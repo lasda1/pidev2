@@ -1,0 +1,3 @@
+co_voiturage_homepage:
+    path:     /
+    defaults: { _controller: CoVoiturageBundle:Default:index }
