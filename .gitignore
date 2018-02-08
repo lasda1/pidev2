@@ -1,3 +1,4 @@
+/composer.lock
 /.idea
 /.web-server-pid
 /app/config/parameters.yml
