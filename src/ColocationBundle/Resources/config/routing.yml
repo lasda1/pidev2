@@ -1,0 +1,10 @@
+colocation_homepage:
+    path:     /colocation
+    defaults: { _controller: ColocationBundle:Default:index }
+
+ajout:
+    path:     /ajout
+    defaults: { _controller: ColocationBundle:Default:ajout}
+
+
+
