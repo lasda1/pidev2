@@ -236,9 +236,8 @@
     </div>
     <nav class="am-right-sidebar">
         <div class="sb-content">
-            <div class="user-info"><img src="assets/img/avatar.jpg"><span class="name">{% block userName %} {% if user is defined %}{{ user.username | upper }} {% endif %}
-                    {% endblock %}<span
-                            class="status"></span></span><span class="position">{% block classe %}classe : {% if user is defined %}{{ user.classe }}{% endif %} {% endblock %}</span></div>
+            <div class="user-info"><img src="assets/img/avatar.jpg"><span class="name">{% block userName %}{{ user.username | upper }} {% endblock %}<span
+                            class="status"></span></span><span class="position">{% block classe %}classe : {{ user.classe }} {% endblock %}</span></div>
             <div class="tab-navigation">
                 <ul role="tablist" class="nav nav-tabs nav-justified">
                     <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab"
