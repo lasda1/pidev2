@@ -1,0 +1,3 @@
+objet_homepage:
+    path:     /objets
+    defaults: { _controller: ObjetBundle:Default:index }
