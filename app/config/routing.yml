@@ -1,3 +1,7 @@
+objet:
+    resource: "@ObjetBundle/Resources/config/routing.yml"
+    prefix:   /
+
 co_voiturage:
     resource: "@CoVoiturageBundle/Resources/config/routing.yml"
     prefix:   /
