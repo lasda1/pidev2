@@ -64,7 +64,7 @@
                             <li><a href="#">Colocation</a></li>
                             <li><a href="#">Co-voiturage</a></li>
                             <li><a href="#">Espace educatif</a></li>
-                            <li><a href="#">Evenements</a></li>
+                            <li><a href="{{ path('e_index') }}">Evenements</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Contact us</a></li>
@@ -206,11 +206,11 @@
                         </li>
                     </ul>
                 </li>
-                <li class="parent"><a href="#"><i class="icon s7-note2"></i><span>Evenements</span></a>
+                <li class="parent"><a href="{{ path('e_index') }}"><i class="icon s7-note2"></i><span>Evenements</span></a>
                     <ul class="sub-menu">
-                        <li><a href="#">Ajouter un evenement</a>
+                        <li><a href="{{ path('e_new') }}">Ajouter un evenement</a>
                         </li>
-                        <li class="active"><a href="#">Consulter les evenements</a>
+                        <li class="active"><a href="{{ path('e_index') }}">Consulter les evenements</a>
                         </li>
                     </ul>
                 </li>
@@ -236,9 +236,9 @@
     </div>
     <nav class="am-right-sidebar">
         <div class="sb-content">
-            <div class="user-info"><img src="assets/img/avatar.jpg"><span class="name">{% block userName %}{{ user.username | upper }}
+            <div class="user-info"><img src="assets/img/avatar.jpg"><span class="name">{% block userName %}
                     {% endblock %}<span
-                            class="status"></span></span><span class="position">{% block classe %}classe : {{ user.classe }} {% endblock %}</span></div>
+                            class="status"></span></span><span class="position">{% block classe %}classe :  {% endblock %}</span></div>
             <div class="tab-navigation">
                 <ul role="tablist" class="nav nav-tabs nav-justified">
                     <li role="presentation" class="active"><a href="#tab1" aria-controls="home" role="tab"
