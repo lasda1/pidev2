@@ -65,6 +65,21 @@ class Event
      */
     private $y;
     /**
+     * @var float
+     *
+     * @ORM\Column(name="x", type="float", nullable=false)
+     */
+    private $x;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="y", type="float", nullable=false)
+     */
+    private $y;
+
+
+    /**
      * @var string
      *
      * @ORM\Column(name="photo", type="string", length=255, nullable=false)
@@ -82,6 +97,7 @@ class Event
      * @ORM\Column(name="enable", type="boolean", nullable=false)
      */
     private $enable=1;
+
     /**
      * @var string
      *
@@ -94,6 +110,14 @@ class Event
      * @ORM\Column(name="createdAt", type="datetime", nullable=false)
      */
     private $createdAt;
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime", nullable=false)
+     */
+    private $createdAt;
+
+
     /**
      * @return int
      */
@@ -248,6 +272,7 @@ class Event
     {
         $this->user = $user;
     }
+
     /**
      * @return \DateTime
      */
@@ -255,6 +280,7 @@ class Event
     {
         return $this->createdAt;
     }
+
     /**
      * @param \DateTime $createdAt
      */
@@ -262,6 +288,7 @@ class Event
     {
         $this->createdAt = $createdAt;
     }
+
     /**
      * @return float
      */
@@ -269,6 +296,7 @@ class Event
     {
         return $this->x;
     }
+
     /**
      * @param float $x
      */
@@ -276,6 +304,7 @@ class Event
     {
         $this->x = $x;
     }
+
     /**
      * @return float
      */
@@ -283,6 +312,7 @@ class Event
     {
         return $this->y;
     }
+
     /**
      * @param float $y
      */
@@ -290,4 +320,6 @@ class Event
     {
         $this->y = $y;
     }
+
 }
+
