@@ -1,21 +1,159 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Event edit</h1>
+    <style>
 
-    {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
-    {{ form_end(edit_form) }}
+        #map {
+            height: 400px;
 
-    <ul>
-        <li>
-            <a href="{{ path('e_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+        }
+        .pac-container {
+            font-family: Roboto;
+        }
+
+        #type-selector {
+            color: #fff;
+            background-color: #4d90fe;
+            padding: 5px 11px 0px 11px;
+        }
+
+        #type-selector label {
+            font-family: Roboto;
+            font-size: 13px;
+            font-weight: 300;
+        }
+    </style>
+    <div class="col-md-1"></div>
+    <div class="col-md-6">
+        {{ form_start(form) }}
+        {{ form_widget(form.titre,{'attr':{'class':'form-control','placeholder':"Nom de l'evennement"}}) }}
+        {{ form_widget(form.description,{'attr':{'class':'form-control','placeholder':"description de l'evennement"}}) }}
+        {{ form_widget(form.datedebut,{'attr':{'class':'form-control ','placeholder':"Date de l'evennement"}}) }}
+        {{ form_widget(form.datefin,{'attr':{'class':'form-control ','placeholder':"Date de Fin de l'evennement s'il y a plusieurs jours"}}) }}
+        {{ form_widget(form.photo,{'attr':{'class':'form-control ','placeholder':"Logo de l'evennement"}}) }}
+        {{ form_widget(form.nbMax,{'attr':{'class':'form-control ','placeholder':"Nombre de place"}}) }}
+
+        {{ form_widget(form.lieu,{'attr':{'class':'form-control controls','placeholder':'Où vas se passer?'}}) }}
+        <div class="col-md-3">
+            {{ form_widget(form.x,{'attr':{'class':'form-control','placeholder':'x'}}) }}
+        </div>
+        <div class="col-md-3">
+            {{ form_widget(form.y,{'attr':{'class':'form-control','placeholder':'y'}}) }}
+
+        </div>
+        {{ form_widget(form.categorie,{'attr':{'class':'form-control ','placeholder':"Categorie de l'evennement"}}) }}
+
+
+        {{ form_widget(form) }}
+
+        <input type="submit" value="Publier l'evennement" onclick="xy()" />
+        {{ form_end(form) }}
+    </div>
+
+    <div class="col-md-5" id="map">
+
+    </div>
+
+
+
+    <script>
+        function xy() {
+
+            document.getElementById('eventbundle_event_x').value=map.center.lat();
+
+            document.getElementById('eventbundle_event_y').value=map.center.lng();
+        }
+
+
+        // This example requires the Places library. Include the libraries=places
+        // parameter when you first load the API. For example:
+        // <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places">
+        var marker;
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: 36, lng: 10},
+                zoom: 8
+            });
+            var input = /** @type {!HTMLInputElement} */(
+                document.getElementById('eventbundle_event_lieu'));
+
+
+            var autocomplete = new google.maps.places.Autocomplete(input);
+            autocomplete.bindTo('bounds', map);
+
+            var infowindow = new google.maps.InfoWindow();
+            var marker = new google.maps.Marker({
+                map: map,
+                anchorPoint: new google.maps.Point(0, -29)
+
+            });
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: true,
+                animation: google.maps.Animation.DROP,
+                position: map.center
+
+
+            });
+            marker.setMap(map);
+            marker.addListener('click', toggleBounce);
+
+            autocomplete.addListener('place_changed', function() {
+                infowindow.close();
+                marker.setVisible(true);
+                document.getElementById('eventbundle_event_x').value =marker.position.lat();
+                document.getElementById('eventbundle_event_y').value =marker.position.lng();
+
+
+                var place = autocomplete.getPlace();
+
+                // If the place has a geometry, then present it on a map.
+                if (place.geometry.viewport) {
+                    map.fitBounds(place.geometry.viewport);
+                } else {
+                    map.setCenter(place.geometry.location);
+                    map.setZoom(10);  // Why 17? Because it looks good.
+
+                }
+
+
+                ;
+                marker.setVisible(true);
+
+
+                var address = '';
+                if (place.address_components) {
+                    address = [
+                        (place.address_components[0] && place.address_components[0].short_name || ''),
+                        (place.address_components[1] && place.address_components[1].short_name || ''),
+                        (place.address_components[2] && place.address_components[2].short_name || '')
+                    ].join(' ');
+                }
+
+                infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+                infowindow.open(map, marker);
+            });
+
+            // Sets a listener on a radio button to change the filter type on Places
+            // Autocomplete.
+            function setupClickListener(id, types) {
+                var radioButton = document.getElementById(id);
+                radioButton.addEventListener('click', function() {
+                    autocomplete.setTypes(types);
+                });
+            }
+
+
+        }
+        function toggleBounce() {
+            if (marker.getAnimation() !== null) {
+                marker.setAnimation(null);
+            } else {
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+            }
+        }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWb0i4faRZm8P5oEN-ukUF_CACQzWt480&libraries=places&callback=initMap"
+            async defer></script>
+
 {% endblock %}

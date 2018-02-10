@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Event
  *
- * @ORM\Table(name="avis", indexes={@ORM\Index(name="EventUser", columns={"idUser", "idEvent"})})
+ * @ORM\Table(name="event")
  * @ORM\Entity(repositoryClass="EventBundle\Repository\EventRepository")
  */
 class Event
@@ -31,7 +31,7 @@ class Event
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=255, nullable=false)
+     * @ORM\Column(name="description", type="string", length=6000, nullable=false)
      */
     private $description;
 
@@ -64,6 +64,21 @@ class Event
     private $lieu;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="x", type="float", nullable=false)
+     */
+    private $x;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="y", type="float", nullable=false)
+     */
+    private $y;
+
+
+    /**
      * @var string
      *
      * @ORM\Column(name="photo", type="string", length=255, nullable=false)
@@ -82,7 +97,7 @@ class Event
      *
      * @ORM\Column(name="enable", type="boolean", nullable=false)
      */
-    private $enable;
+    private $enable=1;
 
     /**
      * @var string
@@ -90,6 +105,14 @@ class Event
      * @ORM\Column(name="categorie", type="string", length=255, nullable=false)
      */
     private $categorie;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime", nullable=false)
+     */
+    private $createdAt;
+
 
     /**
      * @return int
@@ -265,6 +288,54 @@ class Event
     public function setUser($user)
     {
         $this->user = $user;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getCreatedAt()
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * @param \DateTime $createdAt
+     */
+    public function setCreatedAt($createdAt)
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * @return float
+     */
+    public function getX()
+    {
+        return $this->x;
+    }
+
+    /**
+     * @param float $x
+     */
+    public function setX($x)
+    {
+        $this->x = $x;
+    }
+
+    /**
+     * @return float
+     */
+    public function getY()
+    {
+        return $this->y;
+    }
+
+    /**
+     * @param float $y
+     */
+    public function setY($y)
+    {
+        $this->y = $y;
     }
 
 
