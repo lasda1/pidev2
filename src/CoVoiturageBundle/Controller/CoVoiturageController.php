@@ -2,7 +2,9 @@
 
 namespace CoVoiturageBundle\Controller;
 
+use CoVoiturageBundle\Entity\CoVoiturage;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Request;
 
 class CoVoiturageController extends Controller
 {
@@ -46,5 +48,6 @@ class CoVoiturageController extends Controller
     public function readAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->findAll();
+        return $this->render('CoVoiturageBundle:Default:index.html.twig');
     }
 }
