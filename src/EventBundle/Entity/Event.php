@@ -64,19 +64,8 @@ class Event
      * @ORM\Column(name="y", type="float", nullable=false)
      */
     private $y;
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="x", type="float", nullable=false)
-     */
-    private $x;
 
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="y", type="float", nullable=false)
-     */
-    private $y;
+
 
 
     /**
@@ -110,12 +99,7 @@ class Event
      * @ORM\Column(name="createdAt", type="datetime", nullable=false)
      */
     private $createdAt;
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="createdAt", type="datetime", nullable=false)
-     */
-    private $createdAt;
+
 
 
     /**
