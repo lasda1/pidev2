@@ -16,14 +16,23 @@ class EventController extends Controller
      * Lists all event entities.
      *
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $events = $em->getRepository('EventBundle:Event')->findAll();
+        $events = $em->getRepository('EventBundle:Event')->createQueryBuilder('e')
+            ->addORderBy('e.datedebut','DESC')
+            ->getQuery()
+            ->execute();
+        $paginator  = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $events, /* query NOT result */
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 7));
 
         return $this->render('@Event/event/index.html.twig', array(
             'events' => $events,
+            'pagination' => $pagination
         ));
     }
 
@@ -32,13 +41,21 @@ class EventController extends Controller
      *
      */
     public function newAction(Request $request)
-    {
-        $event = new Event();
+    { global $kernel;
+        $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
+
+        if ($user == 'anon.') {
+            return $this->redirectToRoute('e_index');
+        }
+        else{
+            $event = new Event();
         $form = $this->createForm('EventBundle\Form\EventType', $event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $event->setCreatedAt(new \DateTime());
+            $event->setUser($user);
             $em->persist($event);
             $em->flush();
 
@@ -49,7 +66,7 @@ class EventController extends Controller
             'event' => $event,
             'form' => $form->createView(),
         ));
-    }
+    }}
 
     /**
      * Finds and displays a event entity.
@@ -69,24 +86,38 @@ class EventController extends Controller
      * Displays a form to edit an existing event entity.
      *
      */
-    public function editAction(Request $request, Event $event)
+    public function editAction(Request $request, $id)
     {
-        $deleteForm = $this->createDeleteForm($event);
-        $editForm = $this->createForm('EventBundle\Form\EventType', $event);
-        $editForm->handleRequest($request);
+        global $kernel;
+        $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+
+        $event = $em->getRepository('EventBundle:Event')->find($id);
+
+        if ($user == 'anon.' or $user!=$event->getUser()) {
+
+            return $this->redirectToRoute('e_index');
+        } else
+
+        {
+            $deleteForm = $this->createDeleteForm($event);
+            $editForm = $this->createForm('EventBundle\Form\EventType', $event);
+            $editForm->handleRequest($request);
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
+            $event->setEnable(1);
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('e_edit', array('id' => $event->getId()));
+            return $this->redirectToRoute('e_show', array('id' => $event->getId()));
         }
 
         return $this->render('@Event/event/edit.html.twig', array(
             'event' => $event,
-            'edit_form' => $editForm->createView(),
+            'form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
-    }
+    }}
 
     /**
      * Deletes a event entity.
@@ -99,7 +130,11 @@ class EventController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->remove($event);
+            if ($event->isEnable()==1)
+            $event->setEnable(0);
+            else
+                $event->setEnable(1);
+            $em->persist($event);
             $em->flush();
         }
 
