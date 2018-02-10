@@ -2,6 +2,7 @@
 
 namespace EventBundle\Form;
 
+use Doctrine\DBAL\Types\FloatType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -31,8 +32,12 @@ class EventType extends AbstractType
             ))
 
             ->add('lieu',TextType::class)
-            ->add('x',NumberType::class)
-            ->add('y',NumberType::class)
+            ->add('x',NumberType::class,array(
+                'scale'=>15
+            ))
+            ->add('y',NumberType::class,array(
+                'scale'=>15
+            ))
             ->add('photo',TextType::class)
             ->add('nbMax',NumberType::class)
 

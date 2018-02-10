@@ -66,14 +66,14 @@ class Event
     /**
      * @var float
      *
-     * @ORM\Column(name="x", type="float", nullable=false)
+     * @ORM\Column(name="x", type="float", nullable=false, length=70)
      */
     private $x;
 
     /**
      * @var float
      *
-     * @ORM\Column(name="y", type="float", nullable=false)
+     * @ORM\Column(name="y", type="float", nullable=false, length=70)
      */
     private $y;
 

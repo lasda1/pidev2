@@ -7,23 +7,31 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Avis
  *
- * @ORM\Table(name="avis", indexes={@ORM\Index(name="id", columns={"idevent"}),@ORM\Index(name="id", columns={"iduser"})})
+ * @ORM\Table(name="avis", indexes={@ORM\Index(name="EventUser", columns={"idUser", "idEvent"})})
  * @ORM\Entity(repositoryClass="EventBundle\Repository\AvisRepository")
  */
 class Avis
 {
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
 
     /**
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="iduser",referencedColumnName="id")
-     * @ORM\Id
+     * @var integer
+     *
+     * @ORM\Column(name="iduser", type="integer", nullable=false)
      */
     private $iduser;
 
     /**
-     * @ORM\ManyToOne(targetEntity="EventBundle\Entity\Event")
-     * @ORM\JoinColumn(name="idevent",referencedColumnName="id")
-     * @ORM\Id
+     * @var integer
+     *
+     * @ORM\Column(name="idevent", type="integer", nullable=false)
      */
     private $idevent;
 
@@ -35,23 +43,7 @@ class Avis
     private $avis=0;
 
     /**
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-    }
-
-    /**
-     * @return int
+     * @return mixed
      */
     public function getIduser()
     {
@@ -59,7 +51,7 @@ class Avis
     }
 
     /**
-     * @param int $iduser
+     * @param mixed $iduser
      */
     public function setIduser($iduser)
     {
@@ -67,7 +59,7 @@ class Avis
     }
 
     /**
-     * @return int
+     * @return mixed
      */
     public function getIdevent()
     {
@@ -75,7 +67,7 @@ class Avis
     }
 
     /**
-     * @param int $idevent
+     * @param mixed $idevent
      */
     public function setIdevent($idevent)
     {
@@ -97,6 +89,7 @@ class Avis
     {
         $this->avis = $avis;
     }
+
 
 }
 

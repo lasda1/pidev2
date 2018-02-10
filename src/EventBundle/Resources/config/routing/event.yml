@@ -22,3 +22,18 @@ e_delete:
     path:     /{id}/delete
     defaults: { _controller: "EventBundle:Event:delete" }
     methods:  DELETE
+
+e_participate:
+    path:     /{id}/participer
+    defaults: { _controller: "EventBundle:Event:participer" }
+    methods:  GET
+
+e_rating:
+    path:     /{id}/{val}
+    defaults: { _controller: "EventBundle:Event:rating" }
+    methods:  GET
+
+e_recherche:
+    path:     /recherche
+    defaults: { _controller: "EventBundle:Event:recherche" }
+    methods:  GET

@@ -34,10 +34,10 @@
         {{ form_widget(form.nbMax,{'attr':{'class':'form-control ','placeholder':"Nombre de place"}}) }}
 
         {{ form_widget(form.lieu,{'attr':{'class':'form-control controls','placeholder':'Où vas se passer?'}}) }}
-        <div class="col-md-3">
+        <div class="col-md-6">
             {{ form_widget(form.x,{'attr':{'class':'form-control','placeholder':'x'}}) }}
         </div>
-        <div class="col-md-3">
+        <div class="col-md-6">
             {{ form_widget(form.y,{'attr':{'class':'form-control','placeholder':'y'}}) }}
 
         </div>
@@ -71,8 +71,8 @@
         var marker;
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: 36, lng: 10},
-                zoom: 8
+                center: {lat: {{ event.x }}, lng: {{ event.y}} },
+                zoom: 17
             });
             var input = /** @type {!HTMLInputElement} */(
                 document.getElementById('eventbundle_event_lieu'));
@@ -91,19 +91,23 @@
                 map: map,
                 draggable: true,
                 animation: google.maps.Animation.DROP,
-                position: map.center
+                position: {lat: {{ event.x }}, lng: {{ event.y}} }
 
 
             });
             marker.setMap(map);
             marker.addListener('click', toggleBounce);
 
+            google.maps.event.addListener(marker, 'drag', function(event) {
+                document.getElementById('eventbundle_event_x').value =event.latLng.lat();
+                document.getElementById('eventbundle_event_y').value= event.latLng.lng();
+
+            });
+
+
             autocomplete.addListener('place_changed', function() {
                 infowindow.close();
-                marker.setVisible(true);
-                document.getElementById('eventbundle_event_x').value =marker.position.lat();
-                document.getElementById('eventbundle_event_y').value =marker.position.lng();
-
+                marker.setVisible(false);
 
                 var place = autocomplete.getPlace();
 
@@ -118,6 +122,7 @@
 
 
                 ;
+                marker.setPosition(place.geometry.location);
                 marker.setVisible(true);
 
 
