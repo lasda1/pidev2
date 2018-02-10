@@ -1,9 +1,6 @@
 <?php
-
 namespace EventBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
-
 /**
  * Event
  *
@@ -20,49 +17,53 @@ class Event
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
     /**
      * @var string
      *
      * @ORM\Column(name="titre", type="string", length=255, nullable=false)
      */
     private $titre;
-
     /**
      * @var string
      *
      * @ORM\Column(name="description", type="string", length=6000, nullable=false)
      */
     private $description;
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="dateDebut", type="datetime", nullable=false)
      */
     private $datedebut;
-
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
      * @ORM\JoinColumn(name="user",referencedColumnName="id")
      */
     private $user;
-
-
     /**
      * @var \DateTime
      *
      * @ORM\Column(name="dateFin", type="datetime", nullable=true)
      */
     private $datefin;
-
     /**
      * @var string
      *
      * @ORM\Column(name="lieu", type="string", length=255, nullable=false)
      */
     private $lieu;
-
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="x", type="float", nullable=false)
+     */
+    private $x;
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="y", type="float", nullable=false)
+     */
+    private $y;
     /**
      * @var float
      *
@@ -84,14 +85,12 @@ class Event
      * @ORM\Column(name="photo", type="string", length=255, nullable=false)
      */
     private $photo;
-
     /**
      * @var integer
      *
      * @ORM\Column(name="nb_max", type="integer", nullable=true)
      */
     private $nbMax;
-
     /**
      * @var boolean
      *
@@ -105,7 +104,12 @@ class Event
      * @ORM\Column(name="categorie", type="string", length=255, nullable=false)
      */
     private $categorie;
-
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="createdAt", type="datetime", nullable=false)
+     */
+    private $createdAt;
     /**
      * @var \DateTime
      *
@@ -121,7 +125,6 @@ class Event
     {
         return $this->id;
     }
-
     /**
      * @param int $id
      */
@@ -129,7 +132,6 @@ class Event
     {
         $this->id = $id;
     }
-
     /**
      * @return string
      */
@@ -137,7 +139,6 @@ class Event
     {
         return $this->titre;
     }
-
     /**
      * @param string $titre
      */
@@ -145,7 +146,6 @@ class Event
     {
         $this->titre = $titre;
     }
-
     /**
      * @return string
      */
@@ -153,7 +153,6 @@ class Event
     {
         return $this->description;
     }
-
     /**
      * @param string $description
      */
@@ -161,7 +160,6 @@ class Event
     {
         $this->description = $description;
     }
-
     /**
      * @return \DateTime
      */
@@ -169,7 +167,6 @@ class Event
     {
         return $this->datedebut;
     }
-
     /**
      * @param \DateTime $datedebut
      */
@@ -177,7 +174,6 @@ class Event
     {
         $this->datedebut = $datedebut;
     }
-
     /**
      * @return \DateTime
      */
@@ -185,7 +181,6 @@ class Event
     {
         return $this->datefin;
     }
-
     /**
      * @param \DateTime $datefin
      */
@@ -193,7 +188,6 @@ class Event
     {
         $this->datefin = $datefin;
     }
-
     /**
      * @return string
      */
@@ -201,7 +195,6 @@ class Event
     {
         return $this->lieu;
     }
-
     /**
      * @param string $lieu
      */
@@ -209,7 +202,6 @@ class Event
     {
         $this->lieu = $lieu;
     }
-
     /**
      * @return string
      */
@@ -217,7 +209,6 @@ class Event
     {
         return $this->photo;
     }
-
     /**
      * @param string $photo
      */
@@ -225,7 +216,6 @@ class Event
     {
         $this->photo = $photo;
     }
-
     /**
      * @return int
      */
@@ -233,7 +223,6 @@ class Event
     {
         return $this->nbMax;
     }
-
     /**
      * @param int $nbMax
      */
@@ -241,7 +230,6 @@ class Event
     {
         $this->nbMax = $nbMax;
     }
-
     /**
      * @return bool
      */
@@ -249,7 +237,6 @@ class Event
     {
         return $this->enable;
     }
-
     /**
      * @param bool $enable
      */
@@ -257,7 +244,6 @@ class Event
     {
         $this->enable = $enable;
     }
-
     /**
      * @return string
      */
@@ -265,7 +251,6 @@ class Event
     {
         return $this->categorie;
     }
-
     /**
      * @param string $categorie
      */
@@ -273,7 +258,6 @@ class Event
     {
         $this->categorie = $categorie;
     }
-
     /**
      * @return mixed
      */
@@ -281,7 +265,6 @@ class Event
     {
         return $this->user;
     }
-
     /**
      * @param mixed $user
      */
@@ -337,7 +320,6 @@ class Event
     {
         $this->y = $y;
     }
-
 
 }
 

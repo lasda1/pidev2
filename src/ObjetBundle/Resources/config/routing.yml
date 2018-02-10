@@ -1,3 +1,19 @@
 objet_homepage:
     path:     /objets
     defaults: { _controller: ObjetBundle:Default:index }
+
+ajoutobj:
+    path:     /ajoutobj
+    defaults: { _controller: ObjetBundle:Objet:ajoutobj }
+
+affichobj:
+    path:     /affichobj
+    defaults: { _controller: ObjetBundle:Objet:affichobj }
+
+deleteobj:
+    path:     /deleteobj
+    defaults: { _controller: ObjetBundle:Objet:deleteobj }
+
+updateobj:
+    path:     /updateobj
+    defaults: { _controller: ObjetBundle:Objet:updateobj }
