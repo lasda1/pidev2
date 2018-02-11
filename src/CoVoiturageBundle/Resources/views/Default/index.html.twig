@@ -6,10 +6,9 @@ Co-Voiturage
 
 
 
-
     <div class="panel panel-alt3">
         <div class="panel-heading" >
-            <div class="tools" id="clickoffre" ><span class="icon s7-upload" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ajouter un offre"></span></div><span class="title">Offres de Co-Voiturage</span>
+            <div class="tools" data-toggle="modal" data-target="#modal-offre" ><span class="icon s7-upload" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ajouter un offre"></span></div><span class="title">Offres de Co-Voiturage</span>
         </div>
 
         <div class="panel-body">
@@ -19,7 +18,7 @@ Co-Voiturage
 
     <div class="panel panel-alt3">
         <div class="panel-heading">
-            <div class="tools" id="clickdemande">
+            <div class="tools" data-toggle="modal" data-target="#modal-demande">
                 <span class="icon s7-upload"  data-toggle="tooltip" data-placement="top" data-original-title="Ajouter une demande"></span>
             </div>
             <span class="title">Demandes de Co-Voiturage</span>
@@ -30,9 +29,6 @@ Co-Voiturage
         </div>
     </div>
 
-    <div style="width: 100%;" class="col-md-6">
-        <div style="height: 400px; width: 600px;" id="map"></div>
-    </div>
 
 
 
@@ -120,9 +116,9 @@ Co-Voiturage
                                 </div>
 
                             </div>
-
-
-
+                            <div class="col-md-6">
+                                <div style="height: 400px; width: 400px;" id="map" style="height: 100%;"></div>
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -139,65 +135,18 @@ Co-Voiturage
 {% endblock %}
 
 {% block customScript %}
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8w507O9U90-M_IIeytsa4weIBO_yAjhI&callback=initMap"
-            type="text/javascript"></script>
+
     <script>
         var map;
         function initMap() {
-            var directionsService = new google.maps.DirectionsService;
-            var directionsDisplay = new google.maps.DirectionsRenderer;
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 7,
-                center: {lat: 41.85, lng: -87.65}
-            });
-            directionsDisplay.setMap(map);
-
-            var onChangeHandler = function() {
-                calculateAndDisplayRoute(directionsService, directionsDisplay);
-            };
-            document.getElementById('depart').addEventListener('change', onChangeHandler);
-            document.getElementById('destination').addEventListener('change', onChangeHandler);
-        }
-
-        function calculateAndDisplayRoute(directionsService, directionsDisplay) {
-            directionsService.route({
-                origin: document.getElementById('depart').value,
-                destination: document.getElementById('destination').value,
-                travelMode: 'DRIVING'
-            }, function(response, status) {
-                if (status === 'OK') {
-                    directionsDisplay.setDirections(response);
-                } else {
-                    window.alert('Directions request failed due to ' + status);
-                }
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: -34.397, lng: 150.644},
+                zoom: 8
             });
         }
-
-
-        $('#clickdemande').click(function () {
-            $('#modal-demande').modal('show');
-           /google.maps.event.addListener(map, "idle", function()
-            {
-                google.maps.event.trigger(map, 'resize');
-            });
-
-            map_array[Next].setZoom( map.getZoom() - 1 );
-            map_array[Next].setZoom( map.getZoom() + 1 );
-            map.setCenter(center);
-        });
-
-        $('#clickoffre').click(function () {
-            $('#modal-offre').modal('show');
-            google.maps.event.addListener(map, "idle", function()
-            {
-                google.maps.event.trigger(map, 'resize');
-            });
-
-            map_array[Next].setZoom( map.getZoom() - 1 );
-            map_array[Next].setZoom( map.getZoom() + 1 );
-            map.setCenter(center);
-        });
     </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8w507O9U90-M_IIeytsa4weIBO_yAjhI&callback=initMap"
+            type="text/javascript"></script>
 
 
 {% endblock %}
