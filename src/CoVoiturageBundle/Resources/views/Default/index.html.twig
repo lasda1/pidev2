@@ -1,15 +1,153 @@
 {% extends "base.html.twig" %}
-
+{% block pageName %}
+Co-Voiturage
+{% endblock %}
 {% block body %}
 
-    <div class="panel panel-alt1">
-        <div class="panel-heading">
-            <span class="title">Offres de co-voiturage</span>
+
+
+    <div class="panel panel-alt3">
+        <div class="panel-heading" >
+            <div class="tools" data-toggle="modal" data-target="#modal-offre" ><span class="icon s7-upload" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ajouter un offre"></span></div><span class="title">Offres de Co-Voiturage</span>
         </div>
+
         <div class="panel-body">
-            <p> Offres recentes </p>
-            <p>Velit numquam possimus eum delectus maiores dicta perspiciatis quae aperiam dolores facere, doloribus non, iusto, sit.</p>
+
         </div>
     </div>
 
+    <div class="panel panel-alt3">
+        <div class="panel-heading">
+            <div class="tools" data-toggle="modal" data-target="#modal-demande">
+                <span class="icon s7-upload"  data-toggle="tooltip" data-placement="top" data-original-title="Ajouter une demande"></span>
+            </div>
+            <span class="title">Demandes de Co-Voiturage</span>
+        </div>
+
+        <div class="panel-body">
+
+        </div>
+    </div>
+
+
+
+
+    <div id="modal-offre" tabindex="-1" role="dialog" class="modal fade modal-colored-header modal-colored-header-info">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close"><i class="icon s7-close"></i></button>
+                    <h3 class="modal-title">Ajouter un offre</h3>
+                </div>
+                <div class="modal-body">
+                    <div class="text-center">
+                        <div class="i-circle text-primary"><i class="icon s7-check"></i></div>
+                        <h4>Awesome!</h4>
+                        <p>Changes has been saved successfully! </p>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                    <button type="button" data-dismiss="modal" class="btn btn-info">Proceed</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal-demande" tabindex="-1" role="dialog" class="modal fade modal-colored-header modal-colored-header-info">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close"><i class="icon s7-close"></i></button>
+                    <h3 class="modal-title">Ajouter une demande</h3>
+                </div>
+                <form role="form">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Départ</label>
+                                    <input name="depart" type="text" placeholder="Entrez la zone de départ" class="form-control">
+                                </div>
+                                <div class="form-group">
+                                    <label>Destination</label>
+                                    <input name="destination" type="text" placeholder="Entrez la zone de Destination" class="form-control">
+                                </div>
+
+                                <div class="form-group">
+                                    <label>Quotidiennement</label>
+                                    <div class="switch-button switch-button-info" style="margin-left: 10px;">
+                                        <input name="onetime" id="swt6" type="checkbox" />
+                                        <span>
+                                            <label for="swt6"></label>
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div style="display: none" id="jours" class="form-group">
+                                    <label class="control-label">Les jours</label>
+                                        <div class="am-checkbox">
+                                            <input name="lundi" id="lundi" type="checkbox">
+                                            <label for="lundi">Lundi</label>
+
+                                            <input name="mardi" id="mardi" type="checkbox">
+                                            <label for="mardi">Mardi</label>
+
+                                            <input name="mercredi" id="mercredi" type="checkbox">
+                                            <label for="mercredi">Mercredi</label>
+                                        </div>
+                                        <div class="am-checkbox">
+                                            <input name="jeudi" id="jeudi" type="checkbox">
+                                            <label for="jeudi">Jeudi</label>
+
+                                            <input name="vendredi" id="vendredi" type="checkbox">
+                                            <label for="vendredi">Vendredi</label>
+
+                                            <input name="samedi" id="samedi" type="checkbox">
+                                            <label for="samedi">Samedi</label>
+                                        </div>
+                                </div>
+
+                                <div id="dateheure" class="form-group">
+                                    <label>Date et heure</label>
+                                    <div data-date-format="yyyy-mm-dd - HH:ii" data-link-field="dtp_input1" class="input-group date datetimepicker">
+                                        <input name="date" size="16" value="" readonly="" class="form-control" type="text"><span class="input-group-addon btn btn-primary"><i class="icon-th s7-date"></i></span>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                <div style="height: 400px; width: 400px;" id="map" style="height: 100%;"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
+                        <button type="submit" data-dismiss="modal" class="btn btn-info">Proceed</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    AIzaSyAI33scV0XCVUQdbgqrNcG_1v1roL6EjOw
+
+
 {% endblock %}
+
+{% block customScript %}
+
+    <script>
+        var map;
+        function initMap() {
+            map = new google.maps.Map(document.getElementById('map'), {
+                center: {lat: -34.397, lng: 150.644},
+                zoom: 8
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8w507O9U90-M_IIeytsa4weIBO_yAjhI&callback=initMap"
+            type="text/javascript"></script>
+
+
+{% endblock %}
+
