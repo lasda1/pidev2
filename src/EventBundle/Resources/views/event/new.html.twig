@@ -34,10 +34,10 @@
     {{ form_widget(form.nbMax,{'attr':{'class':'form-control ','placeholder':"Nombre de place"}}) }}
 
     {{ form_widget(form.lieu,{'attr':{'class':'form-control controls','placeholder':'Où vas se passer?'}}) }}
-    <div class="col-md-3">
+    <div class="col-md-6">
         {{ form_widget(form.x,{'attr':{'class':'form-control','placeholder':'x'}}) }}
     </div>
-    <div class="col-md-3">
+    <div class="col-md-6">
         {{ form_widget(form.y,{'attr':{'class':'form-control','placeholder':'y'}}) }}
 
     </div>
@@ -57,12 +57,9 @@
 
 
     <script>
-            function xy() {
 
-                document.getElementById('eventbundle_event_x').value=map.center.lat();
 
-                document.getElementById('eventbundle_event_y').value=map.center.lng();
-            }
+
 
 
         // This example requires the Places library. Include the libraries=places
@@ -72,7 +69,7 @@ var marker;
         function initMap() {
             var map = new google.maps.Map(document.getElementById('map'), {
                 center: {lat: 36, lng: 10},
-                zoom: 8
+                zoom: 10
             });
             var input = /** @type {!HTMLInputElement} */(
                 document.getElementById('eventbundle_event_lieu'));
@@ -98,19 +95,30 @@ var marker;
             marker.setMap(map);
             marker.addListener('click', toggleBounce);
 
+
+            google.maps.event.addListener(marker, 'drag', function(event) {
+                document.getElementById('eventbundle_event_x').value =event.latLng.lat();
+                document.getElementById('eventbundle_event_y').value= event.latLng.lng();
+
+            });
+
+
+
+
+
+
             autocomplete.addListener('place_changed', function() {
                 infowindow.close();
-                marker.setVisible(true);
-                document.getElementById('eventbundle_event_x').value =marker.position.lat();
-                document.getElementById('eventbundle_event_y').value =marker.position.lng();
-
+                marker.setVisible(false);
 
                 var place = autocomplete.getPlace();
 
                 // If the place has a geometry, then present it on a map.
                 if (place.geometry.viewport) {
                     map.fitBounds(place.geometry.viewport);
+
                 } else {
+
                     map.setCenter(place.geometry.location);
                     map.setZoom(10);  // Why 17? Because it looks good.
 
@@ -118,6 +126,7 @@ var marker;
 
 
                 ;
+                marker.setPosition(place.geometry.location);
                 marker.setVisible(true);
 
 

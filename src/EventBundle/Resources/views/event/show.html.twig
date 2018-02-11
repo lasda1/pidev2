@@ -94,7 +94,7 @@
                                         <i class="fas fa-map-marker-alt"></i>
                                     </div>
                                     <div class="media-body iconContent">
-                                        <h4 class="media-heading color-4"><i class="fas fa-map-marker-alt"></i>
+                                        <h4 class="media-heading color-4"><i class="fas fa-map-marker"></i>
                                             Adresse de l'evennement</h4>
                                         <p>{{ event.lieu }}</p>
                                     </div>
@@ -103,12 +103,29 @@
                         </div>
                     </div>
                     {% if app.user %}
-                        <div class="btnPart">
-                            <a href="" class="btn btn-primary btn-block bg-color-6">Participer</a>
-                        </div>
+                        {% if avis.iduser is not defined %}
+                            <div class="btnPart">
+                                <a href="{{ path('e_participate', { 'id': event.id }) }}" class="btn btn-primary btn-block bg-color-6">Participer</a>
+                            </div>
+
+                        {% elseif app.user and avis.idevent==event.id %}
+                            <div class="btnPart" align="center">
+                                <h1><strong> Rating</strong></h1>
+                        <a href="{{ path('e_rating', {'val': 1, 'id': event.id}) }}" class="btn"><i style="font-size: 30px" class="far fa-star">{% if avis.avis>0 %}<strong></strong>{% else %}{% endif %}</i></a>
+                                <a href="{{ path('e_rating', {'val': 2, 'id': event.id}) }}" class="btn "><i style="font-size: 30px" class="far fa-star">{% if avis.avis>1 %}<strong></strong>{% else %}{% endif %}</i></a>
+                                <a href="{{ path('e_rating', {'val': 3, 'id': event.id}) }}" class="btn "><i style="font-size: 30px" class="far fa-star">{% if avis.avis>2 %}<strong></strong>{% else %}{% endif %}</i></a>
+                                <a href="{{ path('e_rating', {'val': 4, 'id': event.id}) }}" class="btn "><i style="font-size: 30px" class="far fa-star">{% if avis.avis>3 %}<strong></strong>{% else %}{% endif %}</i></a>
+                                <a href="{{ path('e_rating', {'val': 5, 'id': event.id}) }}" class="btn"><i style="font-size: 30px" class="far fa-star">{% if avis.avis>4 %}<strong></strong>{% else %}{% endif %}</i></a>
+                                {% if avis.avis==1 %}<h4><strong>J'ai détesté</strong></h4>{% endif %}
+                                {% if avis.avis==2 %}<h4><strong>J'ai pas aimé</strong></h4>{% endif %}
+                                {% if avis.avis==3 %}<h4><strong>C'est pas mal</strong></h4>{% endif %}
+                                {% if avis.avis==4 %}<h4><strong>Ca m'a beacoup plu</strong></h4>{% endif %}
+                                {% if avis.avis==5 %}<h4><strong>J'ai adoré</strong></h4>{% endif %}
+                            </div>
+                            {% endif %}
                     {% else %}
                         <div class="btnPart">
-                            <a href="{{ path('fos_user_security_login') }}" class="btn btn-primary btn-block bg-color-6">login & participer</a>
+                            <a href="{{ path('fos_user_security_login') }}" class="btn btn-primary btn-block bg-color-6">login Pour participer</a>
                         </div>
                     {% endif %}
                 </div>
@@ -172,7 +189,14 @@
             });
 
             var infoWindow = new google.maps.InfoWindow({map: map});
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: false,
+                animation: google.maps.Animation.DROP,
+                position: {lat: {{ event.x }}, lng: {{ event.y}} }
 
+
+            });
             // Try HTML5 geolocation.
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
