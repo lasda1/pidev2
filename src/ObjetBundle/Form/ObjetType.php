@@ -35,7 +35,7 @@ class ObjetType extends AbstractType
                 'Autres'=> 'Autres',
             )))
             ->add('lieu',TextType::class)
-            ->add('photo',FileType::class,array('required'=>false))
+            ->add('photo',FileType::class,array('attr' => array('class' => 'form-control file'),'data_class' => null,'label'=>'click here to drag images'))
             ->add('Ajouter',SubmitType::class);
 
     }/**
@@ -54,11 +54,6 @@ class ObjetType extends AbstractType
     public function getBlockPrefix()
     {
         return 'objetbundle_objet';
-    }
-
-    public function getParent()
-    {
-        return 'FOS\UserBundle\Form\Type\RegistrationFormType';
     }
 
 
