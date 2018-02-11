@@ -45,28 +45,36 @@ class CoVoiturage
     /**
      * @var string
      *
+     * @ORM\Column(name="depart_id", type="string", length=255)
+     */
+    private $departId;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="destination", type="string", length=255)
      */
     private $destination;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="destination_id", type="string", length=255)
+     */
+    private $destinationId;
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetime")
+     * @ORM\Column(name="date", type="datetime" , nullable=true)
      */
     private $date;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="heure", type="integer")
-     */
-    private $heure;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="onetime", type="integer")
+     * @ORM\Column(name="onetime", type="string")
      */
     private $onetime;
 
@@ -160,29 +168,6 @@ class CoVoiturage
         return $this->date;
     }
 
-    /**
-     * Set heure
-     *
-     * @param integer $heure
-     *
-     * @return CoVoiturage
-     */
-    public function setHeure($heure)
-    {
-        $this->heure = $heure;
-
-        return $this;
-    }
-
-    /**
-     * Get heure
-     *
-     * @return int
-     */
-    public function getHeure()
-    {
-        return $this->heure;
-    }
 
     /**
      * Set onetime
@@ -278,5 +263,53 @@ class CoVoiturage
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set departId
+     *
+     * @param string $departId
+     *
+     * @return CoVoiturage
+     */
+    public function setDepartId($departId)
+    {
+        $this->departId = $departId;
+
+        return $this;
+    }
+
+    /**
+     * Get departId
+     *
+     * @return string
+     */
+    public function getDepartId()
+    {
+        return $this->departId;
+    }
+
+    /**
+     * Set destinationId
+     *
+     * @param string $destinationId
+     *
+     * @return CoVoiturage
+     */
+    public function setDestinationId($destinationId)
+    {
+        $this->destinationId = $destinationId;
+
+        return $this;
+    }
+
+    /**
+     * Get destinationId
+     *
+     * @return string
+     */
+    public function getDestinationId()
+    {
+        return $this->destinationId;
     }
 }

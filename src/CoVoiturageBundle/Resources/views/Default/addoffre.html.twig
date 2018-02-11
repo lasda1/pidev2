@@ -4,18 +4,17 @@
 {% endblock %}
 {% block body %}
 
-    <form role="form">
+    <form role="form" method="POST" action="{{ path('co_voiturage_addoffre') }}">
 <div class="row">
-<div class="col-md-6">
+<div class="col-md-5">
 
-    <div class="modal-body">
                 <div class="form-group">
                     <label>Départ</label>
-                    <input id="start" name="depart" type="text" placeholder="Entrez la zone de départ" class="form-control">
+                    <input required value="Votre emplacement" id="start" name="depart" type="text" placeholder="Entrez la zone de départ" class="form-control">
                 </div>
                 <div class="form-group">
                     <label>Destination</label>
-                    <input value="ESPRIT, Ariana, Tunisie" id="end" name="destination" type="text" placeholder="Entrez la zone de Destination" class="form-control">
+                    <input required value="ESPRIT, Ariana, Tunisie" id="end" name="destination" type="text" placeholder="Entrez la zone de Destination" class="form-control">
                 </div>
 
                 <div class="form-group">
@@ -23,54 +22,65 @@
                     <div class="switch-button switch-button-info" style="margin-left: 10px;">
                         <input name="onetime" id="swt6" type="checkbox" />
                         <span>
-                                            <label for="swt6"></label>
-                                        </span>
+                                <label for="swt6"></label>
+                        </span>
                     </div>
                 </div>
 
                 <div style="display: none" id="jours" class="form-group">
                     <label class="control-label">Les jours</label>
                     <div class="am-checkbox">
-                        <input name="lundi" id="lundi" type="checkbox">
+                        <input value="lundi" name="jour[]" id="lundi" type="checkbox">
                         <label for="lundi">Lundi</label>
 
-                        <input name="mardi" id="mardi" type="checkbox">
-                        <label for="mardi">Mardi</label>
+                        <input value="mardi" name="jour[]" id="mardi" type="checkbox">
+                        <label  for="mardi">Mardi</label>
 
-                        <input name="mercredi" id="mercredi" type="checkbox">
-                        <label for="mercredi">Mercredi</label>
+                        <input value="mercredi" name="jour[]" id="mercredi" type="checkbox">
+                        <label  for="mercredi">Mercredi</label>
                     </div>
                     <div class="am-checkbox">
-                        <input name="jeudi" id="jeudi" type="checkbox">
-                        <label for="jeudi">Jeudi</label>
+                        <input value="jeudi" name="jour[]" id="jeudi" type="checkbox">
+                        <label val for="jeudi">Jeudi</label>
 
-                        <input name="vendredi" id="vendredi" type="checkbox">
+                        <input value="vendredi" name="jour[]" id="vendredi" type="checkbox">
                         <label for="vendredi">Vendredi</label>
 
-                        <input name="samedi" id="samedi" type="checkbox">
+                        <input value="samedi" name="jour[]" id="samedi" type="checkbox">
                         <label for="samedi">Samedi</label>
                     </div>
                 </div>
 
                 <div id="dateheure" class="form-group">
                     <label>Date et heure</label>
-                    <div data-date-format="yyyy-mm-dd - HH:ii" data-link-field="dtp_input1" class="input-group date datetimepicker">
+                    <div data-date-format="yyyy-mm-dd HH:ii" data-link-field="dtp_input1" class="input-group date datetimepicker">
                         <input name="date" size="16" value="" readonly="" class="form-control" type="text"><span class="input-group-addon btn btn-primary"><i class="icon-th s7-date"></i></span>
                     </div>
                 </div>
 
-            </div>
+                <div class="form-group">
+                    <label>Places disponibles</label>
+                    <input  name="placesdisponibles" type="number" placeholder="Entrez le nombre de places disponibles" class="form-control">
+                </div>
+
+
+
+</div>
+    <div class="col-md-6">
+        <div style="height: 400px; width: 700px;" id="map"></div>
+    </div>
 
 </div>
 
-    <div class="col-md-6">
-        <div style="height: 400px; width: 600px;" id="map"></div>
+
+
+    <input type="hidden" id="idDepart" name="idDepart">
+    <input type="hidden" id="idDestination" name="idDestination">
+
     </div>
-    <div id="placeIdLocation"></div>
-    </div>
-        <center>
-            <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-            <button type="submit" data-dismiss="modal" class="btn btn-info">Proceed</button>
+        <center style="margin-top: 50px;">
+            <button type="button" class="btn btn-default">Cancel</button>
+            <button type="submit" class="btn btn-primary">Proceed</button>
         </center>
     </form>
 {% endblock %}
@@ -100,7 +110,7 @@
                 zoom: 13
             });
             var geocoder = new google.maps.Geocoder;
-            var infoWindow = new google.maps.InfoWindow({map: map});
+            //var infoWindow = new google.maps.InfoWindow({map: map});
 
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(function(position) {
@@ -211,6 +221,10 @@
                 return;
             }
             var me = this;
+
+            $('#idDepart').val(this.originPlaceId);
+            $('#idDestination').val(this.destinationPlaceId);
+
 
             this.directionsService.route({
                 origin: {'placeId': this.originPlaceId},
