@@ -41,25 +41,38 @@ class ObjetController extends Controller
     public function affichobjAction()
     {
         $em =$this->getDoctrine()->getManager();
-        $objet=$em->getRepository(Objet::class)->findAll();
+        $objet=$em->getRepository(Objet::class)->objtrouv();
 
         return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet'=>$objet
             // ...
         ));
     }
 
-    public function deleteobjAction()
+
+    public function deleteobjAction($id)
     {
-        return $this->render('ObjetBundle:Objet:deleteobj.html.twig', array(
-            // ...
-        ));
+        $em=$this->getDoctrine()->getManager();
+        $objet=$em->getRepository(Objet::class)->find($id);
+        $em->remove($objet);
+        $em->flush();
+        return $this->redirectToRoute("affichobj");
     }
 
-    public function updateobjAction()
+    public function updateobjAction(Request $request,$id)
     {
-        return $this->render('ObjetBundle:Objet:updateobj.html.twig', array(
+        $em=$this->getDoctrine()->getManager();
+        $objet=$em->getRepository(Objet::class)->find($id);
+        $Form = $this->createForm( ObjetType::class, $objet);
+        $Form->handleRequest($request);
+        if ($Form->isValid() && $Form->isSubmitted()){
+            $em->persist($objet);
+            $em->flush();
+
+        }
+        return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form'=>$Form->createView()
             // ...
         ));
+
     }
 
 }
