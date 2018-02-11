@@ -1,3 +1,7 @@
 co_voiturage_homepage:
     path:     /covoiturage
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:read }
+
+co_voiturage_addoffre:
+    path:     /covoiturage/addoffre
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:addOffre }

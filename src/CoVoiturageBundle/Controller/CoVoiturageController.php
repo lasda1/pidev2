@@ -50,4 +50,8 @@ class CoVoiturageController extends Controller
         $co = $em->getRepository(CoVoiturage::class)->findAll();
         return $this->render('CoVoiturageBundle:Default:index.html.twig');
     }
+
+    public function addOffreAction(Request $request){
+        return $this->render('CoVoiturageBundle:Default:addoffre.html.twig');
+    }
 }
