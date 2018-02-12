@@ -9,3 +9,7 @@ co_voiturage_addoffreview:
 co_voiturage_addoffre:
     path:     /covoiturage/addoffreA
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:addOffre }
+
+co_voiturage_viewoffre:
+    path:     /covoiturage/offres
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewOffre }

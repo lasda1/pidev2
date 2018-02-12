@@ -19,6 +19,7 @@ Co-Voiturage
                     <th>User</th>
                     <th>Départ</th>
                     <th>Destination</th>
+                    <th>Derniere modification</th>
                 </tr>
                 </thead>
                 <tbody class="no-border-x">
@@ -28,13 +29,18 @@ Co-Voiturage
                             <td>{{ c.user.username }}</td>
                             <td>{{ c.depart }}</td>
                             <td>{{ c.destination }}</td>
+                            {% if c.updated == null %}
+                                <td>{{ c.created | date }}</td>
+                                {% else %}
+                                <td>{{ c.modified | date }}</td>
+                            {% endif %}
                         </tr>
                     {% endfor %}
                 {% endif %}
                 </tbody>
             </table>
 
-            <h6>Consulter tout les offres</h6>
+            <a href="{{ path('co_voiturage_viewoffre') }}"><h5 style="float:right;">Consulter tout les offres</h5></a>
 
 
 

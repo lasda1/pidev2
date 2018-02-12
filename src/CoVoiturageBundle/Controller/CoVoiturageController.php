@@ -94,4 +94,10 @@ class CoVoiturageController extends Controller
     public function addOffreViewAction(Request $request){
         return $this->render('CoVoiturageBundle:Default:addoffre.html.twig');
     }
+
+    public function viewOffreAction(){
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->getAllDesc('o');
+        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig',['cov' => $co]);
+    }
 }

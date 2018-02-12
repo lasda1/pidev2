@@ -1,0 +1,67 @@
+{% extends "base.html.twig" %}
+{% block pageName %}
+    Co-Voiturage
+{% endblock %}
+{% block body %}
+
+
+
+    <div class="panel panel-alt3">
+        <div class="panel-heading" >
+            <div class="tools" data-toggle="modal" data-target="#modal-offre" ><span class="icon s7-upload" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ajouter un offre"></span></div><span class="title">Offres de Co-Voiturage</span>
+        </div>
+
+        <div class="panel-body">
+
+            <table class="table table-striped table-fw-widget table-hover">
+                <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Départ</th>
+                    <th>Destination</th>
+                    <th>Derniere modification</th>
+                </tr>
+                </thead>
+                <tbody class="no-border-x">
+                {% if cov is defined %}
+                    {% for c in cov %}
+                        <tr>
+                            <td>{{ c.user.username }}</td>
+                            <td>{{ c.depart }}</td>
+                            <td>{{ c.destination }}</td>
+                            {% if c.updated == null %}
+                                <td>{{ c.created | date }}</td>
+                            {% else %}
+                                <td>{{ c.modified | date }}</td>
+                            {% endif %}
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+
+
+
+
+        </div>
+    </div>
+
+
+
+
+
+{% endblock %}
+
+{% block customScript %}
+    <script>
+        {% if addsuccess is defined %}
+        $.gritter.add({
+            title: "Succès",
+            text: "Ajout fait avec succès.",
+            class_name: "color alt3"
+        });
+        {% endif %}
+    </script>
+
+{% endblock %}
+
