@@ -10,6 +10,11 @@ supprimer:
       path:     /user/colocation/supprimer/{id}
       defaults: { _controller: ColocationBundle:Default:supprimer }
 
+annonces:
+      path:     /user/colocation/MesAnnonce
+      defaults: { _controller: ColocationBundle:Default:supprimer }
+
+
 
 
 
