@@ -59,7 +59,7 @@ class Objet
     /**
      * @var string
      *
-     * @ORM\Column(name="Photo", type="string", length=255)
+     * @ORM\Column(name="Photo", type="string", length=255,nullable=true)
      */
     private $photo;
 

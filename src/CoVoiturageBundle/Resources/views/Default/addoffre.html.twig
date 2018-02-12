@@ -1,0 +1,252 @@
+{% extends "base.html.twig" %}
+{% block pageName %}
+    Co-Voiturage
+{% endblock %}
+{% block body %}
+
+    <form role="form" method="POST" action="{{ path('co_voiturage_addoffre') }}">
+<div class="row">
+<div class="col-md-5">
+
+                <div class="form-group">
+                    <label>Départ</label>
+                    <input required value="Votre emplacement" id="start" name="depart" type="text" placeholder="Entrez la zone de départ" class="form-control">
+                </div>
+                <div class="form-group">
+                    <label>Destination</label>
+                    <input required value="ESPRIT, Ariana, Tunisie" id="end" name="destination" type="text" placeholder="Entrez la zone de Destination" class="form-control">
+                </div>
+
+                <div class="form-group">
+                    <label>Quotidiennement</label>
+                    <div class="switch-button switch-button-info" style="margin-left: 10px;">
+                        <input name="onetime" id="swt6" type="checkbox" />
+                        <span>
+                                <label for="swt6"></label>
+                        </span>
+                    </div>
+                </div>
+
+                <div style="display: none" id="jours" class="form-group">
+                    <label class="control-label">Les jours</label>
+                    <div class="am-checkbox">
+                        <input value="lundi" name="jour[]" id="lundi" type="checkbox">
+                        <label for="lundi">Lundi</label>
+
+                        <input value="mardi" name="jour[]" id="mardi" type="checkbox">
+                        <label  for="mardi">Mardi</label>
+
+                        <input value="mercredi" name="jour[]" id="mercredi" type="checkbox">
+                        <label  for="mercredi">Mercredi</label>
+                    </div>
+                    <div class="am-checkbox">
+                        <input value="jeudi" name="jour[]" id="jeudi" type="checkbox">
+                        <label val for="jeudi">Jeudi</label>
+
+                        <input value="vendredi" name="jour[]" id="vendredi" type="checkbox">
+                        <label for="vendredi">Vendredi</label>
+
+                        <input value="samedi" name="jour[]" id="samedi" type="checkbox">
+                        <label for="samedi">Samedi</label>
+                    </div>
+                </div>
+
+                <div id="dateheure" class="form-group">
+                    <label>Date et heure</label>
+                    <div data-date-format="yyyy-mm-dd HH:ii" data-link-field="dtp_input1" class="input-group date datetimepicker">
+                        <input name="date" size="16" value="" readonly="" class="form-control" type="text"><span class="input-group-addon btn btn-primary"><i class="icon-th s7-date"></i></span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Places disponibles</label>
+                    <input  name="placesdisponibles" type="number" placeholder="Entrez le nombre de places disponibles" class="form-control">
+                </div>
+
+
+
+</div>
+    <div class="col-md-6">
+        <div style="height: 400px; width: 700px;" id="map"></div>
+    </div>
+
+</div>
+
+
+
+    <input type="hidden" id="idDepart" name="idDepart">
+    <input type="hidden" id="idDestination" name="idDestination">
+
+    </div>
+        <center style="margin-top: 50px;">
+            <button type="button" class="btn btn-default">Cancel</button>
+            <button type="submit" class="btn btn-primary">Proceed</button>
+        </center>
+    </form>
+{% endblock %}
+
+
+{% block customScript %}
+    <script>
+        $('#swt6').change(function () {
+            if ($('#swt6').is(':checked')){
+                $('#dateheure').hide();
+                $('#jours').show();
+            }
+            else {
+                $('#jours').hide();
+                $('#dateheure').show();
+            }
+        });
+    </script>
+    <script>
+        var pos;
+        var lol;
+
+        function initMap(lol) {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                mapTypeControl: false,
+                center: {lat: -33.8688, lng: 151.2195},
+                zoom: 13
+            });
+            var geocoder = new google.maps.Geocoder;
+            //var infoWindow = new google.maps.InfoWindow({map: map});
+
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    pos = {
+                        lat: position.coords.latitude,
+                        lng: position.coords.longitude
+                    };
+
+                    var latlng = {lat: parseFloat(pos.lat), lng: parseFloat(pos.lng)};
+
+                    geocoder.geocode({'location': latlng}, function(results, status,lol) {
+                        if (status === google.maps.GeocoderStatus.OK) {
+                            if (results[1]) {
+                                lol=results[1].place_id.toString();
+                                new AutocompleteDirectionsHandler(map,lol);
+                                //new AutocompleteDirectionsHandlerDefault(map,locationId);
+                            } else {
+                                window.alert('Pas de résultat trouvé');
+                                new AutocompleteDirectionsHandler(map);
+                            }
+                        } else {
+                            window.alert('Echec : ' + status);
+                            new AutocompleteDirectionsHandler(map);
+                        }
+                    });
+
+                    //new AutocompleteDirectionsHandler(map);
+
+                    //infoWindow.setPosition(pos);
+                    //infoWindow.setContent('Votre emplacement.');
+                    //map.setCenter(pos);
+                }, function() {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+
+
+
+
+
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Erreur: La géolocalisation a échoué.' :
+                'Erreur: Votre navigateur ne supporte pas la géolocalisation');
+        }
+
+
+
+
+
+        //alert($('#placeIdLocation').val());
+
+        function AutocompleteDirectionsHandler(map,lol) {
+            this.map = map;
+            this.originPlaceId = lol ;
+            //alert($('#placeIdLocation').attr('name'));
+            this.destinationPlaceId = "ChIJUe3GVHTL4hIRV9NcVrU6O2g";
+            this.travelMode = 'DRIVING';
+            var originInput = document.getElementById('start');
+            var destinationInput = document.getElementById('end');
+            var modeSelector = 'DRIVING';
+            this.directionsService = new google.maps.DirectionsService;
+            this.directionsDisplay = new google.maps.DirectionsRenderer;
+            this.directionsDisplay.setMap(map);
+
+            var originAutocomplete = new google.maps.places.Autocomplete(
+                originInput, {placeIdOnly: true});
+            var destinationAutocomplete = new google.maps.places.Autocomplete(
+                destinationInput, {placeIdOnly: true});
+
+
+            this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+            this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+
+            this.route();
+
+        }
+
+
+
+        AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function(autocomplete, mode) {
+            var me = this;
+            autocomplete.bindTo('bounds', this.map);
+            autocomplete.addListener('place_changed', function() {
+                var place = autocomplete.getPlace();
+                if (!place.place_id) {
+                    window.alert("Remplissez les champs nécessaires");
+                    return;
+                }
+                if (mode === 'ORIG') {
+                    me.originPlaceId = place.place_id;
+                } else {
+                    me.destinationPlaceId = place.place_id;
+                }
+                me.route();
+            });
+
+        };
+
+        AutocompleteDirectionsHandler.prototype.route = function() {
+            if (!this.originPlaceId || !this.destinationPlaceId) {
+                return;
+            }
+            var me = this;
+
+            $('#idDepart').val(this.originPlaceId);
+            $('#idDestination').val(this.destinationPlaceId);
+
+
+            this.directionsService.route({
+                origin: {'placeId': this.originPlaceId},
+                destination: {'placeId': this.destinationPlaceId},
+                travelMode: 'DRIVING'
+            }, function(response, status) {
+                if (status === 'OK') {
+                    me.directionsDisplay.setDirections(response);
+                } else {
+                    window.alert('Directions request failed due to ' + status);
+                }
+            });
+        };
+
+    </script>
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8w507O9U90-M_IIeytsa4weIBO_yAjhI&libraries=places&callback=initMap"
+            async defer></script>
+
+
+
+
+
+{% endblock %}

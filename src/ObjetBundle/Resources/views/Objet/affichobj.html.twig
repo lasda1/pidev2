@@ -1,0 +1,24 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Affichage{% endblock %}
+
+{% block body %}
+    <table border="3">
+        <tr>
+            <td>Type </td>
+            <td>Date </td>
+            <td>Lieu </td>
+            <td>Description </td>
+            <td>Photo  </td>
+        </tr>
+        {% for objet in objet %}
+            <tr>
+                <td>{{ objet.Type }}</td>
+                <td>{{ objet.Date |date }}</td>
+                <td>{{ objet.Lieu }}</td>
+                <td>{{ objet.Description }}</td>
+                <td><img src="{{ asset(objet.Photo) }}" height="75" width="75"></td>
+            </tr>
+        {% endfor %}
+    </table>
+{% endblock %}
