@@ -76,6 +76,12 @@ class User extends BaseUser
 
 
     /**
+     * @ORM\OneToMany(targetEntity="ColocationBundle\Entity\Colocation", mappedBy="utilisateur")
+     */
+    private $colocations;
+
+
+    /**
      * Get id
      *
      * @return int
@@ -260,5 +266,38 @@ class User extends BaseUser
     {
         return $this->telephone;
     }
-}
 
+    /**
+     * Add colocation
+     *
+     * @param \ColocationBundle\Entity\Colocation $colocation
+     *
+     * @return User
+     */
+    public function addColocation(\ColocationBundle\Entity\Colocation $colocation)
+    {
+        $this->colocations[] = $colocation;
+
+        return $this;
+    }
+
+    /**
+     * Remove colocation
+     *
+     * @param \ColocationBundle\Entity\Colocation $colocation
+     */
+    public function removeColocation(\ColocationBundle\Entity\Colocation $colocation)
+    {
+        $this->colocations->removeElement($colocation);
+    }
+
+    /**
+     * Get colocations
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getColocations()
+    {
+        return $this->colocations;
+    }
+}

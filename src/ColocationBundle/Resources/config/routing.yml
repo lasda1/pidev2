@@ -1,10 +1,16 @@
 colocation_homepage:
-    path:     /colocation
+    path:     /user/colocation
     defaults: { _controller: ColocationBundle:Default:index }
 
-ajout:
-    path:     /ajout
+back:
+    path:     /user/colocation/ajout
     defaults: { _controller: ColocationBundle:Default:ajout}
+
+supprimer:
+      path:     /user/colocation/supprimer/{id}
+      defaults: { _controller: ColocationBundle:Default:supprimer }
+
+
 
 
 

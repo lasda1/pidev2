@@ -21,6 +21,7 @@ class AppKernel extends Kernel
             new CoVoiturageBundle\CoVoiturageBundle(),
             new ObjetBundle\ObjetBundle(),
             new EventBundle\EventBundle(),
+            new \ColocationBundle\ColocationBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
