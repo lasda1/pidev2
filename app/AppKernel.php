@@ -21,11 +21,8 @@ class AppKernel extends Kernel
             new CoVoiturageBundle\CoVoiturageBundle(),
             new ObjetBundle\ObjetBundle(),
             new EventBundle\EventBundle(),
-<<<<<<< HEAD
-           
-=======
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
->>>>>>> 9f0796e505bb86a1ea385f99d81f36dbe56b8e6e
+            new \ColocationBundle\ColocationBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
