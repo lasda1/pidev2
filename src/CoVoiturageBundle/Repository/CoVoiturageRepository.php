@@ -10,4 +10,13 @@ namespace CoVoiturageBundle\Repository;
  */
 class CoVoiturageRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    public function getLastThree($type)
+    {
+        $q = $this->getEntityManager()->createQuery("SELECT p
+              FROM CoVoiturageBundle:CoVoiturage p
+              WHERE p.type = :type
+              ORDER BY p.id DESC")->setParameter('type',$type);
+        return $q->setMaxResults(3)->getResult();
+    }
 }

@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="co_voiturage")
  * @ORM\Entity(repositoryClass="CoVoiturageBundle\Repository\CoVoiturageRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class CoVoiturage
 {
@@ -84,6 +85,20 @@ class CoVoiturage
      * @ORM\Column(name="placedisponibles", type="integer", nullable=true)
      */
     private $placedisponibles;
+
+    /**
+     * @var datetime $created
+     *
+     * @ORM\Column(type="datetime")
+     */
+    protected $created;
+
+    /**
+     * @var datetime $updated
+     *
+     * @ORM\Column(type="datetime", nullable = true)
+     */
+    protected $updated;
 
 
     /**
@@ -311,5 +326,25 @@ class CoVoiturage
     public function getDestinationId()
     {
         return $this->destinationId;
+    }
+
+    /**
+     * Gets triggered only on insert
+
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->created = new \DateTime("now");
+    }
+
+    /**
+     * Gets triggered every time on update
+
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->updated = new \DateTime("now");
     }
 }

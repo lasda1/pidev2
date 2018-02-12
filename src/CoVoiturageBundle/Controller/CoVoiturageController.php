@@ -13,9 +13,17 @@ class CoVoiturageController extends Controller
     public function addOffreAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $co = new CoVoiturage();
+
         $co->setUser($this->getUser());
         $co->setType("o");
-        $co->setDepart($request->get("depart"));
+
+        if ($request->get("depart") == "Votre emplacement"){
+            //return new Response($request->get("formattedaddr"));
+            $co->setDepart($request->get("formattedaddr"));
+        } else {
+            $co->setDepart($request->get("depart"));
+        }
+
         $co->setDestination($request->get("destination"));
         $co->setDepartId($request->get('idDepart'));
         $co->setDestinationId($request->get('idDestination'));
@@ -32,23 +40,27 @@ class CoVoiturageController extends Controller
         $em->persist($co);
         $em->flush();
 
-        $cod = new CoVoiturageDays();
-        $cod->setIdc($co);
+        if ($request->get("onetime") == "on") {
+            $cod = new CoVoiturageDays();
+            $cod->setIdc($co);
 
-        foreach($jours as $j){
-            if ($j == "lundi") $cod->setLundi('y');
-            if ($j == "mardi") $cod->setMardi('y');
-            if ($j == "mercredi") $cod->setMercredi('y');
-            if ($j == "jeudi") $cod->setJeudi('y');
-            if ($j == "vendredi") $cod->setVendredi('y');
-            if ($j == "samedi") $cod->setLundi('y');
+            foreach ($jours as $j) {
+                if ($j == "lundi") $cod->setLundi('y');
+                if ($j == "mardi") $cod->setMardi('y');
+                if ($j == "mercredi") $cod->setMercredi('y');
+                if ($j == "jeudi") $cod->setJeudi('y');
+                if ($j == "vendredi") $cod->setVendredi('y');
+                if ($j == "samedi") $cod->setLundi('y');
+            }
+
+
+            $em->persist($cod);
+            $em->flush();
         }
 
 
-        $em->persist($cod);
-        $em->flush();
 
-        return $this->redirectToRoute('co_voiturage_addoffreview');
+        return $this->render('CoVoiturageBundle:Default:index.html.twig',['addsuccess' => 1]);
     }
 
     public function updateAction(Request $request){
@@ -75,8 +87,8 @@ class CoVoiturageController extends Controller
 
     public function readAction(Request $request){
         $em = $this->getDoctrine()->getManager();
-        $co = $em->getRepository(CoVoiturage::class)->findAll();
-        return $this->render('CoVoiturageBundle:Default:index.html.twig');
+        $co = $em->getRepository(CoVoiturage::class)->getLastThree("o");
+        return $this->render('CoVoiturageBundle:Default:index.html.twig',['cov'=>$co]);
     }
 
     public function addOffreViewAction(Request $request){

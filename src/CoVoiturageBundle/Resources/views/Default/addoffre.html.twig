@@ -76,6 +76,7 @@
 
     <input type="hidden" id="idDepart" name="idDepart">
     <input type="hidden" id="idDestination" name="idDestination">
+        <input type="text" id="formatted_addr" name="formattedaddr">
 
     </div>
         <center style="margin-top: 50px;">
@@ -125,6 +126,7 @@
                         if (status === google.maps.GeocoderStatus.OK) {
                             if (results[1]) {
                                 lol=results[1].place_id.toString();
+                                $('#formatted_addr').val(results[1].formatted_address);
                                 new AutocompleteDirectionsHandler(map,lol);
                                 //new AutocompleteDirectionsHandlerDefault(map,locationId);
                             } else {
