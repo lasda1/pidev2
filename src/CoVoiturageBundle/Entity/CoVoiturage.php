@@ -91,14 +91,14 @@ class CoVoiturage
      *
      * @ORM\Column(type="datetime")
      */
-    protected $created;
+    private $created;
 
     /**
      * @var datetime $updated
      *
      * @ORM\Column(type="datetime", nullable = true)
      */
-    protected $updated;
+    private $updated;
 
 
     /**

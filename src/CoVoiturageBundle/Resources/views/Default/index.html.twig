@@ -32,13 +32,21 @@ Co-Voiturage
                             {% if c.updated == null %}
                                 <td>{{ c.created | date }}</td>
                                 {% else %}
-                                <td>{{ c.modified | date }}</td>
+                                <td>{{ c.updated | date }}</td>
                             {% endif %}
+                            <td class="onhovericon" style="font-size:25px;" >
+                                <a href="{{ path('co_voiturage_modifyoffreview',{'id':c.id}) }}"><span class="icon s7-edit" data-toggle="tooltip" data-placement="top" title="" data-original-title="Modification"></span></a>
+                            </td>
+                            <td class="onhovericon" style="font-size:25px;" >
+                                <a href="{{ path('co_voiturage_deleteoffre',{'id':c.id}) }}"><span class="icon s7-close onhovericon" data-toggle="tooltip" data-placement="top" title="" data-original-title="Suppression"></span></a>
+                            </td>
+
                         </tr>
                     {% endfor %}
                 {% endif %}
                 </tbody>
             </table>
+
 
             <a href="{{ path('co_voiturage_viewoffre') }}"><h5 style="float:right;">Consulter tout les offres</h5></a>
 
@@ -166,15 +174,29 @@ Co-Voiturage
 {% endblock %}
 
 {% block customScript %}
-<script>
-    {% if addsuccess is defined %}
+    <script>
+        {% if success is defined %}
+        {% if success == 1 %}
         $.gritter.add({
             title: "Succès",
             text: "Ajout fait avec succès.",
             class_name: "color alt3"
         });
-    {% endif %}
-</script>
+        {% elseif success == 2 %}
+        $.gritter.add({
+            title: "Succès",
+            text: "Modification faite avec succès.",
+            class_name: "color alt2"
+        });
+        {% elseif success == 3 %}
+        $.gritter.add({
+            title: "Succès",
+            text: "Suppression faite avec succès.",
+            class_name: "color alt1"
+        });
+        {% endif %}
+        {% endif %}
+    </script>
 
 {% endblock %}
 
