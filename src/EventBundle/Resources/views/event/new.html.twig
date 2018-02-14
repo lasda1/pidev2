@@ -5,18 +5,15 @@
 
         #map {
             height: 400px;
-
         }
         .pac-container {
             font-family: Roboto;
         }
-
         #type-selector {
             color: #fff;
             background-color: #4d90fe;
             padding: 5px 11px 0px 11px;
         }
-
         #type-selector label {
             font-family: Roboto;
             font-size: 13px;
@@ -27,26 +24,30 @@
 <div class="col-md-6">
     {{ form_start(form) }}
     {{ form_widget(form.titre,{'attr':{'class':'form-control','placeholder':"Nom de l'evennement"}}) }}
+    <br>
     {{ form_widget(form.description,{'attr':{'class':'form-control','placeholder':"description de l'evennement"}}) }}
+    <br>
     {{ form_widget(form.datedebut,{'attr':{'class':'form-control ','placeholder':"Date de l'evennement"}}) }}
+    <br>
     {{ form_widget(form.datefin,{'attr':{'class':'form-control ','placeholder':"Date de Fin de l'evennement s'il y a plusieurs jours"}}) }}
-    {{ form_widget(form.photo,{'attr':{'class':'form-control ','placeholder':"Logo de l'evennement"}}) }}
+    <br>
+    {{ form_widget(form.photo,{'attr':{'class':'form-control','placeholder':"Logo de l'evennement"}}) }}
+    <br>
     {{ form_widget(form.nbMax,{'attr':{'class':'form-control ','placeholder':"Nombre de place"}}) }}
-
+    <br>
     {{ form_widget(form.lieu,{'attr':{'class':'form-control controls','placeholder':'Où vas se passer?'}}) }}
+    <br>
     <div class="col-md-6">
         {{ form_widget(form.x,{'attr':{'class':'form-control','placeholder':'x'}}) }}
     </div>
     <div class="col-md-6">
         {{ form_widget(form.y,{'attr':{'class':'form-control','placeholder':'y'}}) }}
-
+        <br>
     </div>
     {{ form_widget(form.categorie,{'attr':{'class':'form-control ','placeholder':"Categorie de l'evennement"}}) }}
-
-
+    <br>
 {{ form_widget(form) }}
-
-        <input type="submit" value="Publier l'evennement" onclick="xy()" />
+        <input type="submit" class="btn btn-primary" value="Publier l'evennement" onclick="xy()" />
     {{ form_end(form) }}
     </div>
 
@@ -89,24 +90,14 @@ var marker;
                 draggable: true,
                 animation: google.maps.Animation.DROP,
                 position: map.center
-
-
             });
             marker.setMap(map);
             marker.addListener('click', toggleBounce);
-
-
             google.maps.event.addListener(marker, 'drag', function(event) {
                 document.getElementById('eventbundle_event_x').value =event.latLng.lat();
                 document.getElementById('eventbundle_event_y').value= event.latLng.lng();
 
             });
-
-
-
-
-
-
             autocomplete.addListener('place_changed', function() {
                 infowindow.close();
                 marker.setVisible(false);
@@ -118,18 +109,11 @@ var marker;
                     map.fitBounds(place.geometry.viewport);
 
                 } else {
-
                     map.setCenter(place.geometry.location);
                     map.setZoom(10);  // Why 17? Because it looks good.
-
-                }
-
-
-                ;
+                };
                 marker.setPosition(place.geometry.location);
                 marker.setVisible(true);
-
-
                 var address = '';
                 if (place.address_components) {
                     address = [
@@ -138,11 +122,9 @@ var marker;
                         (place.address_components[2] && place.address_components[2].short_name || '')
                     ].join(' ');
                 }
-
                 infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
                 infowindow.open(map, marker);
             });
-
             // Sets a listener on a radio button to change the filter type on Places
             // Autocomplete.
             function setupClickListener(id, types) {
@@ -151,8 +133,6 @@ var marker;
                     autocomplete.setTypes(types);
                 });
             }
-
-
         }
         function toggleBounce() {
             if (marker.getAnimation() !== null) {
