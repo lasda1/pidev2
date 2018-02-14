@@ -17,9 +17,10 @@
                             <td><h1>{{ colocation.titre}}</h1></td>
                         </tr>
                         <tr class="odd gradeX">
-                            <td><img src="{{ asset('uploads/photos/'~colocation.photo) }}" width="50" /> </td>
-                            <td><img src="{{ asset('uploads/photos/'~colocation.photo1) }}" width="50" /> </td>
-                            <td><img src="{{ asset('uploads/photos/'~colocation.photo2) }}" width="50" /> </td>
+                            <td
+                                    width=70% height=70%><img src="{{ asset('uploads/photos/'~colocation.photo) }}" width="300px" /> </td>
+                            <td  width=70% height=70%><img src="{{ asset('uploads/photos/'~colocation.photo1) }}" width="300px" /> </td>
+                            <td  width=70% height=70%><img src="{{ asset('uploads/photos/'~colocation.photo2) }}" width="300px" /> </td>
 
 
                         </tr>
@@ -34,7 +35,7 @@
                         <tr  class="even gradeA">
                             <td   COLSPAN=3>{{ colocation.description }}</td>
 
-                        </tr>
+                        </tr >
                         <tr   class="odd gradeA">
                             <td height=100% ><a  href="{{ path('supprimer',{'id':colocation.id}) }}">supprimer l'annonce</a></td>
                         </tr>
@@ -45,7 +46,7 @@
                         <tr   class="odd gradeA">
                             <td></td>
                         </tr>
-                        <tr   class="odd gradeA">
+                        <tr   >
                             <td></td>
                         </tr>
 

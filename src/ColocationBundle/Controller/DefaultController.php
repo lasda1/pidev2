@@ -23,6 +23,8 @@ class DefaultController extends Controller
         $colocation=new Colocation();
         $form = $this->createForm(ColocationType::class, $colocation);
         $form->handleRequest($request);
+        dump($colocation);
+
 
         if ($form->isSubmitted() && $form->isValid()) {
             $currentUser = $this->getUser();
