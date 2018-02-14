@@ -23,20 +23,28 @@
 <div class="col-md-1"></div>
 <div class="col-md-6">
     {{ form_start(form) }}
+    <label>Nom de l'évennement</label>
     {{ form_widget(form.titre,{'attr':{'class':'form-control','placeholder':"Nom de l'evennement"}}) }}
     <br>
+    <label>Description de l'évennement</label>
     {{ form_widget(form.description,{'attr':{'class':'form-control','placeholder':"description de l'evennement"}}) }}
     <br>
+    <label>Date de début de l'évennement</label>
     {{ form_widget(form.datedebut,{'attr':{'class':'form-control ','placeholder':"Date de l'evennement"}}) }}
     <br>
+    <label>Date de fin de l'évennement</label>
     {{ form_widget(form.datefin,{'attr':{'class':'form-control ','placeholder':"Date de Fin de l'evennement s'il y a plusieurs jours"}}) }}
     <br>
+    <label>Logo de l'évennement</label>
     {{ form_widget(form.photo,{'attr':{'class':'form-control','placeholder':"Logo de l'evennement"}}) }}
     <br>
+    <label>Nombre de place</label>
     {{ form_widget(form.nbMax,{'attr':{'class':'form-control ','placeholder':"Nombre de place"}}) }}
     <br>
+    <label>Lieu de l'évennement</label>
     {{ form_widget(form.lieu,{'attr':{'class':'form-control controls','placeholder':'Où vas se passer?'}}) }}
     <br>
+
     <div class="col-md-6">
         {{ form_widget(form.x,{'attr':{'class':'form-control','placeholder':'x'}}) }}
     </div>
