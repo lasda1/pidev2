@@ -1,64 +1,232 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Event</h1>
+    <style>
+        #map {
+            height: 300px;
+            width: 100%;
+        }
+        /* Optional: Makes the sample page fill the window. */
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ event.id }}</td>
-            </tr>
-            <tr>
-                <th>Titre</th>
-                <td>{{ event.titre }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ event.description }}</td>
-            </tr>
-            <tr>
-                <th>Datedebut</th>
-                <td>{% if event.datedebut %}{{ event.datedebut|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Datefin</th>
-                <td>{% if event.datefin %}{{ event.datefin|date('Y-m-d H:i:s') }}{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Lieu</th>
-                <td>{{ event.lieu }}</td>
-            </tr>
-            <tr>
-                <th>Photo</th>
-                <td>{{ event.photo }}</td>
-            </tr>
-            <tr>
-                <th>Nbmax</th>
-                <td>{{ event.nbMax }}</td>
-            </tr>
-            <tr>
-                <th>Enable</th>
-                <td>{% if event.enable %}Yes{% else %}No{% endif %}</td>
-            </tr>
-            <tr>
-                <th>Categorie</th>
-                <td>{{ event.categorie }}</td>
-            </tr>
-        </tbody>
-    </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('e_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('e_edit', { 'id': event.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+</style>
+
+    <link rel="stylesheet"  href="{{ asset('fontawesome-free-5.0.6/web-fonts-with-css/css/fa-solid.css') }}"/>
+    <link rel="stylesheet"  href="{{ asset('fontawesome-free-5.0.6/web-fonts-with-css/css/fa-brands.css') }}"/>
+    <link rel="stylesheet"  href="{{ asset('fontawesome-free-5.0.6/web-fonts-with-css/css/fa-brands.min.css') }}"/>
+    <link rel="stylesheet"  href="{{ asset('fontawesome-free-5.0.6/web-fonts-with-css/css/fa-regular.css') }}"/>
+
+
+
+    <div class="container">
+    <div class="row">
+        <div class="col-md-8 col-sm-8 col-xs-12 block">
+            <div class="panel panel-default">
+                <img src="{{ asset('img/gallery1.jpg') }}" alt="image" class="img-responsive">
+                <div class="panel-body">
+                    <h3 class="color-1">{{ event.titre|capitalize }}</h3>
+                    <p style="width:max-content;  word-wrap: break-word">{{ event.description }}</p>
+                </div>
+
+
+
+            </div>
+
+        </div>
+        <div class="col-md-4 col-sm-4 col-xs-12">
+
+            <aside>
+                <div class="rightSidebar">
+
+                    <div class="panel panel-default">
+
+                        <div class="panel-heading bg-color-1 border-color-1">
+                            <h3 class="panel-title">Informations de l'evennement</h3>
+                        </div>
+                        <div class="panel-body">
+                            <ul class="media-list">
+                                <li class="media">
+                                    <div class="media-left iconContent bg-color-2">
+                                        <i class="fa fa-calendar" aria-hidden="true"></i>
+                                    </div>
+                                    <div class="media-body iconContent">
+                                        <h4 class="media-heading color-2">Start Date</h4>
+                                        <p>{% if event.datedebut %}{{ event.datedebut|date('Y-m-d H:i:s') }}{% endif %}</p>
+                                    </div>
+                                </li>
+
+                                {% if event.datefin %}
+                                    <li class="media">
+                                        <div class="media-left iconContent bg-color-3">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body iconContent">
+                                            <h4 class="media-heading color-3">end Date</h4>
+                                            <p>{{ event.datefin|date('Y-m-d H:i:s') }}</p>
+                                        </div>
+
+                                    </li>
+                                {% endif %}
+                                {% if event.nbMax==0 %}
+                                    <li class="media iconContet">
+                                        <div class="media-left iconContent bg-color-4">
+                                            <i class="fa fa-anchor" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body iconContent">
+                                            <h4 class="media-heading color-4">Available Seats</h4>
+                                            <p>Ouvert</p>
+                                        </div>
+                                    </li>
+                                {% else %}
+                                    <li class="media iconContet">
+                                        <div class="media-left iconContent bg-color-4">
+                                            <i class="fa fa-anchor" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body iconContent">
+                                            <h4 class="media-heading color-4">Available Seats</h4>
+                                            <p>{{ event.nbMax }}</p>
+                                        </div>
+                                    </li>
+
+                                {% endif %}
+                                <li class="media iconContet">
+                                    <div class="media-left iconContent bg-color-4">
+                                        <i class="fas fa-map-marker-alt"></i>
+                                    </div>
+                                    <div class="media-body iconContent">
+                                        <h4 class="media-heading color-4"><i class="fas fa-map-marker"></i>
+                                            Adresse de l'evennement</h4>
+                                        <p>{{ event.lieu }}</p>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    {% if app.user %}
+                        {% if avis.iduser is not defined %}
+                            <div class="btnPart">
+                                <a href="{{ path('e_participate', { 'id': event.id }) }}" class="btn btn-primary btn-block bg-color-6">Participer</a>
+                            </div>
+
+                        {% elseif app.user and avis.idevent==event.id %}
+                            <div class="btnPart" align="center">
+                                <h1><strong> Rating</strong></h1>
+                        <a href="{{ path('e_rating', {'val': 1, 'id': event.id}) }}" class="btn"><i style="font-size: 30px" class="far fa-star">{% if avis.avis>0 %}<strong></strong>{% else %}{% endif %}</i></a>
+                                <a href="{{ path('e_rating', {'val': 2, 'id': event.id}) }}" class="btn "><i style="font-size: 30px" class="far fa-star">{% if avis.avis>1 %}<strong></strong>{% else %}{% endif %}</i></a>
+                                <a href="{{ path('e_rating', {'val': 3, 'id': event.id}) }}" class="btn "><i style="font-size: 30px" class="far fa-star">{% if avis.avis>2 %}<strong></strong>{% else %}{% endif %}</i></a>
+                                <a href="{{ path('e_rating', {'val': 4, 'id': event.id}) }}" class="btn "><i style="font-size: 30px" class="far fa-star">{% if avis.avis>3 %}<strong></strong>{% else %}{% endif %}</i></a>
+                                <a href="{{ path('e_rating', {'val': 5, 'id': event.id}) }}" class="btn"><i style="font-size: 30px" class="far fa-star">{% if avis.avis>4 %}<strong></strong>{% else %}{% endif %}</i></a>
+                                {% if avis.avis==1 %}<h4><strong>J'ai détesté</strong></h4>{% endif %}
+                                {% if avis.avis==2 %}<h4><strong>J'ai pas aimé</strong></h4>{% endif %}
+                                {% if avis.avis==3 %}<h4><strong>C'est pas mal</strong></h4>{% endif %}
+                                {% if avis.avis==4 %}<h4><strong>Ca m'a beacoup plu</strong></h4>{% endif %}
+                                {% if avis.avis==5 %}<h4><strong>J'ai adoré</strong></h4>{% endif %}
+                            </div>
+                            {% endif %}
+                    {% else %}
+                        <div class="btnPart">
+                            <a href="{{ path('fos_user_security_login') }}" class="btn btn-primary btn-block bg-color-6">login Pour participer</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </aside>
+            <hr>
+            <div id="map"></div>
+
+        </div>
+
+
+    </div>
+    </div>
+    {% if app.user==event.user %}
+        <div class="col-md-8">
+            <div class="col-md-4">
+
+                <div class="btnArea">
+                    <a href="{{ path('e_index') }}" class="btn btn-primary">Tout les evennements</a>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="btnArea">
+                    <a href="{{ path('e_edit', { 'id': event.id }) }}" class="btn btn-success">Modifier l'evennement</a>
+                </div>
+            </div>
+            {% if event.enable %}
+            <div class="col-md-4">
+                <div class="btnArea">
+                    {{ form_start(delete_form) }}
+                    <input class="btn btn-primary" type="submit" value="Désactiver l'evennement">
+                    {{ form_end(delete_form) }}
+                </div>
+            </div>
+            {% else %}
+                <div class="col-md-4">
+                    <div class="btnArea">
+                        {{ form_start(delete_form) }}
+                        <input class="btn btn-primary" type="submit" value="Activer l'evennement">
+                        {{ form_end(delete_form) }}
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+    {% else %}
+        <div class="col-md-8">
+            <div class="btnArea">
+                <a href="{{ path('e_index') }}"  class="btn btn-primary">Retourner à la liste des evennements</a>
+            </div>
+        </div>
+    {% endif %}
+
+    <br><br><br><br><br><br>
+    <script>
+
+        // This example adds a marker to indicate the position of Bondi Beach in Sydney,
+        // Australia.
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 17,
+                center: {lat: {{ event.x }}, lng: {{ event.y }}}
+            });
+
+            var infoWindow = new google.maps.InfoWindow({map: map});
+            marker = new google.maps.Marker({
+                map: map,
+                draggable: false,
+                animation: google.maps.Animation.DROP,
+                position: {lat: {{ event.x }}, lng: {{ event.y}} }
+
+
+            });
+            // Try HTML5 geolocation.
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function(position) {
+                    var pos = {
+                        lat: {{ event.x }},
+                        lng: {{ event.y }}
+                    };
+
+                    infoWindow.setPosition(pos);
+                    infoWindow.setContent('{{ event.titre }}');
+                    map.setCenter(pos);
+                }, function() {
+                    handleLocationError(true, infoWindow, map.getCenter());
+                });
+            } else {
+                // Browser doesn't support Geolocation
+                handleLocationError(false, infoWindow, map.getCenter());
+            }
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Error: The Geolocation service failed.' :
+                'Error: Your browser doesn\'t support geolocation.');
+        }
+    </script>
+
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWb0i4faRZm8P5oEN-ukUF_CACQzWt480&callback=initMap">
+    </script>
+
 {% endblock %}

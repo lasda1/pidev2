@@ -1,0 +1,76 @@
+{% extends 'base.html.twig' %}
+{% block pageName %}
+        <a href="{{ path('e_index') }}">Tous les evennements</a>
+
+    {% endblock %}
+
+{% block body %}
+    <center>
+        <form action="{{ path('e_recherche') }}?chose=" class="form-horizontal group-border-dashed" novalidate="">
+            <div class="form-group">
+                <div class="col-sm-3"></div>
+                <div class="col-sm-6">
+                    <input  placeholder="Recherche" name="chose" class="form-control" data-parsley-id="28" type="text">
+                </div>
+            </div>
+        </form>
+
+<div class="am-content">
+
+
+    <div class="row">
+
+        {% for event in pagination  %}
+            {% if app.user==event.user %}
+                <div class="col-md-4     col-sm-6 col-xs-12 block">
+                    <div class="thumbnail thumbnailContent">
+                        {%  if event.enable==0  %}
+                            <a href="{{ path('e_show', { 'id': event.id }) }}"><img style="-webkit-filter: blur(5px)" src="https://img.grouponcdn.com/deal/3kp4sx8cTJxFBS7xk39i/3B-440x267/v1/c414x250q50.jpg" alt="image" class="img-responsive"></a>
+                        {% else %}
+                            <a href="{{ path('e_show', { 'id': event.id }) }}"><img src="https://img.grouponcdn.com/deal/3kp4sx8cTJxFBS7xk39i/3B-440x267/v1/c414x250q50.jpg" alt="image" class="img-responsive"></a>
+                        {% endif %}
+
+                        <div class="caption border-color-1">
+                            <h3><a href="{{ path('e_show', { 'id': event.id }) }}" class="color-1">{{ event.titre }}</a></h3>
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-calendar" aria-hidden="true"></i>{% if event.datedebut %}{{ event.datedebut|date('Y/m/d H') }}H{% endif %}{% if event.datefin %}, Jusqu'à{{ event.datefin|date('Y/m/d H') }}H{% endif %}</li>
+
+                            </ul>
+                            <p>{{ event.description|truncate(30, false, '')}}</p>
+                            <ul class="list-inline btn-yellow">
+                                <li><a href="{{ path('e_show', { 'id': event.id }) }}" class="btn btn-primary "><i class="fa fa-calendar-check-o" aria-hidden="true"></i>Voir l'evennement</a></li>
+                                <li><a href="{{ path('e_show', { 'id': event.id }) }}" class="btn btn-link"><i class="fa fa-angle-double-right" aria-hidden="true"></i> More</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% elseif event.enable==1 and app.user!=event.user%}
+                <div class="col-md-4     col-sm-6 col-xs-12 block">
+                    <div class="thumbnail thumbnailContent">
+                        <a href="{{ path('e_show', { 'id': event.id }) }}"><img  src="https://img.grouponcdn.com/deal/3kp4sx8cTJxFBS7xk39i/3B-440x267/v1/c414x250q50.jpg" alt="image" class="img-responsive"></a>
+
+                        <div class="caption border-color-1">
+                            <h3><a href="{{ path('e_show', { 'id': event.id }) }}" class="color-1">{{ event.titre|capitalize  }}</a></h3>
+                            <ul class="list-unstyled">
+                                <li><i class="fa fa-calendar" aria-hidden="true"></i>{% if event.datedebut %}{{ event.datedebut|date('Y/m/d H') }}H{% endif %}{% if event.datefin %}, Jusqu'à {{ event.datefin|date('Y/m/d H') }}H{% endif %}</li>
+
+                            </ul>
+                            <p >{{ event.description|truncate(30, false, '')}}</p>
+                            <ul class="list-inline btn-yellow">
+                                <li><a href="{{ path('e_show', { 'id': event.id }) }}" class="btn btn-primary "><i class="fa fa-calendar-check-o" aria-hidden="true"></i>Voir l'evennement</a></li>
+                                <li><a href="{{ path('e_show', { 'id': event.id }) }}" class="btn btn-link"><i class="fa fa-angle-double-right" aria-hidden="true"></i> More</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        {% endfor %}
+
+
+    </div></div>
+    <div class="navigation">
+        {{ knp_pagination_render(pagination) }}
+    </div>
+    </center>
+{% endblock %}

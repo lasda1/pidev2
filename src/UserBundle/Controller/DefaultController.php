@@ -11,6 +11,9 @@ class DefaultController extends Controller
     {
         
         $user = $this->getUser();
-        return $this->render('@User/layout.html.twig',['user' => $user]);
+        if ($user) {
+            return $this->render('@User/layout.html.twig', ['user' => $user]);
+        }
+        return $this->redirectToRoute('fos_user_security_login');
     }
 }
