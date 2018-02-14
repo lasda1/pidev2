@@ -59,8 +59,8 @@ class CoVoiturageController extends Controller
         }
 
 
-
-        return $this->render('CoVoiturageBundle:Default:index.html.twig',['addsuccess' => 1]);
+        return $this->redirectToRoute('co_voiturage_viewoffreparam',['success' => 1]);
+        //return $this->render('CoVoiturageBundle:Default:index.html.twig',['addsuccess' => 1]);
     }
 
     public function updateAction(Request $request){
@@ -81,6 +81,12 @@ class CoVoiturageController extends Controller
     public function deleteOffreAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->find($request->get("id"));
+
+        $cod = $em->getRepository(CoVoiturageDays::class)->findByidc($request->get("id"));
+        if ($cod){
+            $em->remove($cod[0]);
+        }
+
         $em->remove($co);
         $em->flush();
         return $this->redirectToRoute('co_voiturage_viewoffreparam',['success' => 3]);
@@ -138,8 +144,10 @@ class CoVoiturageController extends Controller
         $em->flush();
 
 
-        $cod = $em->getRepository(CoVoiturageDays::class)->find($request->get("id"));
+        $cod = $em->getRepository(CoVoiturageDays::class)->findByidc($request->get("id"));
 
+        if ($cod)
+        $cod = $cod[0];
 
         if ($request->get("onetime") == "on" && $cod == null) {
             $cod = new CoVoiturageDays();
