@@ -336,6 +336,7 @@ class CoVoiturage
     public function onPrePersist()
     {
         $this->created = new \DateTime("now");
+        $this->updated = new \DateTime("now");
     }
 
     /**
