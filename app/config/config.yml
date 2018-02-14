@@ -14,7 +14,6 @@ imports:
 
 parameters:
     locale: fr
-    brochures_directory: '%kernel.project_dir%/web/img'
 
 framework:
     #esi: ~
