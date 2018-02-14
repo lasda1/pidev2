@@ -56,7 +56,7 @@
                 <div {% if cod is not null %} style="display: none" {% endif %} id="dateheure" class="form-group">
                     <label>Date et heure</label>
                     <div data-date-format="yyyy-mm-dd HH:ii" data-link-field="dtp_input1" class="input-group date datetimepicker">
-                        <input name="date" size="16" value="{% if cod is not null %} {{ co.date }} {% endif %}" readonly="" class="form-control" type="text"><span class="input-group-addon btn btn-primary"><i class="icon-th s7-date"></i></span>
+                        <input name="date" size="16" value="{% if cod is not null %} {{ co.date | date }} {% endif %}" readonly="" class="form-control" type="text"><span class="input-group-addon btn btn-primary"><i class="icon-th s7-date"></i></span>
                     </div>
                 </div>
 
