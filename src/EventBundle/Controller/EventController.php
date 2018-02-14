@@ -45,18 +45,29 @@ class EventController extends Controller
     {
         global $kernel;
         $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
+        $event = new Event();
 
         if ($user === 'anon.') {
             return $this->redirectToRoute('e_index');
         } else {
-            $event = new Event();
+
             $form = $this->createForm('EventBundle\Form\EventType', $event);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
+
+                $file = $event->getPhoto();
+
+                $fileName = md5(uniqid('', true)).'.'.$file->guessExtension();
+                $path = "C:/wamp64/www/pidev2/web" ;
+                $file->move(
+                    $path,
+                    $fileName
+                );
                 $em = $this->getDoctrine()->getManager();
                 $event->setCreatedAt(new \DateTime());
                 $event->setUser($user);
+                $event->setPhoto($fileName);
                 $em->persist($event);
                 $em->flush();
 
@@ -231,6 +242,12 @@ class EventController extends Controller
             'events' => $events,
             'pagination' => $pagination
         ));
+    }
+
+    private function generateUniqueFileName()
+    {
+
+        return md5(uniqid('', true));
     }
 
 

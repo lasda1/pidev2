@@ -17,7 +17,7 @@ class ObjetController extends Controller
         $form->handleRequest($request);
         if ($form->isValid() && $form->isSubmitted()) {
             $file = $objet->getPhoto();
-            $fileName = md5(uniqid()).'.'.$file->guessExtension();
+            $fileName = md5(uniqid('', true)).'.'.$file->guessExtension();
             $path = "C:/xampp/htdocs/pidev2/web" ;
             $file->move(
                 $path,

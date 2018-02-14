@@ -64,7 +64,7 @@
                             <li><a href="#">Colocation</a></li>
                             <li><a href="#">Co-voiturage</a></li>
                             <li><a href="#">Espace educatif</a></li>
-                            <li><a href="{{ path('e_index') }}">Evenements</a></li>
+                            <li><a href="{{ path('e_index') }}">Evennements</a></li>
                         </ul>
                     </li>
                     <li><a href="#">Contact us</a></li>
@@ -172,7 +172,7 @@
         <div class="content">
             <div class="am-logo"></div>
             <ul class="sidebar-elements">
-                <li class="parent"><a href="#"><i class="icon s7-monitor"></i><span>News</span></a>
+                <li class="parent"><a href="{{ path('user_homepage') }}"><i class="icon s7-monitor"></i><span>News</span></a>
                   </li>
                 <li class="parent"><a href="{{ path('objet_homepage') }}"><i class="icon s7-diamond"></i><span>Objets perdus</span></a>
                     <ul class="sub-menu">
@@ -208,11 +208,11 @@
                         </li>
                     </ul>
                 </li>
-                <li class="parent"><a href="{{ path('e_index') }}"><i class="icon s7-note2"></i><span>Evenements</span></a>
+                <li class="parent"><a href="{{ path('e_index') }}"><i class="icon s7-note2"></i><span>Evennements</span></a>
                     <ul class="sub-menu">
-                        <li><a href="{{ path('e_new') }}">Ajouter un evenement</a>
+                        <li><a href="{{ path('e_new') }}">Ajouter un evennement</a>
                         </li>
-                        <li class="active"><a href="{{ path('e_index') }}">Consulter les evenements</a>
+                        <li class="active"><a href="{{ path('e_index') }}">Consulter les evennements</a>
                         </li>
                     </ul>
                 </li>
