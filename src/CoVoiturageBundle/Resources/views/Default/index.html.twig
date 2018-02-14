@@ -8,10 +8,52 @@ Co-Voiturage
 
     <div class="panel panel-alt3">
         <div class="panel-heading" >
-            <div class="tools" data-toggle="modal" data-target="#modal-offre" ><span class="icon s7-upload" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ajouter un offre"></span></div><span class="title">Offres de Co-Voiturage</span>
+            <div class="tools">
+                <a href="{{ path('co_voiturage_addoffreview') }}"><span class="icon s7-upload" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ajouter un offre"></span></a>
+            </div>
+            <span class="title">Offres de Co-Voiturage</span>
         </div>
 
         <div class="panel-body">
+
+            <table class="table table-striped table-fw-widget table-hover">
+                <thead>
+                <tr>
+                    <th>User</th>
+                    <th>Départ</th>
+                    <th>Destination</th>
+                    <th>Derniere modification</th>
+                </tr>
+                </thead>
+                <tbody class="no-border-x">
+                {% if cov is defined %}
+                    {% for c in cov %}
+                        <tr>
+                            <td>{{ c.user.username }}</td>
+                            <td>{{ c.depart }}</td>
+                            <td>{{ c.destination }}</td>
+                            {% if c.updated == null %}
+                                <td>{{ c.created | date }}</td>
+                                {% else %}
+                                <td>{{ c.updated | date }}</td>
+                            {% endif %}
+                            <td class="onhovericon" style="font-size:25px;" >
+                                <a href="{{ path('co_voiturage_modifyoffreview',{'id':c.id}) }}"><span class="icon s7-edit" data-toggle="tooltip" data-placement="top" title="" data-original-title="Modification"></span></a>
+                            </td>
+                            <td class="onhovericon" style="font-size:25px;" >
+                                <a href="{{ path('co_voiturage_deleteoffre',{'id':c.id}) }}"><span class="icon s7-close onhovericon" data-toggle="tooltip" data-placement="top" title="" data-original-title="Suppression"></span></a>
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+
+
+            <a href="{{ path('co_voiturage_viewoffre') }}"><h5 style="float:right;">Consulter tout les offres</h5></a>
+
+
 
         </div>
     </div>
@@ -129,25 +171,35 @@ Co-Voiturage
             </div>
         </div>
     </div>
-    AIzaSyAI33scV0XCVUQdbgqrNcG_1v1roL6EjOw
+
 
 
 {% endblock %}
 
 {% block customScript %}
-
     <script>
-        var map;
-        function initMap() {
-            map = new google.maps.Map(document.getElementById('map'), {
-                center: {lat: -34.397, lng: 150.644},
-                zoom: 8
-            });
-        }
+        {% if success is defined %}
+        {% if success == 1 %}
+        $.gritter.add({
+            title: "Succès",
+            text: "Ajout fait avec succès.",
+            class_name: "color alt3"
+        });
+        {% elseif success == 2 %}
+        $.gritter.add({
+            title: "Succès",
+            text: "Modification faite avec succès.",
+            class_name: "color alt2"
+        });
+        {% elseif success == 3 %}
+        $.gritter.add({
+            title: "Succès",
+            text: "Suppression faite avec succès.",
+            class_name: "color alt1"
+        });
+        {% endif %}
+        {% endif %}
     </script>
-    <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8w507O9U90-M_IIeytsa4weIBO_yAjhI&callback=initMap"
-            type="text/javascript"></script>
-
 
 {% endblock %}
 

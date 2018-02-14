@@ -3,9 +3,30 @@ co_voiturage_homepage:
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:read }
 
 co_voiturage_addoffreview:
-    path:     /covoiturage/addoffre
+    path:     /covoiturage/offre/add
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:addOffreView }
 
+co_voiturage_modifyoffreview:
+    path:     /covoiturage/offre/modify
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:modifyOffreView }
+
 co_voiturage_addoffre:
-    path:     /covoiturage/addoffreA
+    path:     /covoiturage/offres/adding
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:addOffre }
+
+co_voiturage_deleteoffre:
+    path:     /covoiturage/offres/deleting
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:deleteOffre }
+
+co_voiturage_modifyoffre:
+    path:     /covoiturage/offres/modifying
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:modifyOffre }
+
+
+co_voiturage_viewoffre:
+    path:     /covoiturage/offres
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewOffre }
+
+co_voiturage_viewoffreparam:
+    path:     /covoiturage/offres/param
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewOffreParam }
