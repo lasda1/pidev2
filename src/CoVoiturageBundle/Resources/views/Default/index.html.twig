@@ -5,180 +5,50 @@ Co-Voiturage
 {% block body %}
 
 
-
-    <div class="panel panel-alt3">
-        <div class="panel-heading" >
-            <div class="tools">
-                <a href="{{ path('co_voiturage_addoffreview') }}"><span class="icon s7-upload" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ajouter un offre"></span></a>
-            </div>
-            <span class="title">Offres de Co-Voiturage</span>
-        </div>
-
-        <div class="panel-body">
-
-            <table class="table table-striped table-fw-widget table-hover">
-                <thead>
-                <tr>
-                    <th></th>
-                    <th>User</th>
-                    <th>Départ</th>
-                    <th>Destination</th>
-                    <th>Derniere modification</th>
-                </tr>
-                </thead>
-                <tbody class="no-border-x">
-                {% if cov is defined %}
-                    {% for c in cov %}
-                        <tr>
-                            <td class="onhovericon" style="font-size:20px;">
-                                <a href="{{ path('co_voiturage_infooffre',{'id':c.id}) }}">
-                                    <span class="icon s7-info onhovericon" data-toggle="tooltip" data-placement="top" title="" data-original-title="Informations"></span>
-                                </a>
-                            </td>
-                            <td>{{ c.user.username }}</td>
-                            <td>{{ c.depart }}</td>
-                            <td>{{ c.destination }}</td>
-                            {% if c.updated == null %}
-                                <td>{{ c.created | date }}</td>
-                                {% else %}
-                                <td>{{ c.updated | date }}</td>
-                            {% endif %}
-
-                            <td><a href="{{ path('co_voiturage_requestoffre',{'id':c.id}) }}"><button class="btn btn-info">Request</button></a></td>
-                            <td class="onhovericon" style="font-size:25px;" >
-                                <a href="{{ path('co_voiturage_modifyoffreview',{'id':c.id}) }}"><span class="icon s7-edit" data-toggle="tooltip" data-placement="top" title="" data-original-title="Modification"></span></a>
-                            </td>
-                            <td class="onhovericon" style="font-size:25px;" >
-                                <a href="{{ path('co_voiturage_deleteoffre',{'id':c.id}) }}"><span class="icon s7-close" data-toggle="tooltip" data-placement="top" title="" data-original-title="Suppression"></span></a>
-                            </td>
-
-                        </tr>
-                    {% endfor %}
-                {% endif %}
-                </tbody>
-            </table>
-
-
-            <a href="{{ path('co_voiturage_viewoffre') }}"><h5 style="float:right;">Consulter tout les offres</h5></a>
+    <div class="tools">
+        <a href="{{ path('co_voiturage_addoffreview') }}"><span class="icon s7-upload" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ajouter un offre"></span></a>
+    </div>
 
 
 
+    
+
+<div class="row">
+
+
+
+    <div class="col-md-offset-2 col-md-4">
+        <div class="pricing-table pricing-table-warning">
+            <div class="pricing-table-title">Co-voiturage</div>
+            <div class="pricing-table-price"><span class="value">Offres</span></div>
+            <div class="pricing-table-description">Best for your budget</div>
+            <div class="panel-divider panel-divider-xl"></div>
+            <ul class="pricing-table-features">
+                <li>Lorem ipsum dolor sit amet</li>
+                <li>Pellentesque sit amet odio elit</li>
+                <li>Integer felis odio</li>
+            </ul><a href="{{ path('co_voiturage_viewoffre') }}" class="btn btn-warning">Get Started</a>
         </div>
     </div>
 
-    <div class="panel panel-alt3">
-        <div class="panel-heading">
-            <div class="tools" data-toggle="modal" data-target="#modal-demande">
-                <span class="icon s7-upload"  data-toggle="tooltip" data-placement="top" data-original-title="Ajouter une demande"></span>
-            </div>
-            <span class="title">Demandes de Co-Voiturage</span>
-        </div>
-
-        <div class="panel-body">
-
+    <div class="col-md-4">
+        <div class="pricing-table pricing-table-success">
+            <div class="pricing-table-title">Co-voiturage</div>
+            <div class="pricing-table-price"><span class="value">Demandes</span></div>
+            <div class="pricing-table-description">Ideal for advanced users</div>
+            <div class="panel-divider panel-divider-xl"></div>
+            <ul class="pricing-table-features">
+                <li>Lorem ipsum dolor sit amet</li>
+                <li>Pellentesque sit amet odio elit</li>
+                <li>Integer felis odio</li>
+            </ul><a href="#" class="btn btn-success">Get Started</a>
         </div>
     </div>
 
 
 
+</div>
 
-    <div id="modal-offre" tabindex="-1" role="dialog" class="modal fade modal-colored-header modal-colored-header-info">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close"><i class="icon s7-close"></i></button>
-                    <h3 class="modal-title">Ajouter un offre</h3>
-                </div>
-                <div class="modal-body">
-                    <div class="text-center">
-                        <div class="i-circle text-primary"><i class="icon s7-check"></i></div>
-                        <h4>Awesome!</h4>
-                        <p>Changes has been saved successfully! </p>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-                    <button type="button" data-dismiss="modal" class="btn btn-info">Proceed</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div id="modal-demande" tabindex="-1" role="dialog" class="modal fade modal-colored-header modal-colored-header-info">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" data-dismiss="modal" aria-hidden="true" class="close"><i class="icon s7-close"></i></button>
-                    <h3 class="modal-title">Ajouter une demande</h3>
-                </div>
-                <form role="form">
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Départ</label>
-                                    <input name="depart" type="text" placeholder="Entrez la zone de départ" class="form-control">
-                                </div>
-                                <div class="form-group">
-                                    <label>Destination</label>
-                                    <input name="destination" type="text" placeholder="Entrez la zone de Destination" class="form-control">
-                                </div>
-
-                                <div class="form-group">
-                                    <label>Quotidiennement</label>
-                                    <div class="switch-button switch-button-info" style="margin-left: 10px;">
-                                        <input name="onetime" id="swt6" type="checkbox" />
-                                        <span>
-                                            <label for="swt6"></label>
-                                        </span>
-                                    </div>
-                                </div>
-
-                                <div style="display: none" id="jours" class="form-group">
-                                    <label class="control-label">Les jours</label>
-                                        <div class="am-checkbox">
-                                            <input name="lundi" id="lundi" type="checkbox">
-                                            <label for="lundi">Lundi</label>
-
-                                            <input name="mardi" id="mardi" type="checkbox">
-                                            <label for="mardi">Mardi</label>
-
-                                            <input name="mercredi" id="mercredi" type="checkbox">
-                                            <label for="mercredi">Mercredi</label>
-                                        </div>
-                                        <div class="am-checkbox">
-                                            <input name="jeudi" id="jeudi" type="checkbox">
-                                            <label for="jeudi">Jeudi</label>
-
-                                            <input name="vendredi" id="vendredi" type="checkbox">
-                                            <label for="vendredi">Vendredi</label>
-
-                                            <input name="samedi" id="samedi" type="checkbox">
-                                            <label for="samedi">Samedi</label>
-                                        </div>
-                                </div>
-
-                                <div id="dateheure" class="form-group">
-                                    <label>Date et heure</label>
-                                    <div data-date-format="yyyy-mm-dd - HH:ii" data-link-field="dtp_input1" class="input-group date datetimepicker">
-                                        <input name="date" size="16" value="" readonly="" class="form-control" type="text"><span class="input-group-addon btn btn-primary"><i class="icon-th s7-date"></i></span>
-                                    </div>
-                                </div>
-
-                            </div>
-                            <div class="col-md-6">
-                                <div style="height: 400px; width: 400px;" id="map" style="height: 100%;"></div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" data-dismiss="modal" class="btn btn-default">Cancel</button>
-                        <button type="submit" data-dismiss="modal" class="btn btn-info">Proceed</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
 
 
