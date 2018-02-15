@@ -1,0 +1,3 @@
+espace_etude_homepage:
+    path:     /
+    defaults: { _controller: EspaceEtudeBundle:Default:index }

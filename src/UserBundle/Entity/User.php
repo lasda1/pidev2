@@ -268,4 +268,3 @@ class User extends BaseUser
 
 
 }
-
