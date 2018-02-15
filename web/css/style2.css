@@ -1,3 +1,4 @@
+
 .profile-pic {
     border-radius: 50%;
     height: 150px;
@@ -89,4 +90,8 @@ margin : 30px;
     border: 1px solid #888;
     width:90%; /* Could be more or less, depending on screen size */
 	height:100%;
+}
+
+.onhovericon :hover {
+    color: #f35e78;
 }

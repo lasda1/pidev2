@@ -1,19 +1,38 @@
 objet_homepage:
     path:     /objets
-    defaults: { _controller: ObjetBundle:Default:index }
+    defaults: { _controller: ObjetBundle:Objet:Objet }
 
-ajoutobj:
-    path:     /ajoutobj
-    defaults: { _controller: ObjetBundle:Objet:ajoutobj }
+objperd_homepage:
+    path:     /objets/objperd
+    defaults: { _controller: ObjetBundle:Objet:coinobjperd }
 
-affichobj:
-    path:     /affichobj
-    defaults: { _controller: ObjetBundle:Objet:affichobj }
+objtrouv_homepage:
+    path:     /objets/objtrouv
+    defaults: { _controller: ObjetBundle:Objet:coinobjtrouv }
+
+ajoutobjtrouv:
+    path:     /objets/objetstrouves/ajoutobjtrouv
+    defaults: { _controller: ObjetBundle:Objet:ajoutobjtrouv }
+
+
+ajoutobjperdtrouv:
+    path:     /objets/objetsperdus/ajoutobjperd
+    defaults: { _controller: ObjetBundle:Objet:ajoutobjperd }
+
+
+
+affichobjperd:
+    path:     /objets/objetsperdus/affichobj
+    defaults: { _controller: ObjetBundle:Objet:affichobjperd }
+
+affichobjtrouv:
+    path:     /objets/objetstrouves/affichobj
+    defaults: { _controller: ObjetBundle:Objet:affichobjtrouv }
 
 deleteobj:
-    path:     /deleteobj
+    path:     /objets/deleteobj/{id}
     defaults: { _controller: ObjetBundle:Objet:deleteobj }
 
 updateobj:
-    path:     /updateobj
+    path:     /objets/updateobj/{id}
     defaults: { _controller: ObjetBundle:Objet:updateobj }

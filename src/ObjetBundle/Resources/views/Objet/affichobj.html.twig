@@ -9,7 +9,7 @@
             <td>Date </td>
             <td>Lieu </td>
             <td>Description </td>
-            <td>Photo fdsfdsfdqsfgdqgfq </td>
+            <td>Photo  </td>
         </tr>
         {% for objet in objet %}
             <tr>
@@ -17,7 +17,7 @@
                 <td>{{ objet.Date |date }}</td>
                 <td>{{ objet.Lieu }}</td>
                 <td>{{ objet.Description }}</td>
-                <td>{{ objet.Photo }}</td>
+                <td><img src="{{ asset(objet.Photo) }}" height="75" width="75"></td>
             </tr>
         {% endfor %}
     </table>

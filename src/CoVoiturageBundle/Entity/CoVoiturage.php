@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="co_voiturage")
  * @ORM\Entity(repositoryClass="CoVoiturageBundle\Repository\CoVoiturageRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class CoVoiturage
 {
@@ -45,28 +46,36 @@ class CoVoiturage
     /**
      * @var string
      *
+     * @ORM\Column(name="depart_id", type="string", length=255)
+     */
+    private $departId;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="destination", type="string", length=255)
      */
     private $destination;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="destination_id", type="string", length=255)
+     */
+    private $destinationId;
+
+    /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="date")
+     * @ORM\Column(name="date", type="datetime" , nullable=true)
      */
     private $date;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="heure", type="integer")
-     */
-    private $heure;
 
     /**
-     * @var int
+     * @var string
      *
-     * @ORM\Column(name="onetime", type="integer")
+     * @ORM\Column(name="onetime", type="string")
      */
     private $onetime;
 
@@ -76,6 +85,20 @@ class CoVoiturage
      * @ORM\Column(name="placedisponibles", type="integer", nullable=true)
      */
     private $placedisponibles;
+
+    /**
+     * @var datetime $created
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
+
+    /**
+     * @var datetime $updated
+     *
+     * @ORM\Column(type="datetime", nullable = true)
+     */
+    private $updated;
 
 
     /**
@@ -160,29 +183,6 @@ class CoVoiturage
         return $this->date;
     }
 
-    /**
-     * Set heure
-     *
-     * @param integer $heure
-     *
-     * @return CoVoiturage
-     */
-    public function setHeure($heure)
-    {
-        $this->heure = $heure;
-
-        return $this;
-    }
-
-    /**
-     * Get heure
-     *
-     * @return int
-     */
-    public function getHeure()
-    {
-        return $this->heure;
-    }
 
     /**
      * Set onetime
@@ -278,5 +278,122 @@ class CoVoiturage
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set departId
+     *
+     * @param string $departId
+     *
+     * @return CoVoiturage
+     */
+    public function setDepartId($departId)
+    {
+        $this->departId = $departId;
+
+        return $this;
+    }
+
+    /**
+     * Get departId
+     *
+     * @return string
+     */
+    public function getDepartId()
+    {
+        return $this->departId;
+    }
+
+    /**
+     * Set destinationId
+     *
+     * @param string $destinationId
+     *
+     * @return CoVoiturage
+     */
+    public function setDestinationId($destinationId)
+    {
+        $this->destinationId = $destinationId;
+
+        return $this;
+    }
+
+    /**
+     * Get destinationId
+     *
+     * @return string
+     */
+    public function getDestinationId()
+    {
+        return $this->destinationId;
+    }
+
+    /**
+     * Gets triggered only on insert
+
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->created = new \DateTime("now");
+        $this->updated = new \DateTime("now");
+    }
+
+    /**
+     * Gets triggered every time on update
+
+     * @ORM\PreUpdate
+     */
+    public function onPreUpdate()
+    {
+        $this->updated = new \DateTime("now");
+    }
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     *
+     * @return CoVoiturage
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
+    }
+
+    /**
+     * Set updated
+     *
+     * @param \DateTime $updated
+     *
+     * @return CoVoiturage
+     */
+    public function setUpdated($updated)
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    /**
+     * Get updated
+     *
+     * @return \DateTime
+     */
+    public function getUpdated()
+    {
+        return $this->updated;
     }
 }

@@ -20,10 +20,6 @@ class ObjetType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('nature',ChoiceType::class,array('choices'=>array(
-                'Objet Perdu'=> 'Objet Perdu',
-                'Objet Trouvé'=> 'Objet Trouvé',
-            )))
             ->add('description',TextareaType::class,array('attr'=>array('class' => 'form-control')))
             ->add('date',DateType::class,array('data'=>new \DateTime("now"))
             )
@@ -32,11 +28,12 @@ class ObjetType extends AbstractType
                 'Ordinateur'=> 'Ordinateur',
                 'Chargeur'=> 'Chargeur',
                 'Papier'=> 'Papier',
+                'CIN'=>'CIN',
                 'Autres'=> 'Autres',
             )))
             ->add('lieu',TextType::class)
-            ->add('photo',FileType::class,array('required'=>false))
-            ->add('Ajouter',SubmitType::class);
+            ->add('photo',FileType::class,array('attr' => array('class' => 'form-control file'),'data_class' => null,'label'=>'Photo'))
+            ->add('Ajouter',SubmitType::class,array('attr' => array('class' => 'btn btn-primary')));
 
     }/**
      * {@inheritdoc}
@@ -54,11 +51,6 @@ class ObjetType extends AbstractType
     public function getBlockPrefix()
     {
         return 'objetbundle_objet';
-    }
-
-    public function getParent()
-    {
-        return 'FOS\UserBundle\Form\Type\RegistrationFormType';
     }
 
 
