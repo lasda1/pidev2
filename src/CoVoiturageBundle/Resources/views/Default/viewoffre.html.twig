@@ -17,6 +17,7 @@
             <table class="table table-striped table-fw-widget table-hover">
                 <thead>
                 <tr>
+                    <th></th>
                     <th>User</th>
                     <th>Départ</th>
                     <th>Destination</th>
@@ -27,7 +28,12 @@
                 {% if cov is defined %}
                     {% for c in cov %}
                         <tr>
-                            <td>{{ c.user.username }}</td>
+                            <td class="onhovericon" style="font-size:20px;">
+                                <a href="{{ path('co_voiturage_infooffre',{'id':c.id}) }}">
+                                    <span class="icon s7-info onhovericon" data-toggle="tooltip" data-placement="top" title="" data-original-title="Informations"></span>
+                                </a>
+                            </td>
+                            <td>{{ c.user.username | upper }}</td>
                             <td>{{ c.depart }}</td>
                             <td>{{ c.destination }}</td>
                             {% if c.updated == null %}
@@ -35,17 +41,21 @@
                             {% else %}
                                 <td>{{ c.updated | date }}</td>
                             {% endif %}
+
+                            <td><a href="{{ path('co_voiturage_requestoffre',{'id':c.id}) }}"><button class="btn btn-info">Request</button></a></td>
                             <td class="onhovericon" style="font-size:25px;" >
                                 <a href="{{ path('co_voiturage_modifyoffreview',{'id':c.id}) }}"><span class="icon s7-edit" data-toggle="tooltip" data-placement="top" title="" data-original-title="Modification"></span></a>
                             </td>
                             <td class="onhovericon" style="font-size:25px;" >
-                                <span class="icon s7-close onhovericon" data-toggle="tooltip" data-placement="top" title="" data-original-title="Suppression"></span>
+                                <a href="{{ path('co_voiturage_deleteoffre',{'id':c.id}) }}"><span class="icon s7-close" data-toggle="tooltip" data-placement="top" title="" data-original-title="Suppression"></span></a>
                             </td>
+
                         </tr>
                     {% endfor %}
                 {% endif %}
                 </tbody>
             </table>
+
 
 
 

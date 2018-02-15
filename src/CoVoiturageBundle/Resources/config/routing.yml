@@ -30,3 +30,11 @@ co_voiturage_viewoffre:
 co_voiturage_viewoffreparam:
     path:     /covoiturage/offres/param
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewOffreParam }
+
+co_voiturage_requestoffre:
+    path:     /covoiturage/offres/request
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:requestOffre }
+
+co_voiturage_infooffre:
+    path:     /covoiturage/offres/info
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:infoOffre }

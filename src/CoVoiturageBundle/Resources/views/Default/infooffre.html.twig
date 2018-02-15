@@ -1,0 +1,217 @@
+{% extends "base.html.twig" %}
+{% block pageName %}
+    Co-Voiturage
+{% endblock %}
+{% block body %}
+
+        <div class="row">
+            <div class="col-md-5">
+                <div class="form-group">
+                    <h3 class="colortitleinfo">Départ :</h3> {{ co.depart }}
+                </div>
+                <div class="form-group">
+                    <h3 class="colortitleinfo">Destination :</h3> {{ co.destination }}
+                </div>
+
+                <div class="form-group">
+                    <h3 class="colortitleinfo">Quotidiennement
+                        :</h3> {% if co.onetime == "on" %} Oui {% else %} Non {% endif %}
+                </div>
+
+                {% if co.onetime == "off" %}
+                    <div class="form-group">
+                        <h3 class="colortitleinfo">Date et heure :</h3> {{ co.date | date }}
+                    </div>
+                {% else %}
+                    <div class="form-group">
+                        <h3 class="colortitleinfo">Jours :</h3>
+                        {% if cod is not null %}
+                            {% if cod.lundi is not null %} Lundi {% endif %}
+                            {% if cod.mardi is not null %} Mardi {% endif %}
+                            {% if cod.mercredi is not null %} Mercredi {% endif %}
+                            {% if cod.jeudi is not null %} Jeudi {% endif %}
+                            {% if cod.vendredi is not null %} Vendredi {% endif %}
+                            {% if cod.samedi is not null %} Samedi {% endif %}
+                        {% endif %}
+                    </div>
+                {% endif %}
+
+
+                <div class="form-group">
+                    <div class="form-group">
+                        <h3 class="colortitleinfo">Places disponibles:</h3> {{ co.placedisponibles }}
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="col-md-6">
+                <div style="height: 400px; width: 700px;" id="map"></div>
+            </div>
+
+        </div>
+
+
+        <input value="{{ co.departid }}" type="hidden" id="idDepart" name="idDepart">
+        <input value="{{ co.destinationid }}" type="hidden" id="idDestination" name="idDestination">
+        <input type="hidden" id="formatted_addr" name="formattedaddr">
+
+        </div>
+{% endblock %}
+
+
+{% block customScript %}
+    <script>
+        var pos;
+        var lol;
+        var map;
+        var geocoder;
+
+
+
+
+        function initMap(lol) {
+            map = new google.maps.Map(document.getElementById('map'), {
+                mapTypeControl: false,
+                center: {lat: -33.8688, lng: 151.2195},
+                zoom: 13
+            });
+            geocoder = new google.maps.Geocoder;
+            //var infoWindow = new google.maps.InfoWindow({map: map});
+            new AutocompleteDirectionsHandler(map);
+
+
+            /* if (navigator.geolocation) {
+                 navigator.geolocation.getCurrentPosition(function (position) {
+                     pos = {
+                         lat: position.coords.latitude,
+                         lng: position.coords.longitude
+                     };
+
+                     var latlng = {lat: parseFloat(pos.lat), lng: parseFloat(pos.lng)};
+
+                     geocoder.geocode({'location': latlng}, function (results, status, lol) {
+                         if (status === google.maps.GeocoderStatus.OK) {
+                             if (results[1]) {
+                                 lol = results[1].place_id.toString();
+                                 $('#formatted_addr').val(results[1].formatted_address);
+                                 new AutocompleteDirectionsHandler(map, lol);
+                                 //new AutocompleteDirectionsHandlerDefault(map,locationId);
+                             } else {
+                                 window.alert('Pas de résultat trouvé');
+                                 new AutocompleteDirectionsHandler(map);
+                             }
+                         } else {
+                             window.alert('Echec : ' + status);
+                             new AutocompleteDirectionsHandler(map);
+                         }
+                     });
+
+                     //new AutocompleteDirectionsHandler(map);
+
+                     //infoWindow.setPosition(pos);
+                     //infoWindow.setContent('Votre emplacement.');
+                     //map.setCenter(pos);
+                 }, function () {
+                     handleLocationError(true, infoWindow, map.getCenter());
+                 });
+             } else {
+                 // Browser doesn't support Geolocation
+                 handleLocationError(false, infoWindow, map.getCenter());
+             }*/
+
+        }
+
+        function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+            infoWindow.setPosition(pos);
+            infoWindow.setContent(browserHasGeolocation ?
+                'Erreur: La géolocalisation a échoué.' :
+                'Erreur: Votre navigateur ne supporte pas la géolocalisation');
+        }
+
+
+        //alert($('#placeIdLocation').val());
+
+        function AutocompleteDirectionsHandler(map) {
+            this.map = map;
+            this.originPlaceId = "{{ co.departid }}";
+            //alert($('#placeIdLocation').attr('name'));
+            this.destinationPlaceId = "{{ co.destinationid }}";
+            this.travelMode = 'DRIVING';
+            var originInput = document.getElementById('start');
+            var destinationInput = document.getElementById('end');
+            var modeSelector = 'DRIVING';
+            this.directionsService = new google.maps.DirectionsService;
+            this.directionsDisplay = new google.maps.DirectionsRenderer;
+            this.directionsDisplay.setMap(map);
+
+            var originAutocomplete = new google.maps.places.Autocomplete(
+                originInput, {placeIdOnly: true});
+            var destinationAutocomplete = new google.maps.places.Autocomplete(
+                destinationInput, {placeIdOnly: true});
+
+
+            this.setupPlaceChangedListener(originAutocomplete, 'ORIG');
+            this.setupPlaceChangedListener(destinationAutocomplete, 'DEST');
+
+            this.route();
+
+        }
+
+
+        AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function (autocomplete, mode) {
+            console.log(autocomplete);
+            var me = this;
+            autocomplete.bindTo('bounds', this.map);
+            autocomplete.addListener('place_changed', function () {
+
+                var place = autocomplete.getPlace();
+                if (!place.place_id) {
+                    window.alert("Remplissez les champs nécessaires");
+                    return;
+                }
+                if (mode === 'ORIG') {
+                    me.originPlaceId = place.place_id;
+                } else {
+                    me.destinationPlaceId = place.place_id;
+                }
+                me.route();
+            });
+
+        };
+
+        AutocompleteDirectionsHandler.prototype.route = function () {
+            if (!this.originPlaceId || !this.destinationPlaceId) {
+                return;
+            }
+            var me = this;
+
+            $('#idDepart').val(this.originPlaceId);
+            $('#idDestination').val(this.destinationPlaceId);
+
+
+            this.directionsService.route({
+                origin: {'placeId': this.originPlaceId},
+                destination: {'placeId': this.destinationPlaceId},
+                travelMode: 'DRIVING'
+            }, function (response, status) {
+                if (status === 'OK') {
+                    me.directionsDisplay.setDirections(response);
+                } else {
+                    window.alert('Directions request failed due to ' + status);
+                }
+            });
+        };
+
+
+    </script>
+
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8w507O9U90-M_IIeytsa4weIBO_yAjhI&libraries=places&callback=initMap"
+            async defer></script>
+
+
+
+
+
+{% endblock %}

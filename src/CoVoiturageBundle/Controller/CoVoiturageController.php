@@ -202,4 +202,15 @@ class CoVoiturageController extends Controller
             return $this->render('CoVoiturageBundle:Default:modifyoffre.html.twig',['co' => $co , 'cod' => null ]);
         }
     }
+
+    public function infoOffreAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->find($request->get("id"));
+        $cod = $em->getRepository(CoVoiturageDays::class)->findByidc($request->get("id"));
+        if ($cod)
+            return $this->render('CoVoiturageBundle:Default:infooffre.html.twig',['co' => $co , 'cod' => $cod[0]]);
+        else {
+            return $this->render('CoVoiturageBundle:Default:infooffre.html.twig',['co' => $co , 'cod' => null ]);
+        }
+    }
 }
