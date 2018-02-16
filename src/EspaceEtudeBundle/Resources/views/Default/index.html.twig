@@ -1,1 +1,21 @@
-Hello World!
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <div class="col-sm-2">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <img style="width: 125px;height: 80px;" src="{{ asset(img) }}"/>
+            </div>
+            <div class="panel-footer" style="padding: 2px;">
+                <center><p>Basic Form</p></center>
+            </div>
+
+
+        </div>
+    </div>
+
+
+
+{% endblock %}

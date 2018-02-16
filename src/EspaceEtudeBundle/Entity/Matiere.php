@@ -42,6 +42,11 @@ class Matiere
      */
     private $type;
 
+    /**
+     * Matiere constructor.
+     */
+
+
 
     /**
      * Get id.
@@ -60,6 +65,7 @@ class Matiere
      *
      * @return Matiere
      */
+
     public function setLibelle($libelle)
     {
         $this->libelle = $libelle;
@@ -124,4 +130,13 @@ class Matiere
     {
         return $this->type;
     }
+
+    /**
+     * Set document.
+     *
+     * @param \EspaceEtudeBundle\Entity\Documents|null $document
+     *
+     * @return Matiere
+     */
+
 }

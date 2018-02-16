@@ -3,6 +3,7 @@
 namespace EspaceEtudeBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -13,7 +14,7 @@ class DocumentsType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('path')->add('libelle')->add('date')->add('typeDocument')->add('size')->add('language')->add('matiere')->add('user');
+        $builder->add('libelle')->add('language')->add('path' ,FileType::class);
     }/**
      * {@inheritdoc}
      */

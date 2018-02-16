@@ -1,3 +1,25 @@
 espace_etude_homepage:
     path:     /
     defaults: { _controller: EspaceEtudeBundle:Default:index }
+
+afficher_matiere:
+    path:     /afficherMatiere/{section}
+    defaults: { _controller: EspaceEtudeBundle:Matieres:afficherMatiere }
+
+afficher_documents:
+    path:     /afficherDocuments/{id}
+    defaults: { _controller: EspaceEtudeBundle:Document:afficherDocuments }
+ajout_documents:
+    path:     /ajoutDocuments
+    defaults: { _controller: EspaceEtudeBundle:Document:ajoutDocuments }
+
+
+
+
+
+
+
+
+espace_etude_homepdsqge:
+    path:     /test
+    defaults: { _controller: EspaceEtudeBundle:Default:test }
