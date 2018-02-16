@@ -10,4 +10,27 @@ namespace ObjetBundle\Repository;
  */
 class ObjetRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function objperd(){
+        $q = $this->getEntityManager()
+            ->createQuery("select o from ObjetBundle:Objet o WHERE o.nature='Objet Perdu'");
+        return $q->getResult();
+
+    }
+   public function objtrouv(){
+        $q = $this->getEntityManager()
+            ->createQuery("select o from ObjetBundle:Objet o WHERE o.nature='Objet Trouvé'");
+        return $q->getResult();
+    }
+
+
+
+
+
+
+
+
+
+
+
+
 }

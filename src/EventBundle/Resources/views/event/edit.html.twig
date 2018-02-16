@@ -27,26 +27,32 @@
     <div class="col-md-6">
         {{ form_start(form) }}
         {{ form_widget(form.titre,{'attr':{'class':'form-control','placeholder':"Nom de l'evennement"}}) }}
+        <br>
         {{ form_widget(form.description,{'attr':{'class':'form-control','placeholder':"description de l'evennement"}}) }}
+        <br>
         {{ form_widget(form.datedebut,{'attr':{'class':'form-control ','placeholder':"Date de l'evennement"}}) }}
+        <br>
         {{ form_widget(form.datefin,{'attr':{'class':'form-control ','placeholder':"Date de Fin de l'evennement s'il y a plusieurs jours"}}) }}
+        <br>
         {{ form_widget(form.photo,{'attr':{'class':'form-control ','placeholder':"Logo de l'evennement"}}) }}
+        <br>
         {{ form_widget(form.nbMax,{'attr':{'class':'form-control ','placeholder':"Nombre de place"}}) }}
-
+        <br>
         {{ form_widget(form.lieu,{'attr':{'class':'form-control controls','placeholder':'Où vas se passer?'}}) }}
+        <br>
         <div class="col-md-6">
             {{ form_widget(form.x,{'attr':{'class':'form-control','placeholder':'x'}}) }}
         </div>
         <div class="col-md-6">
             {{ form_widget(form.y,{'attr':{'class':'form-control','placeholder':'y'}}) }}
-
+            <br>
         </div>
         {{ form_widget(form.categorie,{'attr':{'class':'form-control ','placeholder':"Categorie de l'evennement"}}) }}
 
 
         {{ form_widget(form) }}
-
-        <input type="submit" value="Publier l'evennement" onclick="xy()" />
+        <br>
+        <input type="submit" class="btn btn-primary" value="Publier l'evennement" onclick="xy()" />
         {{ form_end(form) }}
     </div>
 

@@ -20,3 +20,9 @@ user:
 
 fos_user:
     resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+
+
+colocation:
+    resource: "@ColocationBundle/Resources/config/routing.yml"
+    prefix:   /
+
