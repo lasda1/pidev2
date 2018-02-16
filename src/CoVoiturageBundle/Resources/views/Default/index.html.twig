@@ -3,7 +3,11 @@
 Co-Voiturage
 {% endblock %}
 {% block body %}
-
+        <div style="display: none">
+        {% block CoVoiturageActive %}
+            active
+        {% endblock %}
+        </div>
 
     <div class="tools">
         <a href="{{ path('co_voiturage_addoffreview') }}"><span class="icon s7-upload" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ajouter un offre"></span></a>
@@ -11,7 +15,7 @@ Co-Voiturage
 
 
 
-    
+
 
 <div class="row">
 
@@ -27,7 +31,7 @@ Co-Voiturage
                 <li>Lorem ipsum dolor sit amet</li>
                 <li>Pellentesque sit amet odio elit</li>
                 <li>Integer felis odio</li>
-            </ul><a href="{{ path('co_voiturage_viewoffre') }}" class="btn btn-warning">Get Started</a>
+            </ul><a href="{{ path('co_voiturage_viewoffre') }}" class="btn btn-warning">Consulter les offres</a>
         </div>
     </div>
 

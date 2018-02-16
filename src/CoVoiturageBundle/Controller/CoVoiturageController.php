@@ -4,6 +4,7 @@ namespace CoVoiturageBundle\Controller;
 
 use CoVoiturageBundle\Entity\CoVoiturage;
 use CoVoiturageBundle\Entity\CoVoiturageDays;
+use CoVoiturageBundle\Entity\CoVoiturageRequests;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -105,13 +106,14 @@ class CoVoiturageController extends Controller
     public function viewOffreAction(){
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->getAllDesc('o');
-        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig',['cov' => $co]);
+        $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig',['cov' => $co ,'cor' => $cor[0]]);
     }
 
     public function viewOffreParamAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->getAllDesc('o');
-        return $this->render('CoVoiturageBundle:Default:index.html.twig',['cov' => $co , 'success' => $request->get('success')]);
+        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig',['cov' => $co , 'success' => $request->get('success')]);
     }
 
 
@@ -211,6 +213,20 @@ class CoVoiturageController extends Controller
             return $this->render('CoVoiturageBundle:Default:infooffre.html.twig',['co' => $co , 'cod' => $cod[0]]);
         else {
             return $this->render('CoVoiturageBundle:Default:infooffre.html.twig',['co' => $co , 'cod' => null ]);
+        }
+    }
+
+    public function requestOffreAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->find($request->get("id"));
+        if ($co->getPlacedisponibles() != 0){
+            $co->setPlacedisponibles($co->getPlacedisponibles()-1);
+            $cor = new CoVoiturageRequests();
+            $cor->setUser($this->getUser());
+            $cor->setIdc($co);
+            $em->persist($cor);
+            $em->flush();
+            return $this->redirectToRoute('co_voiturage_viewoffreparam',['success' => 4]);
         }
     }
 }

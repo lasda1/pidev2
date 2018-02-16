@@ -4,7 +4,11 @@
 {% endblock %}
 {% block body %}
 
-
+<div style="display: none">
+    {% block CoVoiturageActive %}
+        active
+    {% endblock %}
+</div>
 
     <div class="panel panel-alt2">
         <div class="panel-heading" >
@@ -15,6 +19,7 @@
         <div class="panel-body">
 
             <table class="table table-striped table-fw-widget table-hover">
+                {% if cov is defined %}
                 <thead>
                 <tr>
                     <th></th>
@@ -25,7 +30,7 @@
                 </tr>
                 </thead>
                 <tbody class="no-border-x">
-                {% if cov is defined %}
+
                     {% for c in cov %}
                         <tr>
                             <td class="onhovericon" style="font-size:20px;">
@@ -42,13 +47,26 @@
                                 <td>{{ c.updated | date }}</td>
                             {% endif %}
 
-                            <td><a href="{{ path('co_voiturage_requestoffre',{'id':c.id}) }}"><button class="btn btn-info">Request</button></a></td>
+                            <td>
+
+                                {% if cor is defined and c.id == cor.idc.id %}
+                                    <span style="font-size: 10px">Vous avez déjà envoyé une demande</span>
+                                {% elseif c.user.id != app.user.id %}
+                                    <a href="{{ path('co_voiturage_requestoffre',{'id':c.id}) }}"><button class="btn btn-warning">Request</button></a>
+                                {% endif %}
+                            </td>
+
                             <td class="onhovericon" style="font-size:25px;" >
-                                <a href="{{ path('co_voiturage_modifyoffreview',{'id':c.id}) }}"><span class="icon s7-edit" data-toggle="tooltip" data-placement="top" title="" data-original-title="Modification"></span></a>
+                                {% if c.user.id == app.user.id %}
+                                    <a href="{{ path('co_voiturage_modifyoffreview',{'id':c.id}) }}"><span class="icon s7-edit" data-toggle="tooltip" data-placement="top" title="" data-original-title="Modification"></span></a>
+                                {% endif %}
                             </td>
                             <td class="onhovericon" style="font-size:25px;" >
-                                <a href="{{ path('co_voiturage_deleteoffre',{'id':c.id}) }}"><span class="icon s7-close" data-toggle="tooltip" data-placement="top" title="" data-original-title="Suppression"></span></a>
+                                {% if c.user.id == app.user.id %}
+                                    <a href="{{ path('co_voiturage_deleteoffre',{'id':c.id}) }}"><span class="icon s7-close" data-toggle="tooltip" data-placement="top" title="" data-original-title="Suppression"></span></a>
+                                {% endif %}
                             </td>
+
 
                         </tr>
                     {% endfor %}
@@ -82,6 +100,18 @@
         $.gritter.add({
             title: "Succès",
             text: "Modification faite avec succès.",
+            class_name: "color alt2"
+        });
+        {% elseif success == 3 %}
+        $.gritter.add({
+            title: "Succès",
+            text: "Suppression faite avec succès.",
+            class_name: "color alt1"
+        });
+        {% elseif success == 4 %}
+        $.gritter.add({
+            title: "Succès",
+            text: "Demande a été faite avec succès.",
             class_name: "color alt2"
         });
         {% endif %}
