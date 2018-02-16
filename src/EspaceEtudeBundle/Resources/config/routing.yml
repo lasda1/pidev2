@@ -9,9 +9,13 @@ afficher_matiere:
 afficher_documents:
     path:     /afficherDocuments/{id}
     defaults: { _controller: EspaceEtudeBundle:Document:afficherDocuments }
-ajout_documents:
-    path:     /ajoutDocuments
-    defaults: { _controller: EspaceEtudeBundle:Document:ajoutDocuments }
+
+supp_documents:
+    path:     /supprimerdoc/{idDoc}/{idMatiere}
+    defaults: { _controller: EspaceEtudeBundle:Document:supprimerDocument }
+modif_documents:
+    path:     /modif/{idDoc}/{idMatiere}
+    defaults: { _controller: EspaceEtudeBundle:Document:modifierDocument }
 
 
 

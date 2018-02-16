@@ -36,27 +36,34 @@ class DocumentController extends Controller
                 $path,
                 $fileName
             );
-            $b=$path."/".$fileName;
-            $b=str_replace('/','\\',$b);
-            $gs = new Ghostscript ();
-            $gs->setGsPath("C:/Program Files/gs/gs9.22/bin/gswin64c.exe");
-            $withoutExt = preg_replace('/\\.[^.\\s]{3,4}$/', '', $fileName);
-            $gs->setDevice('jpeg')
-// Set the input file
-                ->setInputFile($b)
-// Set the output file that will be created in the same directory as the input
-                ->setOutputFile($withoutExt)
-// Set the resolution to 96 pixel per inch
-                ->setResolution(96)
-// Set Text-antialiasing to the highest level
-                ->setTextAntiAliasing(Ghostscript::ANTIALIASING_HIGH);
-// convert the input file to an image
-            $gs->render();
-
+            if($file->getClientOriginalExtension ()=="pdf"){
+                $b=$path."/".$fileName;
+                $b=str_replace('/','\\',$b);
+                $gs = new Ghostscript ();
+                $gs->setGsPath("C:/Program Files/gs/gs9.22/bin/gswin64c.exe");
+                $withoutExt = preg_replace('/\\.[^.\\s]{3,4}$/', '', $fileName);
+                $gs->setDevice('jpeg')
+                    // Set the input file
+                    ->setInputFile($b)
+                    // Set the output file that will be created in the same directory as the input
+                    ->setOutputFile($withoutExt)
+                    // Set the resolution to 96 pixel per inch
+                    ->setResolution(96)
+                    // Set Text-antialiasing to the highest level
+                    ->setTextAntiAliasing(Ghostscript::ANTIALIASING_HIGH);
+                // convert the input file to an image
+                $gs->render();
+                $test="/documents/".$withoutExt.".jpeg";
+                $documents->setImg($test);
+            }
+            elseif($file->getClientOriginalExtension ()=="docx"){
+                $test="documents/telechargement.jpeg";
+                $documents->setImg($test);
+            }else
+                $documents->setImg(" ");
             $user = $this->getUser();
             $documents->setUser($user);
-            $test="/documents/".$withoutExt.".jpeg";
-            $documents->setImg($test);
+
             $matiere = $em->getRepository(Matiere::class)->find($request->attributes->get('id'));
             $documents->setMatiere($matiere);
 
@@ -65,19 +72,36 @@ class DocumentController extends Controller
 
             $type =$file->getClientOriginalExtension ();
             $documents->setTypeDocument($type);
-            $documents->setPath($fileName);
+            $documents->setPath("/Documents/".$fileName);
             $em->persist($documents);
             $em->flush();
         }
 
         $niveau=new Niveau();
-        $documents=$em->getRepository(Documents::class)->findAll();
+        $documents=$em->getRepository(Documents::class)->findBy( ['matiere' => $id]);
         $niveau=$niveau->getAvailableTypes();
         $section=$em->getRepository(Section::class)->findAll();
         return $this->render('EspaceEtudeBundle:Document:afficher_documents.html.twig', array(
             'niveaux'=>$niveau,'sections'=>$section,'form' => $form->createView(),'id'=>$id,'docs'=>$documents,
         ));
     }
+    public function supprimerDocumentAction(Request $request){
+        $em=$this->getDoctrine()->getManager();
+        $doc=$em->getRepository(Documents::class)->find($request->attributes->get('idDoc'));
+        $em->remove($doc);
+        $em->flush();
+        return $this->redirectToRoute("afficher_documents",array('id'=>$request->attributes->get('idMatiere')));
+    }
+    public function modifierDocumentAction(Request $request)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $doc=$em->getRepository(Documents::class)->find($request->attributes->get('idDoc'));
 
 
+            $doc->setLibelle($request->request->get('libelle'));
+            $doc->setLanguage($request->request->get('language'));
+            $em->persist($doc);
+            $em->flush();
+        return $this->redirectToRoute("afficher_documents",array('id'=>$request->attributes->get('idMatiere')));
+    }
 }
