@@ -4,6 +4,7 @@ namespace EspaceEtudeBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+
 /**
  * Documents
  *
@@ -56,6 +57,57 @@ class Documents
      */
     private $size;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="language", type="string", length=255)
+     */
+    private $language;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="img", type="string", length=255)
+     */
+    private $img;
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="EspaceEtudeBundle\Entity\Matiere")
+     * @ORM\JoinColumn(name="id_matiere", referencedColumnName="id")
+     */
+    private $matiere;
+
+    /**
+     *
+     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
+     * @ORM\JoinColumn(name="id_user", referencedColumnName="id")
+     */
+    private $user;
+
+
+
+    /**
+     * Documents constructor.
+     */
+    public function __construct()
+    {
+    }
+
+
+    /**
+     * @return string
+     */
+    public function getLanguage()
+    {
+        return $this->language;
+    }
+
+    /**
+     * @param string $language
+     */
+    public function setLanguage(string $language)
+    {
+        $this->language = $language;
+    }
 
     /**
      * Get id.
@@ -185,5 +237,77 @@ class Documents
     public function getSize()
     {
         return $this->size;
+    }
+
+    /**
+     * Set matiere.
+     *
+     * @param \EspaceEtudeBundle\Entity\Matiere|null $matiere
+     *
+     * @return Documents
+     */
+    public function setMatiere(\EspaceEtudeBundle\Entity\Matiere $matiere = null)
+    {
+        $this->matiere = $matiere;
+
+        return $this;
+    }
+
+    /**
+     * Get matiere.
+     *
+     * @return \EspaceEtudeBundle\Entity\Matiere|null
+     */
+    public function getMatiere()
+    {
+        return $this->matiere;
+    }
+
+    /**
+     * Set user.
+     *
+     * @param \UserBundle\Entity\User|null $user
+     *
+     * @return Documents
+     */
+    public function setUser(\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user.
+     *
+     * @return \UserBundle\Entity\User|null
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set img.
+     *
+     * @param string $img
+     *
+     * @return Documents
+     */
+    public function setImg($img)
+    {
+        $this->img = $img;
+
+        return $this;
+    }
+
+    /**
+     * Get img.
+     *
+     * @return string
+     */
+    public function getImg()
+    {
+        return $this->img;
     }
 }

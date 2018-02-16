@@ -1,7 +1,34 @@
-{% extends "::base.html.twig" %}
+{% extends 'base.html.twig' %}
 
-{% block title %}EspaceEtudeBundle:Matieres:afficherMatiere{% endblock %}
-
+    {% block leftsidebar %}
+        <div class="am-left-sidebar">
+            <div class="content">
+                <div class="am-logo"></div>
+                <ul class="sidebar-elements">
+                    {% for niveau in niveaux %}
+                        <li class="parent"><a href="#"><span>{{ niveau }}</span></a>
+                            {% for section in sections %}
+                                {% if section.niveau == niveau  %}
+                                    <ul class="sub-menu">
+                                        <li><a href="{{ path('afficher_matiere', {'section': section.id}) }}">{{ section.libelle }}</a>
+                                        </li>
+                                    </ul>
+                                {% endif %}
+                            {% endfor %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <!--Sidebar bottom content-->
+            </div>
+        </div>
+    {% endblock %}
 {% block body %}
-<h1>Welcome to the Matieres:afficherMatiere page</h1>
+    <h1>khrit fih</h1>
+
+    {% for matiere in matieres %}
+        <div class="ffolder medium cyan">
+            <span ><a href="{{ path('afficher_documents', {'id': matiere.id}) }}" style="color: #FFFFFF;text-decoration: none;"  >{{ matiere.libelle }}</a></span>
+        </div>
+        &nbsp;&nbsp;
+    {% endfor %}
 {% endblock %}
