@@ -40,6 +40,7 @@
     background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
 }
 
+
 /* Modal Content/Box */
 .modal-content {
     background-color: #fefefe;
@@ -49,6 +50,7 @@
     width: 80%; /* Could be more or less, depending on screen size */
 }
 
+
 /* The Close Button */
 .close {
     color: #aaa;
@@ -57,18 +59,21 @@
     font-weight: bold;
 }
 
+
 .close:hover,
 .close:focus {
     color: black;
     text-decoration: none;
     cursor: pointer;
 }
+
 .wrap {
-    height:200px;
+    height:234px;
     width:100%;
 	margin-top: 50px;
     
 	}
+
 
 #upload{
     display:none;
@@ -85,7 +90,8 @@ margin : 30px;
 } 
 .modal-content2 {
     background-color: #fefefe;
-    margin: auto; /* 15% from the top and centered */
+    margin-top: 7%;
+    margin-left: 9%; /* 15% from the top and centered */
     padding: 20px;
     border: 1px solid #888;
     width:90%; /* Could be more or less, depending on screen size */
@@ -98,4 +104,16 @@ margin : 30px;
 
 .colortitleinfo {
     color: #ec4444;
+}
+
+.action{
+    display: none;
+}
+#ajout{
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    background-color:transparent;
+    padding: 1px;
+    background-color: transparent;
 }

@@ -1,7 +1,160 @@
-{% extends "::base.html.twig" %}
+{% extends 'base.html.twig' %}
 
-{% block title %}EspaceEtudeBundle:Document:afficherDocuments{% endblock %}
+    {% block leftsidebar %}
+        <div class="am-left-sidebar">
+            <div class="content">
+                <div class="am-logo"></div>
+                <ul class="sidebar-elements">
+                    {% for niveau in niveaux %}
+                        <li class="parent"><a href="#"><span>{{ niveau }}</span></a>
+                            {% for section in sections %}
+                                {% if section.niveau == niveau %}
+                                    <ul class="sub-menu">
+                                        <li>
+                                            <a href="{{ path('afficher_matiere', {'section': section.id}) }}">{{ section.libelle }}</a>
+                                        </li>
+                                    </ul>
+                                {% endif %}
+                            {% endfor %}
+                        </li>
+                    {% endfor %}
+                </ul>
+                <!--Sidebar bottom content-->
+            </div>
+        </div>
+    {% endblock %}
+{% block body %}{% set i=0 %}
+    {% for doc in docs %}
 
-{% block body %}
-<h1>Welcome to the Document:afficherDocuments page</h1>
+        {% set i=i+1 %}
+        <div class="col-sm-2">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    {% if doc.typeDocument=="docx" %}
+                        <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
+                                                             src="{{ asset(doc.img) }}"/></a>
+                    {% endif %}
+                    {% if doc.typeDocument=="pdf" %}
+                        <a onclick="modal3({{ i }});"><img style="width: 125px;height: 80px;" src="{{ asset(doc.img) }}"/></a>
+                    {% endif %}
+                </div>
+                {% if doc.user.id==app.user.id %}
+                <div class="panel-footer" id="test{{ i }}" onmouseover="test({{ i }});" onmouseleave="test2({{ i }});"
+                     style="padding: 2px;">
+                    <center><p id="name{{ i }}">{{ doc.libelle }}</p>
+
+                        <div id="action{{ i }}" class="action">
+                            <a href="{{ path('supp_documents',{'idDoc': doc.id,'idMatiere':doc.matiere.id}) }}"><img
+                                        style="width: 25px;height: 25px; margin-left:10px;"
+                                        src="{{ asset('/img/del.png') }}"/></a>
+                            <a onclick="modal2({{ i }});" ><img style="width: 25px;height: 25px; margin-left:20px;"
+                                                         src="{{ asset('/img/update.png') }}"/></a>
+                        </div>
+                    </center>
+
+                    {% else %}
+                        <div class="panel-footer" style="padding: 2px;">
+                            <center><p id="name{{ i }}">{{ doc.libelle }}</p></center>
+                        </div>
+                    {% endif %}
+
+
+                </div>
+
+            </div>
+        </div>
+
+        <div id="update{{ i }}" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <span class="close"><a onclick="out({{ i }});">&times;</a></span>
+                <h3 id="title2">Modifier un document</h3>
+                <div class="wrap">
+                    <form class="form-horizontal group-border-dashed" style="border-radius: 0px;" method="post"
+                          action="{{ path('modif_documents',{'idDoc': doc.id,'idMatiere':doc.matiere.id}) }}">
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Nom du fichier :</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="libelle" placeholder="nouveau nom" value="{{ doc.libelle }}"
+                                       class="form-control">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">language :</label>
+                            <div class="col-sm-6">
+                                <input type="text" name="language" placeholder="nouvelle language"
+                                       value="{{ doc.language }}" class="form-control">
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <button type="submit" class="btn btn-space btn-primary">Modifier</button>
+
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+        <div id="afficher{{ i }}" class="modal">
+            <!-- Modal content -->
+            <div class="modal-content2">
+                <span class="close"><a onclick="out2({{ i }});">&times;</a></span>
+
+                    <object  type="application/PDF" width="100%" height="200%">
+                        <param name="src" value="{{ doc.path }}"  />
+                    </object>
+                
+            </div>
+
+        </div>
+
+    {% endfor %}
+    <div id="ajout"><a id="myBtn" href="#">
+            <div class="icon-container" style="background-color:transparent;">
+                <div class="icon" style="    background-color:transparent;"><span class="s7-plus"></span></div>
+            </div>
+        </a></div>
+
+
+
+    <!-- The Modal -->
+    <div id="myModal" onclick="modal1();" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span id="out" class="close">&times;</span>
+            <h3 id="title">Ajouter un document</h3>
+            <div class="wrap">
+                {{ form_start(form, {'method': 'post', 'action': path('afficher_documents',{'id': id}), 'attr': {'class': 'form-horizontal group-border-dashed','style':'border-radius: 0px;' }}) }}
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">Nom du fichier :</label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.libelle,{'attr':{'class':'form-control','placeholder':'Saisir le nom du votre fichier'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">language :</label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.language,{'attr':{'class':'form-control','placeholder':'Saisir la langue du votre fichier'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">votre fichier :</label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.path,{'attr':{'class':'form-control'}}) }}
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-space btn-primary">Ajouter</button>
+
+                </div>
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+
 {% endblock %}
