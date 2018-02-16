@@ -107,13 +107,18 @@ class CoVoiturageController extends Controller
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->getAllDesc('o');
         $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
-        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig',['cov' => $co ,'cor' => $cor[0]]);
+        if ($cor){
+            return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig',['cov' => $co ,'cor' => $cor[0]]);
+        }
+        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig',['cov' => $co ,'cor' => null]);
+
     }
 
     public function viewOffreParamAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->getAllDesc('o');
-        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig',['cov' => $co , 'success' => $request->get('success')]);
+        $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig',['cov' => $co ,'cor' => $cor[0], 'success' => $request->get('success')]);
     }
 
 
@@ -219,14 +224,27 @@ class CoVoiturageController extends Controller
     public function requestOffreAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->find($request->get("id"));
-        if ($co->getPlacedisponibles() != 0){
-            $co->setPlacedisponibles($co->getPlacedisponibles()-1);
-            $cor = new CoVoiturageRequests();
-            $cor->setUser($this->getUser());
-            $cor->setIdc($co);
-            $em->persist($cor);
-            $em->flush();
-            return $this->redirectToRoute('co_voiturage_viewoffreparam',['success' => 4]);
+        if ($co->getType() == "o") {
+            if ($co->getPlacedisponibles() && $co->getPlacedisponibles() != 0) {
+                //$co->setPlacedisponibles($co->getPlacedisponibles() - 1);
+                $cor = new CoVoiturageRequests();
+                $cor->setUser($this->getUser());
+                $cor->setIdc($co);
+                $cor->setEtat("a");
+                $em->persist($cor);
+                $em->flush();
+                return $this->redirectToRoute('co_voiturage_viewoffreparam', ['success' => 4]);
+            }
+            else {
+                //$co->setPlacedisponibles($co->getPlacedisponibles() - 1);
+                $cor = new CoVoiturageRequests();
+                $cor->setUser($this->getUser());
+                $cor->setIdc($co);
+                $cor->setEtat("a");
+                $em->persist($cor);
+                $em->flush();
+                return $this->redirectToRoute('co_voiturage_viewoffreparam', ['success' => 4]);
+            }
         }
     }
 }

@@ -35,6 +35,13 @@ class CoVoiturageRequests
      */
     private $user;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="etat", type="string", length=255)
+     */
+    private $etat;
+
 
     /**
      * Get id
@@ -92,5 +99,29 @@ class CoVoiturageRequests
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set etat
+     *
+     * @param string $etat
+     *
+     * @return CoVoiturageRequests
+     */
+    public function setEtat($etat)
+    {
+        $this->etat = $etat;
+
+        return $this;
+    }
+
+    /**
+     * Get etat
+     *
+     * @return string
+     */
+    public function getEtat()
+    {
+        return $this->etat;
     }
 }
