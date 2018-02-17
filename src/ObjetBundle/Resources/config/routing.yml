@@ -15,7 +15,7 @@ ajoutobjtrouv:
     defaults: { _controller: ObjetBundle:Objet:ajoutobjtrouv }
 
 
-ajoutobjperdtrouv:
+ajoutobjperd:
     path:     /objets/objetsperdus/ajoutobjperd
     defaults: { _controller: ObjetBundle:Objet:ajoutobjperd }
 
@@ -36,3 +36,9 @@ deleteobj:
 updateobj:
     path:     /objets/updateobj/{id}
     defaults: { _controller: ObjetBundle:Objet:updateobj }
+
+linechart:
+    path:     /linechart
+    defaults: { _controller: ObjetBundle:Default:chartLine }
+
+
