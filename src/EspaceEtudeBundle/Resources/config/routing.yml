@@ -1,0 +1,29 @@
+espace_etude_homepage:
+    path:     /
+    defaults: { _controller: EspaceEtudeBundle:Default:index }
+
+afficher_matiere:
+    path:     /afficherMatiere/{section}
+    defaults: { _controller: EspaceEtudeBundle:Matieres:afficherMatiere }
+
+afficher_documents:
+    path:     /afficherDocuments/{id}
+    defaults: { _controller: EspaceEtudeBundle:Document:afficherDocuments }
+
+supp_documents:
+    path:     /supprimerdoc/{idDoc}/{idMatiere}
+    defaults: { _controller: EspaceEtudeBundle:Document:supprimerDocument }
+modif_documents:
+    path:     /modif/{idDoc}/{idMatiere}
+    defaults: { _controller: EspaceEtudeBundle:Document:modifierDocument }
+
+
+
+
+
+
+
+
+espace_etude_homepdsqge:
+    path:     /test
+    defaults: { _controller: EspaceEtudeBundle:Default:test }

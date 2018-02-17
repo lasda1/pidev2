@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+    <div class="col-sm-2">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <img style="width: 125px;height: 80px;" src="{{ asset('/Documents/telechargement.jpeg') }}" />
+            </div>
+            <div class="panel-footer" id="test" onmouseover="test();" onmouseleave="test2();" style="padding: 2px;">
+
+
+                <center><p id="name">zebi</p>
+
+
+                <div id="action"  >
+                    <a><img style="width: 25px;height: 25px; margin-left:10px;" src="{{ asset('/img/del.png') }}"/></a>
+                    <a><img  style="width: 25px;height: 25px; margin-left:20px;" src="{{ asset('/img/update.png') }}"/></a>
+                </div></center>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
