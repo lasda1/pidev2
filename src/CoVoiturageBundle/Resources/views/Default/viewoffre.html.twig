@@ -4,21 +4,30 @@
 {% endblock %}
 {% block body %}
 
-<div style="display: none">
-    {% block CoVoiturageActive %}
-        active
-    {% endblock %}
-</div>
+    <div style="display: none">
+        {% block CoVoiturageActive %}
+            active
+        {% endblock %}
+    </div>
 
     <div class="panel panel-alt2">
-        <div class="panel-heading" >
-            <div class="tools" ><a href="{{ path('co_voiturage_addoffreview') }}"><span class="icon s7-upload" data-toggle="tooltip" data-placement="top" title="" data-original-title="Ajouter un offre"></span></a>
-        </div><span class="title">Offres de Co-Voiturage</span>
+        <div class="panel-heading">
+            <div class="tools"><a href="{{ path('co_voiturage_addoffreview') }}"><span class="icon s7-upload"
+                                                                                       data-toggle="tooltip"
+                                                                                       data-placement="top" title=""
+                                                                                       data-original-title="Ajouter un offre"></span></a>
+            </div>
+            <span class="title">Offres de Co-Voiturage</span>
         </div>
 
         <div class="panel-body">
 
-            <table class="table table-striped table-fw-widget table-hover">
+            <div class="pull-right">
+                <input type="text" class="search form-control" placeholder="Qu'est ce que vous recherchez ?">
+            </div>
+            <span class="counter pull-right"></span>
+
+            <table id="device-table" class="results table table-striped table-fw-widget table-hover">
                 {% if cov is defined %}
                 <thead>
                 <tr>
@@ -31,50 +40,58 @@
                 </thead>
                 <tbody class="no-border-x">
 
-                    {% for c in cov %}
-                        <tr>
-                            <td class="onhovericon" style="font-size:20px;">
-                                <a href="{{ path('co_voiturage_infooffre',{'id':c.id}) }}">
-                                    <span class="icon s7-info onhovericon" data-toggle="tooltip" data-placement="top" title="" data-original-title="Informations"></span>
+                {% for c in cov %}
+                    <tr>
+                        <td class="onhovericon" style="font-size:20px;">
+                            <a href="{{ path('co_voiturage_infooffre',{'id':c.id}) }}">
+                                <span class="icon s7-info onhovericon" data-toggle="tooltip" data-placement="top"
+                                      title="" data-original-title="Informations"></span>
+                            </a>
+                        </td>
+                        <td>{{ c.user.username | upper }}</td>
+                        <td>{{ c.depart }}</td>
+                        <td>{{ c.destination }}</td>
+                        {% if c.updated == null %}
+                            <td>{{ c.created | date }}</td>
+                        {% else %}
+                            <td>{{ c.updated | date }}</td>
+                        {% endif %}
+
+                        <td>
+                            {% if cor is defined and cor is not null %}
+                                {% if c.id == cor.idc.id %}
+                                    <span style="font-size: 10px">Vous avez déjà envoyé une demande</span>
+                                {% endif %}
+                            {% elseif c.user.id != app.user.id %}
+                                <a href="{{ path('co_voiturage_requestoffre',{'id':c.id}) }}">
+                                    <button class="btn btn-warning">Request</button>
                                 </a>
-                            </td>
-                            <td>{{ c.user.username | upper }}</td>
-                            <td>{{ c.depart }}</td>
-                            <td>{{ c.destination }}</td>
-                            {% if c.updated == null %}
-                                <td>{{ c.created | date }}</td>
-                            {% else %}
-                                <td>{{ c.updated | date }}</td>
                             {% endif %}
+                        </td>
 
-                            <td>
-                                {% if cor is defined and cor is not null %}
-                                    {% if c.id == cor.idc.id %}
-                                        <span style="font-size: 10px">Vous avez déjà envoyé une demande</span>
-                                        {% endif %}
-                                {% elseif c.user.id != app.user.id %}
-                                        <a href="{{ path('co_voiturage_requestoffre',{'id':c.id}) }}"><button class="btn btn-warning">Request</button></a>
-                                {% endif %}
-                            </td>
-
-                            <td class="onhovericon" style="font-size:25px;" >
-                                {% if c.user.id == app.user.id %}
-                                    <a href="{{ path('co_voiturage_modifyoffreview',{'id':c.id}) }}"><span class="icon s7-edit" data-toggle="tooltip" data-placement="top" title="" data-original-title="Modification"></span></a>
-                                {% endif %}
-                            </td>
-                            <td class="onhovericon" style="font-size:25px;" >
-                                {% if c.user.id == app.user.id %}
-                                    <a href="{{ path('co_voiturage_deleteoffre',{'id':c.id}) }}"><span class="icon s7-close" data-toggle="tooltip" data-placement="top" title="" data-original-title="Suppression"></span></a>
-                                {% endif %}
-                            </td>
+                        <td class="onhovericon" style="font-size:25px;">
+                            {% if c.user.id == app.user.id %}
+                                <a href="{{ path('co_voiturage_modifyoffreview',{'id':c.id}) }}"><span
+                                            class="icon s7-edit" data-toggle="tooltip" data-placement="top" title=""
+                                            data-original-title="Modification"></span></a>
+                            {% endif %}
+                        </td>
+                        <td class="onhovericon" style="font-size:25px;">
+                            {% if c.user.id == app.user.id %}
+                                <a href="{{ path('co_voiturage_deleteoffre',{'id':c.id}) }}"><span class="icon s7-close"
+                                                                                                   data-toggle="tooltip"
+                                                                                                   data-placement="top"
+                                                                                                   title=""
+                                                                                                   data-original-title="Suppression"></span></a>
+                            {% endif %}
+                        </td>
 
 
-                        </tr>
-                    {% endfor %}
+                    </tr>
+                {% endfor %}
                 {% endif %}
                 </tbody>
             </table>
-
 
 
         </div>
@@ -115,6 +132,36 @@
         });
         {% endif %}
         {% endif %}
+    </script>
+
+
+    <script>
+
+        $(".search").keyup(function () {
+            var searchTerm = $(".search").val();
+            var listItem = $('.results tbody').children('tr');
+            var searchSplit = searchTerm.replace(/ /g, "'):containsi('")
+
+            $.extend($.expr[':'], {
+                'containsi': function (elem, i, match, array) {
+                    return (elem.textContent || elem.innerText || '').toLowerCase().indexOf((match[3] || "").toLowerCase()) >= 0;
+                }
+            });
+
+            $(".results tbody tr").not(":containsi('" + searchSplit + "')").each(function (e) {
+                $(this).hide();
+            });
+
+            $(".results tbody tr:containsi('" + searchSplit + "')").each(function (e) {
+                $(this).show();
+            });
+
+        });
+
+
+        $('#device-table').on('click', '.device-table', function (event) {
+            $(this).addClass('bg-info').siblings().removeClass('bg-info');
+        });
     </script>
 
 {% endblock %}

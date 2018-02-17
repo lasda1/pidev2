@@ -32,7 +32,7 @@ co_voiturage_viewownoffre:
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewOwnOffre }
 
 co_voiturage_viewownoffreparam:
-    path:     /offres/param
+    path:     /offres/own/param
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewOwnOffreParam }
 
 co_voiturage_viewoffreparam:
@@ -52,5 +52,9 @@ co_voiturage_acceptoffrerequest:
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:acceptOffreRequest }
 
 co_voiturage_refuseoffrerequest:
-    path:     /offres/accept
+    path:     /offres/refuse
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:refuseOffreRequest }
+
+co_voiturage_deleteoffrerequest:
+    path:     /offres/delete
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:deleteOffreRequest }
