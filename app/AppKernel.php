@@ -15,6 +15,8 @@ class AppKernel extends Kernel
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
+            new Ob\HighchartsBundle\ObHighchartsBundle(),
+            new Nomaya\SocialBundle\NomayaSocialBundle(),
             //new AppBundle\AppBundle(),
             new FOS\UserBundle\FOSUserBundle(),
             new UserBundle\UserBundle(),
@@ -24,6 +26,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new EspaceEtudeBundle\EspaceEtudeBundle(),
             new ColocationBundle\ColocationBundle(),
+
 
         ];
 

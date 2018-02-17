@@ -1,0 +1,15 @@
+{% extends "::base.html.twig" %}
+
+{% block title %}Objets{% endblock %}
+
+{% block body %}
+
+    <script src="{{ asset('js/ja.min.js') }}"></script>
+    <script src="{{asset('js/highcharts.js')}}"></script>
+    <script src="{{asset('js/exporting.js')}}"></script>
+    <script type="text/javascript">
+        {{ chart(chart) }}
+    </script>
+    <div id="linechart" style="min-width: 400px; height: 400px; margin: 0 auto">{{ chart(chart) }}</div>
+
+{% endblock %}
