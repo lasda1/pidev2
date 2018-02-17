@@ -46,7 +46,7 @@ class Section
     /**
      * @return string
      */
-    public function getNiveau(): string
+    public function getNiveau()
     {
         return $this->niveau;
     }

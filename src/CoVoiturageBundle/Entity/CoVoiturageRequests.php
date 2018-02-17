@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="co_voiturage_requests")
  * @ORM\Entity(repositoryClass="CoVoiturageBundle\Repository\CoVoiturageRequestsRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class CoVoiturageRequests
 {
@@ -41,6 +42,13 @@ class CoVoiturageRequests
      * @ORM\Column(name="etat", type="string", length=255)
      */
     private $etat;
+
+    /**
+     * @var datetime $created
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $created;
 
 
     /**
@@ -123,5 +131,41 @@ class CoVoiturageRequests
     public function getEtat()
     {
         return $this->etat;
+    }
+
+
+    /**
+     * Gets triggered only on insert
+
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->created = new \DateTime("now");
+    }
+
+
+    /**
+     * Set created
+     *
+     * @param \DateTime $created
+     *
+     * @return CoVoiturage
+     */
+    public function setCreated($created)
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    /**
+     * Get created
+     *
+     * @return \DateTime
+     */
+    public function getCreated()
+    {
+        return $this->created;
     }
 }

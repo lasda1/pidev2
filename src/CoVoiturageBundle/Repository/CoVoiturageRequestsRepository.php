@@ -10,4 +10,11 @@ namespace CoVoiturageBundle\Repository;
  */
 class CoVoiturageRequestsRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function getOrderedBy()
+    {
+        $q = $this->getEntityManager()->createQuery("SELECT p
+              FROM CoVoiturageBundle:CoVoiturageRequests p
+              ORDER BY p.etat DESC , p.created DESC");
+        return $q->getResult();
+    }
 }

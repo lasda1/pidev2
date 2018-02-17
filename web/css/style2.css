@@ -117,3 +117,8 @@ margin : 30px;
     padding: 1px;
     background-color: transparent;
 }
+
+.labels {
+    color: #ef6262;
+    font-size: 17px;
+}

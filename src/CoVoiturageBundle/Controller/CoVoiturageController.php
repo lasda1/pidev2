@@ -12,6 +12,11 @@ use Symfony\Component\HttpFoundation\Response;
 class CoVoiturageController extends Controller
 {
     public function addOffreAction(Request $request){
+
+        if ($request->get("depart") == null || $request->get("destination") == null || $request->get('idDepart') == null || $request->get('idDestination') == null || $request->get("placesdisponibles") == null ){
+            return $this->render('CoVoiturageBundle:Default:addoffre.html.twig');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $co = new CoVoiturage();
 
@@ -114,11 +119,34 @@ class CoVoiturageController extends Controller
 
     }
 
+    public function viewOwnOffreAction(){
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->getOwn('o',$this->getUser());
+        $cor = $em->getRepository(CoVoiturageRequests::class)->getOrderedBy();
+
+        $co2 = $em->getRepository(CoVoiturage::class)->findAll();
+        $cor2 = $em->getRepository(CoVoiturageRequests::class)->findByUser($this->getUser());
+
+        return $this->render('CoVoiturageBundle:Default:viewownoffre.html.twig',['cov' => $co , 'cor' => $cor ,'cov2' => $co2 , 'cor2' => $cor2]);
+    }
+
     public function viewOffreParamAction(Request $request){
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->getAllDesc('o');
         $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
         return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig',['cov' => $co ,'cor' => $cor[0], 'success' => $request->get('success')]);
+    }
+
+    public function viewOffrePaginateAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->getAllDesc2('o');
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $co, /* query NOT result */
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 2));
+
+        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig', ['cov' => $co, 'pagination' => $pagination]);
     }
 
 
@@ -246,5 +274,28 @@ class CoVoiturageController extends Controller
                 return $this->redirectToRoute('co_voiturage_viewoffreparam', ['success' => 4]);
             }
         }
+    }
+
+
+    public function acceptOffreRequestAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
+        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
+        if ($co->getType() == "o"){
+            if ($co->getPlacedisponibles() == 0){
+                return $this->redirectToRoute('co_voiturage_viewownoffreparam',['success' => 3]);
+            }
+            $co->setPlacedisponibles($co->getPlacedisponibles() - 1);
+            $cor->setEtat("c");
+            $em->flush();
+            return $this->redirectToRoute('co_voiturage_viewownoffreparam',['success' => 1]);
+        }
+    }
+
+    public function viewOwnOffreParamAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->getOwn('o',$this->getUser());
+        $cor = $em->getRepository(CoVoiturageRequests::class)->getOrderedBy();
+        return $this->render('CoVoiturageBundle:Default:viewownoffre.html.twig',['cov' => $co , 'cor' => $cor , 'success' => $request->get('success')]);
     }
 }
