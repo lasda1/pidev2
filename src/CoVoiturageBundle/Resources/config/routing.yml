@@ -1,32 +1,60 @@
 co_voiturage_homepage:
-    path:     /covoiturage
+    path:     /
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:read }
 
 co_voiturage_addoffreview:
-    path:     /covoiturage/offre/add
+    path:     /offre/add
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:addOffreView }
 
 co_voiturage_modifyoffreview:
-    path:     /covoiturage/offre/modify
+    path:     /offre/modify
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:modifyOffreView }
 
 co_voiturage_addoffre:
-    path:     /covoiturage/offres/adding
+    path:     /offres/adding
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:addOffre }
 
 co_voiturage_deleteoffre:
-    path:     /covoiturage/offres/deleting
+    path:     /offres/deleting
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:deleteOffre }
 
 co_voiturage_modifyoffre:
-    path:     /covoiturage/offres/modifying
+    path:     /offres/modifying
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:modifyOffre }
 
 
 co_voiturage_viewoffre:
-    path:     /covoiturage/offres
+    path:     /offres
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewOffre }
 
+co_voiturage_viewownoffre:
+    path:     /offres/own
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewOwnOffre }
+
+co_voiturage_viewownoffreparam:
+    path:     /offres/own/param
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewOwnOffreParam }
+
 co_voiturage_viewoffreparam:
-    path:     /covoiturage/offres/param
+    path:     /offres/param
     defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewOffreParam }
+
+co_voiturage_requestoffre:
+    path:     /offres/request
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:requestOffre }
+
+co_voiturage_infooffre:
+    path:     /offres/info
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:infoOffre }
+
+co_voiturage_acceptoffrerequest:
+    path:     /offres/accept
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:acceptOffreRequest }
+
+co_voiturage_refuseoffrerequest:
+    path:     /offres/refuse
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:refuseOffreRequest }
+
+co_voiturage_deleteoffrerequest:
+    path:     /offres/delete
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:deleteOffreRequest }

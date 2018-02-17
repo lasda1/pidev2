@@ -187,7 +187,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="parent"><a href="{{ path('co_voiturage_homepage') }}"><i class="icon s7-graph"></i><span>Co-voiturage</span></a>
+                <li class="parent {% block CoVoiturageActive %} {% endblock %}"><a href="{{ path('co_voiturage_homepage') }}"><i class="icon s7-graph"></i><span>Co-voiturage</span></a>
                     <ul class="sub-menu">
                         <li><a href="#">Offre</a>
                         </li>
@@ -217,7 +217,7 @@
                     <ul class="sub-menu">
                         <li><a href="{{ path('e_new') }}">Ajouter un evennement</a>
                         </li>
-                        <li class="active"><a href="{{ path('e_index') }}">Consulter les evennements</a>
+                        <li><a href="{{ path('e_index') }}">Consulter les evennements</a>
                         </li>
                     </ul>
                 </li>

@@ -4,6 +4,12 @@
 {% endblock %}
 {% block body %}
 
+    <div style="display: none">
+    {% block CoVoiturageActive %}
+        active
+    {% endblock %}
+    </div>
+
     <form role="form" method="POST" action="{{ path('co_voiturage_modifyoffre') }}">
         <div class="row">
             <div class="col-md-5">
