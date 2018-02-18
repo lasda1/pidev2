@@ -189,9 +189,9 @@
                 </li>
                 <li class="parent {% block CoVoiturageActive %} {% endblock %}"><a href="{{ path('co_voiturage_homepage') }}"><i class="icon s7-graph"></i><span>Co-voiturage</span></a>
                     <ul class="sub-menu">
-                        <li><a href="#">Offre</a>
+                        <li><a href="{{ path('co_voiturage_viewoffre') }}">Offre</a>
                         </li>
-                        <li><a href="#">Demande</a>
+                        <li><a href="{{ path('co_voiturage_viewdemande') }}">Demande</a>
                         </li>
                     </ul>
                 </li>
@@ -228,14 +228,14 @@
    {% endblock %}
     <div class="am-content">
         <div class="page-head">
-            <h2>{% block pageName %}
+            {% block pageName %}
                     {% if  app.request.attributes.get('_route') =='e_index' %}
                         Evennements
                     {% elseif app.request.attributes.get('_route') =='e_edit' %}
                         Modifier l'evennement
                     {% endif %}
 
-                {% endblock %}</h2>
+                {% endblock %}
 
         </div>
         <div class="main-content">

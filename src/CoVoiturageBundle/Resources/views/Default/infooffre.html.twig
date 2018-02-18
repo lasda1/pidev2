@@ -1,6 +1,11 @@
 {% extends "base.html.twig" %}
 {% block pageName %}
-    Co-Voiturage
+    <h2>Informations offre</h2>
+    <ol class="breadcrumb">
+        <li><a href="{{ path('co_voiturage_homepage') }}">Co-Voiturage</a></li>
+        <li><a href="{{ path('co_voiturage_viewoffre') }}">Offres</a></li>
+        <li class="active">Informations offre</li>
+    </ol>
 {% endblock %}
 {% block body %}
     <div style="display: none">
