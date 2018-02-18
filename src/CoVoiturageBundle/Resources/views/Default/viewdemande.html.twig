@@ -1,6 +1,6 @@
 {% extends "base.html.twig" %}
 {% block pageName %}
-    <h2>Les demandes</h2>
+    <h2>Les offres</h2>
     <ol class="breadcrumb">
         <li><a href="{{ path('co_voiturage_homepage') }}">Co-Voiturage</a></li>
         <li class="active">Demandes</li>
@@ -14,6 +14,67 @@
         {% endblock %}
     </div>
 
+    <div class="panel panel-dark">
+        <div class="panel-heading">
+            <span class="title">Nos suggestions : les demandes les plus proches de vous</span>
+        </div>
+
+        <div class="panel-body">
+
+            <table class="table table-fw-widget">
+                <tbody class="no-border-x">
+                <tr id="n1"></tr>
+                <tr id="n2"></tr>
+                <tr id="n3"></tr>
+
+                </tbody>
+            </table>
+
+            <table style="display: none;" id="device-table" class="results table table-striped table-fw-widget table-hover">
+                {% if cov is defined %}
+                <tbody class="no-border-x">
+
+                {% for c in cov %}
+                    <tr id="{{ c.id }}">
+                        <td class="onhovericon" style="font-size:20px; width: 30px;">
+                            <a href="{{ path('co_voiturage_infodemande',{'id':c.id}) }}">
+                                    <span class="icon s7-info onhovericon" data-toggle="tooltip" data-placement="top"
+                                          title="" data-original-title="Informations"></span>
+                            </a>
+                        </td>
+                        <td style="width: 100px;">{{ c.user.username | upper }}</td>
+                        <td style="width: 320px;"><span class="labels">Depart : </span> {{ c.depart }}</td>
+                        <td><span class="labels">Destination : </span> {{ c.destination }}</td>
+                        {% if c.updated == null %}
+                            <td>{{ c.created | date }}</td>
+                        {% else %}
+                            <td>{{ c.updated | date }}</td>
+                        {% endif %}
+
+                        <td>
+                            {% if cor is defined and cor is not null %}
+                                {% if c.id == cor.idc.id %}
+                                    <span style="font-size: 10px">Vous avez déjà envoyé une demande</span>
+                                {% endif %}
+                            {% elseif c.user.id != app.user.id %}
+                                <a href="{{ path('co_voiturage_requestdemande',{'id':c.id}) }}">
+                                    <button class="btn btn-warning">Request</button>
+                                </a>
+                            {% endif %}
+                        </td>
+
+
+
+                    </tr>
+                {% endfor %}
+                {% endif %}
+                </tbody>
+            </table>
+
+
+        </div>
+    </div>
+
     <div class="panel panel-alt2">
         <div class="panel-heading">
             <div class="tools"><a href="{{ path('co_voiturage_adddemandeview') }}"><span class="icon s7-upload"
@@ -21,7 +82,7 @@
                                                                                        data-placement="top" title=""
                                                                                        data-original-title="Ajouter un offre"></span></a>
             </div>
-            <span class="title">Demande de Co-Voiturage</span>
+            <span class="title">Demandes de Co-Voiturage</span>
         </div>
 
         <div class="panel-body">
@@ -173,6 +234,41 @@
         $('#device-table').on('click', '.device-table', function (event) {
             $(this).addClass('bg-info').siblings().removeClass('bg-info');
         });
+    </script>
+
+    <script>
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude
+                };
+                var t = [0];
+                {% if cov is defined %}
+                {% for c in cov %}
+                {% if c.user != app.user %}
+                var latc = Math.abs(Math.abs(pos.lat)-Math.abs({{ c.departlat }}));
+                var lngc = Math.abs(Math.abs(pos.lng)-Math.abs({{ c.departlng }}));
+                var place = {id:'{{ c.id }}' ,username:'{{ c.user.username }}' ,depart:'{{ c.depart }}' ,destination:'{{ c.destination }}' , value:latc+lngc};
+                t[{{ loop.index0 }}] = place;
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                t = null;
+                {% endif %}
+                t.sort(function(a, b){return a.value-b.value});
+
+                //var suggContent ="";
+
+                $.each(t,function (index) {
+                    $('#n'+(index+1)).html($('#'+t[index].id).html());
+                });
+
+                //$('#repcontent').html(suggContent);
+
+            });
+        }
+
     </script>
 
 {% endblock %}
