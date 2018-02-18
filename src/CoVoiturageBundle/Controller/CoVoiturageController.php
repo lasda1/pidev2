@@ -33,6 +33,8 @@ class CoVoiturageController extends Controller
         $co->setDestination($request->get("destination"));
         $co->setDepartId($request->get('idDepart'));
         $co->setDestinationId($request->get('idDestination'));
+        $co->setDepartLat($request->get('latDepart'));
+        $co->setDepartLng($request->get('lngDepart'));
 
         $jours = $request->get("jour");
         if ($request->get("onetime") == "on") {
@@ -56,7 +58,7 @@ class CoVoiturageController extends Controller
                 if ($j == "mercredi") $cod->setMercredi('y');
                 if ($j == "jeudi") $cod->setJeudi('y');
                 if ($j == "vendredi") $cod->setVendredi('y');
-                if ($j == "samedi") $cod->setSamedi('y');
+                if ($j == "samedi") $cod->setLundi('y');
             }
 
 
@@ -92,6 +94,8 @@ class CoVoiturageController extends Controller
         $co->setDestination($request->get("destination"));
         $co->setDepartId($request->get('idDepart'));
         $co->setDestinationId($request->get('idDestination'));
+        $co->setDepartLat($request->get('latDepart'));
+        $co->setDepartLng($request->get('lngDepart'));
 
         $jours = $request->get("jour");
         if ($request->get("onetime") == "on") {
@@ -114,7 +118,7 @@ class CoVoiturageController extends Controller
                 if ($j == "mercredi") $cod->setMercredi('y');
                 if ($j == "jeudi") $cod->setJeudi('y');
                 if ($j == "vendredi") $cod->setVendredi('y');
-                if ($j == "samedi") $cod->setSamedi('y');
+                if ($j == "samedi") $cod->setLundi('y');
             }
 
 
@@ -154,7 +158,7 @@ class CoVoiturageController extends Controller
             $em->remove($cod[0]);
         }
         if ($cor){
-            $em->remove($cor[0]);
+            $em->remove($cor);
         }
 
         $em->remove($co);
@@ -230,7 +234,17 @@ class CoVoiturageController extends Controller
         $co2 = $em->getRepository(CoVoiturage::class)->findAll();
         $cor2 = $em->getRepository(CoVoiturageRequests::class)->findByUser($this->getUser());
 
-        return $this->render('CoVoiturageBundle:Default:viewownoffre.html.twig', ['cov' => $co, 'cor' => $cor, 'cov2' => $co2, 'cor2' => $cor2]);
+        $cor22 = $cor2;
+
+        foreach ($cor2 as $c){
+            if ($c->getEtat() == "r"){
+                $em->remove($c);
+                $em->flush();
+            }
+        }
+
+
+        return $this->render('CoVoiturageBundle:Default:viewownoffre.html.twig', ['cov' => $co, 'cor' => $cor, 'cov2' => $co2, 'cor2' => $cor22]);
     }
 
     public function viewOwnDemandeAction()
@@ -242,7 +256,16 @@ class CoVoiturageController extends Controller
         $co2 = $em->getRepository(CoVoiturage::class)->findAll();
         $cor2 = $em->getRepository(CoVoiturageRequests::class)->findByUser($this->getUser());
 
-        return $this->render('CoVoiturageBundle:Default:viewowndemande.html.twig', ['cov' => $co, 'cor' => $cor, 'cov2' => $co2, 'cor2' => $cor2]);
+        $cor22 = $cor2;
+
+        foreach ($cor2 as $c){
+            if ($c->getEtat() == "r"){
+                $em->remove($c);
+                $em->flush();
+            }
+        }
+
+        return $this->render('CoVoiturageBundle:Default:viewowndemande.html.twig', ['cov' => $co, 'cor' => $cor, 'cov2' => $co2, 'cor2' => $cor22]);
     }
 
     public function viewOffreParamAction(Request $request)
@@ -328,7 +351,7 @@ class CoVoiturageController extends Controller
                 if ($j == "mercredi") $cod->setMercredi('y');
                 if ($j == "jeudi") $cod->setJeudi('y');
                 if ($j == "vendredi") $cod->setVendredi('y');
-                if ($j == "samedi") $cod->setSamedi('y');
+                if ($j == "samedi") $cod->setLundi('y');
             }
 
 
@@ -344,7 +367,7 @@ class CoVoiturageController extends Controller
                 if ($j == "mercredi") $cod->setMercredi('y');
                 if ($j == "jeudi") $cod->setJeudi('y');
                 if ($j == "vendredi") $cod->setVendredi('y');
-                if ($j == "samedi") $cod->setSamedi('y');
+                if ($j == "samedi") $cod->setLundi('y');
             }
 
 
@@ -401,7 +424,7 @@ class CoVoiturageController extends Controller
                 if ($j == "mercredi") $cod->setMercredi('y');
                 if ($j == "jeudi") $cod->setJeudi('y');
                 if ($j == "vendredi") $cod->setVendredi('y');
-                if ($j == "samedi") $cod->setSamedi('y');
+                if ($j == "samedi") $cod->setLundi('y');
             }
 
 
@@ -417,7 +440,7 @@ class CoVoiturageController extends Controller
                 if ($j == "mercredi") $cod->setMercredi('y');
                 if ($j == "jeudi") $cod->setJeudi('y');
                 if ($j == "vendredi") $cod->setVendredi('y');
-                if ($j == "samedi") $cod->setSamedi('y');
+                if ($j == "samedi") $cod->setLundi('y');
             }
 
 

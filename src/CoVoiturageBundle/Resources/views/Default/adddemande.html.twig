@@ -83,6 +83,8 @@
         <input type="hidden" id="idDepart" name="idDepart">
         <input type="hidden" id="idDestination" name="idDestination">
         <input type="hidden" id="formatted_addr" name="formattedaddr">
+        <input type="hidden" id="latDepart" name="latDepart">
+        <input type="hidden" id="lngDepart" name="lngDepart">
 
         </div>
         <center style="margin-top: 50px;">
@@ -204,7 +206,6 @@
 
 
         AutocompleteDirectionsHandler.prototype.setupPlaceChangedListener = function (autocomplete, mode) {
-            console.log(autocomplete);
             var me = this;
             autocomplete.bindTo('bounds', this.map);
             autocomplete.addListener('place_changed', function () {
@@ -229,9 +230,14 @@
                 return;
             }
             var me = this;
-
             $('#idDepart').val(this.originPlaceId);
             $('#idDestination').val(this.destinationPlaceId);
+            var pathJson = "https://maps.googleapis.com/maps/api/geocode/json?place_id="+this.originPlaceId+"&key=AIzaSyA8w507O9U90-M_IIeytsa4weIBO_yAjhI";
+
+            $.getJSON(pathJson, function(data) {
+                $('#latDepart').val(data.results[0].geometry.location.lat);
+                $('#lngDepart').val(data.results[0].geometry.location.lng);
+            });
 
 
             this.directionsService.route({
