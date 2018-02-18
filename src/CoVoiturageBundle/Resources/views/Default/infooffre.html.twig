@@ -66,6 +66,23 @@
         <input value="{{ co.destinationid }}" type="hidden" id="idDestination" name="idDestination">
         <input type="hidden" id="formatted_addr" name="formattedaddr">
 
+    {% if co.user.id != app.user.id %}
+        {% if cor is defined and cor is not null %}
+            {% if co.id == cor.idc.id %}
+                <span style="font-size: 10px">Vous avez déjà envoyé une demande</span>
+            {% endif %}
+        {% else %}
+            <a href="{{ path('co_voiturage_requestoffre',{'id':co.id}) }}">
+                <button class="btn btn-warning">Request</button>
+            </a>
+        {% endif %}
+
+    {% else %}
+
+        <a href="{{ path('co_voiturage_modifyoffreview',{'id':co.id}) }}"><button class="btn btn-warning">Modifier</button></a>
+        <a href="{{ path('co_voiturage_deleteoffre',{'id':co.id}) }}"><button class="btn btn-danger">Supprimer</button></a>
+    {% endif %}
+
         </div>
 {% endblock %}
 

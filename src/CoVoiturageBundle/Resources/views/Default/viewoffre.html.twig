@@ -14,7 +14,7 @@
         {% endblock %}
     </div>
 
-    <div class="panel panel-full-dark">
+    <div class="panel panel-dark">
         <div class="panel-heading">
             <span class="title">Nos suggestions : les offres les plus proches de vous</span>
         </div>
@@ -23,7 +23,7 @@
 
             <table class="table table-fw-widget">
                 <tbody class="no-border-x">
-                <tr id="n1"></tr>
+                    <tr id="n1"></tr>
                     <tr id="n2"></tr>
                     <tr id="n3"></tr>
 
@@ -50,6 +50,18 @@
                         {% else %}
                             <td>{{ c.updated | date }}</td>
                         {% endif %}
+
+                        <td>
+                            {% if cor is defined and cor is not null %}
+                                {% if c.id == cor.idc.id %}
+                                    <span style="font-size: 10px">Vous avez déjà envoyé une demande</span>
+                                {% endif %}
+                            {% elseif c.user.id != app.user.id %}
+                                <a href="{{ path('co_voiturage_requestoffre',{'id':c.id}) }}">
+                                    <button class="btn btn-warning">Request</button>
+                                </a>
+                            {% endif %}
+                        </td>
 
 
 
@@ -234,10 +246,12 @@
                 var t = [0];
                 {% if cov is defined %}
                     {% for c in cov %}
+                        {% if c.user != app.user %}
                         var latc = Math.abs(Math.abs(pos.lat)-Math.abs({{ c.departlat }}));
                         var lngc = Math.abs(Math.abs(pos.lng)-Math.abs({{ c.departlng }}));
                         var place = {id:'{{ c.id }}' ,username:'{{ c.user.username }}' ,depart:'{{ c.depart }}' ,destination:'{{ c.destination }}' , value:latc+lngc};
                         t[{{ loop.index0 }}] = place;
+                        {% endif %}
                     {% endfor %}
                 {% else %}
                     t = null;

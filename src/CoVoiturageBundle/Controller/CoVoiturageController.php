@@ -484,11 +484,21 @@ class CoVoiturageController extends Controller
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->find($request->get("id"));
         $cod = $em->getRepository(CoVoiturageDays::class)->findByidc($request->get("id"));
-        if ($cod)
-            return $this->render('CoVoiturageBundle:Default:infooffre.html.twig', ['co' => $co, 'cod' => $cod[0]]);
-        else {
-            return $this->render('CoVoiturageBundle:Default:infooffre.html.twig', ['co' => $co, 'cod' => null]);
+        $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        if ($cod) {
+            $cod = $cod[0];
+        } else {
+            $cod = null;
         }
+
+        if ($cor) {
+            $cor = $cor[0];
+        } else {
+            $cor = null;
+        }
+
+
+        return $this->render('CoVoiturageBundle:Default:infooffre.html.twig', ['co' => $co, 'cod' => $cod , 'cor' =>$cor]);
     }
 
     public function infoDemandeAction(Request $request)
@@ -496,11 +506,20 @@ class CoVoiturageController extends Controller
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->find($request->get("id"));
         $cod = $em->getRepository(CoVoiturageDays::class)->findByidc($request->get("id"));
-        if ($cod)
-            return $this->render('CoVoiturageBundle:Default:infodemande.html.twig', ['co' => $co, 'cod' => $cod[0]]);
-        else {
-            return $this->render('CoVoiturageBundle:Default:infodemande.html.twig', ['co' => $co, 'cod' => null]);
+        $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        if ($cod) {
+            $cod = $cod[0];
+        } else {
+            $cod = null;
         }
+
+        if ($cor) {
+            $cor = $cor[0];
+        } else {
+            $cor = null;
+        }
+
+        return $this->render('CoVoiturageBundle:Default:infodemande.html.twig', ['co' => $co, 'cod' => $cod , 'cor' =>$cor]);
     }
 
     public function requestOffreAction(Request $request)
