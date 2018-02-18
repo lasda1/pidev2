@@ -12,12 +12,12 @@
 
     <div class="panel panel-alt2">
         <div class="panel-heading">
-            <div class="tools"><a href="{{ path('co_voiturage_addoffreview') }}"><span class="icon s7-upload"
+            <div class="tools"><a href="{{ path('co_voiturage_adddemandeview') }}"><span class="icon s7-upload"
                                                                                        data-toggle="tooltip"
                                                                                        data-placement="top" title=""
                                                                                        data-original-title="Ajouter un offre"></span></a>
             </div>
-            <span class="title">Offres de Co-Voiturage</span>
+            <span class="title">Demande de Co-Voiturage</span>
         </div>
 
         <div class="panel-body">
@@ -43,7 +43,7 @@
                 {% for c in cov %}
                     <tr>
                         <td class="onhovericon" style="font-size:20px;">
-                            <a href="{{ path('co_voiturage_infooffre',{'id':c.id}) }}">
+                            <a href="{{ path('co_voiturage_infodemande',{'id':c.id}) }}">
                                 <span class="icon s7-info onhovericon" data-toggle="tooltip" data-placement="top"
                                       title="" data-original-title="Informations"></span>
                             </a>
@@ -63,7 +63,7 @@
                                     <span style="font-size: 10px">Vous avez déjà envoyé une demande</span>
                                 {% endif %}
                             {% elseif c.user.id != app.user.id %}
-                                <a href="{{ path('co_voiturage_requestoffre',{'id':c.id}) }}">
+                                <a href="{{ path('co_voiturage_requestdemande',{'id':c.id}) }}">
                                     <button class="btn btn-warning">Request</button>
                                 </a>
                             {% endif %}
@@ -71,14 +71,14 @@
 
                         <td class="onhovericon" style="font-size:25px;">
                             {% if c.user.id == app.user.id %}
-                                <a href="{{ path('co_voiturage_modifyoffreview',{'id':c.id}) }}"><span
+                                <a href="{{ path('co_voiturage_modifydemandeview',{'id':c.id}) }}"><span
                                             class="icon s7-edit" data-toggle="tooltip" data-placement="top" title=""
                                             data-original-title="Modification"></span></a>
                             {% endif %}
                         </td>
                         <td class="onhovericon" style="font-size:25px;">
                             {% if c.user.id == app.user.id %}
-                                <a href="{{ path('co_voiturage_deleteoffre',{'id':c.id}) }}"><span class="icon s7-close"
+                                <a href="{{ path('co_voiturage_deletedemande',{'id':c.id}) }}"><span class="icon s7-close"
                                                                                                    data-toggle="tooltip"
                                                                                                    data-placement="top"
                                                                                                    title=""

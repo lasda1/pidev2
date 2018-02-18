@@ -29,6 +29,15 @@ class CoVoiturageRepository extends \Doctrine\ORM\EntityRepository
         return $q->getResult();
     }
 
+    public function getAllDescD($type)
+    {
+        $q = $this->getEntityManager()->createQuery("SELECT p
+              FROM CoVoiturageBundle:CoVoiturage p
+              WHERE p.type = :type AND ( p.date > CURRENT_DATE() OR p.onetime = 'on' )
+              ORDER BY p.updated DESC , p.created DESC")->setParameter('type',$type);
+        return $q->getResult();
+    }
+
     public function getAllDesc2($type)
     {
         $q = $this->getEntityManager()->createQuery("SELECT p
