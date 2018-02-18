@@ -3,68 +3,63 @@
     <h2>Informations offre</h2>
     <ol class="breadcrumb">
         <li><a href="{{ path('co_voiturage_homepage') }}">Co-Voiturage</a></li>
-        <li><a href="{{ path('co_voiturage_viewoffre') }}">Offres</a></li>
-        <li class="active">Informations offre</li>
+        <li><a href="{{ path('co_voiturage_viewdemande') }}">Demandes</a></li>
+        <li class="active">Informations demande</li>
     </ol>
 {% endblock %}
 {% block body %}
     <div style="display: none">
-    {% block CoVoiturageActive %}
-        active
-    {% endblock %}
+        {% block CoVoiturageActive %}
+            active
+        {% endblock %}
     </div>
 
-        <div class="row">
-            <div class="col-md-5">
-                <div class="form-group">
-                    <h3 class="colortitleinfo">Départ :</h3> {{ co.depart }}
-                </div>
-                <div class="form-group">
-                    <h3 class="colortitleinfo">Destination :</h3> {{ co.destination }}
-                </div>
-
-                <div class="form-group">
-                    <h3 class="colortitleinfo">Quotidiennement
-                        :</h3> {% if co.onetime == "on" %} Oui {% else %} Non {% endif %}
-                </div>
-
-                {% if co.onetime == "off" %}
-                    <div class="form-group">
-                        <h3 class="colortitleinfo">Date et heure :</h3> {{ co.date | date }}
-                    </div>
-                {% else %}
-                    <div class="form-group">
-                        <h3 class="colortitleinfo">Jours :</h3>
-                        {% if cod is not null %}
-                            {% if cod.lundi is not null %} Lundi {% endif %}
-                            {% if cod.mardi is not null %} Mardi {% endif %}
-                            {% if cod.mercredi is not null %} Mercredi {% endif %}
-                            {% if cod.jeudi is not null %} Jeudi {% endif %}
-                            {% if cod.vendredi is not null %} Vendredi {% endif %}
-                            {% if cod.samedi is not null %} Samedi {% endif %}
-                        {% endif %}
-                    </div>
-                {% endif %}
-
-
-                <div class="form-group">
-                    <div class="form-group">
-                        <h3 class="colortitleinfo">Places disponibles:</h3> {{ co.placedisponibles }}
-                    </div>
-                </div>
-
-
+    <div class="row">
+        <div class="col-md-5">
+            <div class="form-group">
+                <h3 class="colortitleinfo">Départ :</h3> {{ co.depart }}
             </div>
-            <div class="col-md-6">
-                <div style="height: 400px; width: 700px;" id="map"></div>
+            <div class="form-group">
+                <h3 class="colortitleinfo">Destination :</h3> {{ co.destination }}
             </div>
+
+            <div class="form-group">
+                <h3 class="colortitleinfo">Quotidiennement
+                    :</h3> {% if co.onetime == "on" %} Oui {% else %} Non {% endif %}
+            </div>
+
+            {% if co.onetime == "off" %}
+                <div class="form-group">
+                    <h3 class="colortitleinfo">Date et heure :</h3> {{ co.date | date }}
+                </div>
+            {% else %}
+                <div class="form-group">
+                    <h3 class="colortitleinfo">Jours :</h3>
+                    {% if cod is not null %}
+                        {% if cod.lundi is not null %} Lundi {% endif %}
+                        {% if cod.mardi is not null %} Mardi {% endif %}
+                        {% if cod.mercredi is not null %} Mercredi {% endif %}
+                        {% if cod.jeudi is not null %} Jeudi {% endif %}
+                        {% if cod.vendredi is not null %} Vendredi {% endif %}
+                        {% if cod.samedi is not null %} Samedi {% endif %}
+                    {% endif %}
+                </div>
+            {% endif %}
+
+
+
 
         </div>
+        <div class="col-md-6">
+            <div style="height: 400px; width: 700px;" id="map"></div>
+        </div>
+
+    </div>
 
 
-        <input value="{{ co.departid }}" type="hidden" id="idDepart" name="idDepart">
-        <input value="{{ co.destinationid }}" type="hidden" id="idDestination" name="idDestination">
-        <input type="hidden" id="formatted_addr" name="formattedaddr">
+    <input value="{{ co.departid }}" type="hidden" id="idDepart" name="idDepart">
+    <input value="{{ co.destinationid }}" type="hidden" id="idDestination" name="idDestination">
+    <input type="hidden" id="formatted_addr" name="formattedaddr">
 
     {% if co.user.id != app.user.id %}
         {% if cor is defined and cor is not null %}
@@ -72,18 +67,18 @@
                 <span style="font-size: 10px">Vous avez déjà envoyé une demande</span>
             {% endif %}
         {% else %}
-            <a href="{{ path('co_voiturage_requestoffre',{'id':co.id}) }}">
+            <a href="{{ path('co_voiturage_requestdemande',{'id':co.id}) }}">
                 <button class="btn btn-warning">Request</button>
             </a>
         {% endif %}
 
     {% else %}
 
-        <a href="{{ path('co_voiturage_modifyoffreview',{'id':co.id}) }}"><button class="btn btn-warning">Modifier</button></a>
-        <a href="{{ path('co_voiturage_deleteoffre',{'id':co.id}) }}"><button class="btn btn-danger">Supprimer</button></a>
+            <a href="{{ path('co_voiturage_modifydemandeview',{'id':co.id}) }}"><button class="btn btn-warning">Modifier</button></a>
+            <a href="{{ path('co_voiturage_deletedemande',{'id':co.id}) }}"><button class="btn btn-danger">Supprimer</button></a>
     {% endif %}
 
-        </div>
+    </div>
 {% endblock %}
 
 
