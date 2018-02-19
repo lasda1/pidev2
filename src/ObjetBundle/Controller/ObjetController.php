@@ -6,8 +6,11 @@ use Ob\HighchartsBundle\Highcharts\Highchart;
 use ObjetBundle\Entity\Objet;
 use ObjetBundle\Form\ObjetType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class ObjetController extends Controller
 {
@@ -87,7 +90,6 @@ class ObjetController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->objperd();
-
         return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 2
             // ...
         ));
@@ -141,27 +143,21 @@ class ObjetController extends Controller
     public function objetAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $objets = $em->getRepository(Objet::class)->findAll();
-       /* $objetsper = $em->getRepository(Objet::class)->nbobjperd();
-        //$objetstrouv = $em->getRepository(Objet::class)->nbobjtrouv();
+        $objets = $em->getRepository(Objet::class)->objperd();
         $tab = array();
         $categories = array();
-        $tab1=array('ObjetType'=>$objets->getNature(),'Nombre'=>$objetsper)
-        foreach ($tab1 as $tb)
-        {
-            array_push($tab, $tab1);
-            array_push($categories, $objet->getNature());
-        }
-        // Chart
-        $series = array( array("name" => "Les Objets Perdus", "data" => $tab) );
+        foreach ($objets as $objet)
+        { array_push($tab, $objet->getUser()->getId());
+        array_push($categories, $objet->getDate()->format('Y-m-d H:i:s')); }
+        $series = array( array("name" => "Nb étudiants", "data" => $tab) );
         $ob = new Highchart();
         $ob->chart->renderTo('linechart');
-        #id du div où afficher le graphe
-        $ob->title->text('Objet');
-        $ob->xAxis->title(array('text' => "Date"));
-        $ob->yAxis->title(array('text' => "Nature"));
+        // #id du div où afficher le graphe
+        $ob->title->text('Nombre des étudiants par niveau');
+        $ob->xAxis->title(array('text' => "Classe"));
+        $ob->yAxis->title(array('text' => "Nb étudiants"));
         $ob->xAxis->categories($categories);
-        $ob->series($series);*/
+        $ob->series($series);
         return $this->render('ObjetBundle:Objet:Objet.html.twig', array('chart' => $ob));
 
     }
@@ -176,6 +172,24 @@ class ObjetController extends Controller
     {
 
         return $this->render('ObjetBundle:Objet:coinobjtrouv.html.twig');
+    }
+    public function searchAction(Request $request)
+    {
+        if($request->isXmlHttpRequest())
+        {
+            $search=$request->get('search');
+            $em=$this->getDoctrine()->getManager();
+            $objet=$em->getRepository(Objet::class)->recherche($search);
+            //initialiser Serializer
+            $se=new Serializer(array(new ObjectNormalizer()));
+            //Normaliser la liste
+            $data=$se->normalize($objet);
+            //Codage sous forme JSON
+            return new JsonResponse($data);
+        }
+        return $this->render('ObjetBundle:Objet:recherche.html.twig',array(
+
+        ));
     }
 
 

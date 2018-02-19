@@ -35,6 +35,14 @@ class ObjetRepository extends \Doctrine\ORM\EntityRepository
         return $q->getResult();
     }
 
+    function recherche($search){
+        $query = ObjetRepository::createQueryBuilder('e')
+            ->where('UPPER(e.type) LIKE UPPER(:search)')
+            ->setParameter('valeur', '%'.$search.'%')
+            ->getQuery();
+        return $query->getResult();
+    }
+
 
 
 
