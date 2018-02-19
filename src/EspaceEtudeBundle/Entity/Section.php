@@ -54,7 +54,7 @@ class Section
     /**
      * @param string $niveau
      */
-    public function setNiveau(string $niveau)
+    public function setNiveau($niveau)
     {
         if (!in_array($niveau, NiveauEnum::getAvailableTypes())) {
             throw new \InvalidArgumentException("Invalid type");
