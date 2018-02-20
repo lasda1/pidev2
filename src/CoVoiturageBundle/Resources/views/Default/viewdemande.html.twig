@@ -49,9 +49,9 @@
                         <td style="width: 320px;"><span class="labels">Depart : </span> {{ c.depart }}</td>
                         <td><span class="labels">Destination : </span> {{ c.destination }}</td>
                         {% if c.updated == null %}
-                            <td>{{ c.created | date }}</td>
+                            <td>{{ c.created |ago }}</td>
                         {% else %}
-                            <td>{{ c.updated | date }}</td>
+                            <td>{{ c.updated |ago }}</td>
                         {% endif %}
 
                         <td>
@@ -103,7 +103,7 @@
                     <th>User</th>
                     <th>Départ</th>
                     <th>Destination</th>
-                    <th>Derniere modification</th>
+                    <th></th>
                 </tr>
                 </thead>
                 <tbody class="no-border-x">
@@ -120,9 +120,9 @@
                         <td>{{ c.depart }}</td>
                         <td>{{ c.destination }}</td>
                         {% if c.updated == null %}
-                            <td>{{ c.created | date }}</td>
+                            <td>{{ c.created |ago }}</td>
                         {% else %}
-                            <td>{{ c.updated | date }}</td>
+                            <td>{{ c.updated |ago }}</td>
                         {% endif %}
 
                         <td>
