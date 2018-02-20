@@ -12,7 +12,7 @@ objet:
 
 co_voiturage:
     resource: "@CoVoiturageBundle/Resources/config/routing.yml"
-    prefix:   /voiturage
+    prefix:   /covoiturage
 
 user:
     resource: "@UserBundle/Resources/config/routing.yml"

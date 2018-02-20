@@ -3,7 +3,7 @@
     <h2>Les offres</h2>
     <ol class="breadcrumb">
         <li><a href="{{ path('co_voiturage_homepage') }}">Co-Voiturage</a></li>
-        <li class="active">Offres</li>
+        <li class="active">Demandes</li>
     </ol>
 {% endblock %}
 {% block body %}
@@ -16,16 +16,16 @@
 
     <div class="panel panel-dark">
         <div class="panel-heading">
-            <span class="title">Nos suggestions : les offres les plus proches de vous</span>
+            <span class="title">Nos suggestions : les demandes les plus proches de vous</span>
         </div>
 
         <div class="panel-body">
 
             <table class="table table-fw-widget">
                 <tbody class="no-border-x">
-                    <tr id="n1"></tr>
-                    <tr id="n2"></tr>
-                    <tr id="n3"></tr>
+                <tr id="n1"></tr>
+                <tr id="n2"></tr>
+                <tr id="n3"></tr>
 
                 </tbody>
             </table>
@@ -37,7 +37,7 @@
                 {% for c in cov %}
                     <tr id="{{ c.id }}">
                         <td class="onhovericon" style="font-size:20px; width: 30px;">
-                            <a href="{{ path('co_voiturage_infooffre',{'id':c.id}) }}">
+                            <a href="{{ path('co_voiturage_infodemande',{'id':c.id}) }}">
                                     <span class="icon s7-info onhovericon" data-toggle="tooltip" data-placement="top"
                                           title="" data-original-title="Informations"></span>
                             </a>
@@ -57,7 +57,7 @@
                                     <span style="font-size: 10px">Vous avez déjà envoyé une demande</span>
                                 {% endif %}
                             {% elseif c.user.id != app.user.id %}
-                                <a href="{{ path('co_voiturage_requestoffre',{'id':c.id}) }}">
+                                <a href="{{ path('co_voiturage_requestdemande',{'id':c.id}) }}">
                                     <button class="btn btn-warning">Request</button>
                                 </a>
                             {% endif %}
@@ -77,12 +77,12 @@
 
     <div class="panel panel-alt2">
         <div class="panel-heading">
-            <div class="tools"><a href="{{ path('co_voiturage_addoffreview') }}"><span class="icon s7-upload"
+            <div class="tools"><a href="{{ path('co_voiturage_adddemandeview') }}"><span class="icon s7-upload"
                                                                                        data-toggle="tooltip"
                                                                                        data-placement="top" title=""
                                                                                        data-original-title="Ajouter un offre"></span></a>
             </div>
-            <span class="title">Offres de Co-Voiturage</span>
+            <span class="title">Demandes de Co-Voiturage</span>
         </div>
 
         <div class="panel-body">
@@ -108,7 +108,7 @@
                 {% for c in cov %}
                     <tr>
                         <td class="onhovericon" style="font-size:20px;">
-                            <a href="{{ path('co_voiturage_infooffre',{'id':c.id}) }}">
+                            <a href="{{ path('co_voiturage_infodemande',{'id':c.id}) }}">
                                 <span class="icon s7-info onhovericon" data-toggle="tooltip" data-placement="top"
                                       title="" data-original-title="Informations"></span>
                             </a>
@@ -128,7 +128,7 @@
                                     <span style="font-size: 10px">Vous avez déjà envoyé une demande</span>
                                 {% endif %}
                             {% elseif c.user.id != app.user.id %}
-                                <a href="{{ path('co_voiturage_requestoffre',{'id':c.id}) }}">
+                                <a href="{{ path('co_voiturage_requestdemande',{'id':c.id}) }}">
                                     <button class="btn btn-warning">Request</button>
                                 </a>
                             {% endif %}
@@ -136,14 +136,14 @@
 
                         <td class="onhovericon" style="font-size:25px;">
                             {% if c.user.id == app.user.id %}
-                                <a href="{{ path('co_voiturage_modifyoffreview',{'id':c.id}) }}"><span
+                                <a href="{{ path('co_voiturage_modifydemandeview',{'id':c.id}) }}"><span
                                             class="icon s7-edit" data-toggle="tooltip" data-placement="top" title=""
                                             data-original-title="Modification"></span></a>
                             {% endif %}
                         </td>
                         <td class="onhovericon" style="font-size:25px;">
                             {% if c.user.id == app.user.id %}
-                                <a href="{{ path('co_voiturage_deleteoffre',{'id':c.id}) }}"><span class="icon s7-close"
+                                <a href="{{ path('co_voiturage_deletedemande',{'id':c.id}) }}"><span class="icon s7-close"
                                                                                                    data-toggle="tooltip"
                                                                                                    data-placement="top"
                                                                                                    title=""
@@ -245,24 +245,24 @@
                 };
                 var t = [0];
                 {% if cov is defined %}
-                    {% for c in cov %}
-                        {% if c.user != app.user %}
-                        var latc = Math.abs(Math.abs(pos.lat)-Math.abs({{ c.departlat }}));
-                        var lngc = Math.abs(Math.abs(pos.lng)-Math.abs({{ c.departlng }}));
-                        var place = {id:'{{ c.id }}' ,username:'{{ c.user.username }}' ,depart:'{{ c.depart }}' ,destination:'{{ c.destination }}' , value:latc+lngc};
-                        t[{{ loop.index0 }}] = place;
-                        {% endif %}
-                    {% endfor %}
+                {% for c in cov %}
+                {% if c.user != app.user %}
+                var latc = Math.abs(Math.abs(pos.lat)-Math.abs({{ c.departlat }}));
+                var lngc = Math.abs(Math.abs(pos.lng)-Math.abs({{ c.departlng }}));
+                var place = {id:'{{ c.id }}' ,username:'{{ c.user.username }}' ,depart:'{{ c.depart }}' ,destination:'{{ c.destination }}' , value:latc+lngc};
+                t[{{ loop.index0 }}] = place;
+                {% endif %}
+                {% endfor %}
                 {% else %}
-                    t = null;
+                t = null;
                 {% endif %}
                 t.sort(function(a, b){return a.value-b.value});
 
                 //var suggContent ="";
 
-                    $.each(t,function (index) {
-                        $('#n'+(index+1)).html($('#'+t[index].id).html());
-                    });
+                $.each(t,function (index) {
+                    $('#n'+(index+1)).html($('#'+t[index].id).html());
+                });
 
                 //$('#repcontent').html(suggContent);
 
