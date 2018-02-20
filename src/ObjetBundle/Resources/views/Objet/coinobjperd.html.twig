@@ -1,6 +1,12 @@
 {% extends "::base.html.twig" %}
 
-{% block title %}Coin des Objets Perdus{% endblock %}
+{% block pageName %}
+    <h2>Coin des objets perdus</h2>
+    <ol class="breadcrumb">
+        <li><a href="{{ path('objet_homepage') }}">Les Objets</a></li>
+        <li class="active">Coin des objets perdus</li>
+    </ol>
+{% endblock %}
 
 {% block body %}
 
