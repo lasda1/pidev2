@@ -31,9 +31,9 @@ class DefaultController extends Controller
              $photo = $colocation->getPhoto();
           $photo1 = $colocation->getPhoto1();
             $photo2 = $colocation->getPhoto2();
-            $fileNameP = uniqid().'.'.$photo->guessExtension();
-              $fileNameP2 = uniqid().'.'.$photo1->guessExtension();
-            $fileNameP3 = uniqid().'.'.$photo2->guessExtension();
+            $fileNameP = uniqid('', true).'.'.$photo->guessExtension();
+              $fileNameP2 = uniqid('', true).'.'.$photo1->guessExtension();
+            $fileNameP3 = uniqid('', true).'.'.$photo2->guessExtension();
 
             // Move the file to the directory where brochures are stored
            $photo->move(

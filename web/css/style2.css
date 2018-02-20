@@ -101,6 +101,11 @@ margin : 30px;
 .onhovericon :hover {
     color: #f35e78;
 }
+
+.colortitleinfo {
+    color: #ec4444;
+}
+
 .action{
     display: none;
 }
@@ -125,4 +130,8 @@ margin : 30px;
     margin-left: 90px;
     width: 1053px;
     margin-top: -22px;
+
+.labels {
+    color: #ef6262;
+    font-size: 17px;
 }

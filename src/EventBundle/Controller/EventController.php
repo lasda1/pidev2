@@ -29,7 +29,7 @@ class EventController extends Controller
         $pagination = $paginator->paginate(
             $events, /* query NOT result */
             $request->query->getInt('page', 1),
-            $request->query->getInt('limit', 7));
+            $request->query->getInt('limit', 6));
 
         return $this->render('@Event/event/index.html.twig', array(
             'events' => $events,
@@ -111,7 +111,7 @@ class EventController extends Controller
     {
         global $kernel;
         $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
-
+        $event = new Event();
         $em = $this->getDoctrine()->getManager();
 
         $event = $em->getRepository('EventBundle:Event')->find($id);
@@ -125,6 +125,15 @@ class EventController extends Controller
             $editForm->handleRequest($request);
 
             if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $file = $event->getPhoto();
+
+                $fileName = md5(uniqid('', true)).'.'.$file->guessExtension();
+                $path = "C:/wamp64/www/pidev2/web" ;
+                $file->move(
+                    $path,
+                    $fileName
+                );
+                $event->setPhoto($fileName);
                 $event->setEnable(1);
                 $this->getDoctrine()->getManager()->flush();
 
@@ -236,7 +245,7 @@ class EventController extends Controller
         $pagination = $paginator->paginate(
             $events, /* query NOT result */
             $request->query->getInt('page',1 ),
-            $request->query->getInt('limit', 7));
+            $request->query->getInt('limit', 6));
 
         return $this->render('@Event/event/recherche.html.twig', array(
             'events' => $events,
@@ -244,11 +253,6 @@ class EventController extends Controller
         ));
     }
 
-    private function generateUniqueFileName()
-    {
-
-        return md5(uniqid('', true));
-    }
 
 
 }

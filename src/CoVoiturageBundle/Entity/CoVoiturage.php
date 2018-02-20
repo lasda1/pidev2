@@ -51,6 +51,20 @@ class CoVoiturage
     private $departId;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="depart_lat", type="float")
+     */
+    private $departLat;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="depart_lng", type="float")
+     */
+    private $departLng;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="destination", type="string", length=255)
@@ -395,5 +409,53 @@ class CoVoiturage
     public function getUpdated()
     {
         return $this->updated;
+    }
+
+    /**
+     * Set departLat
+     *
+     * @param \double $departLat
+     *
+     * @return CoVoiturage
+     */
+    public function setDepartLat($departLat)
+    {
+        $this->departLat = $departLat;
+
+        return $this;
+    }
+
+    /**
+     * Get departLat
+     *
+     * @return \double
+     */
+    public function getDepartLat()
+    {
+        return $this->departLat;
+    }
+
+    /**
+     * Set departLng
+     *
+     * @param \double $departLng
+     *
+     * @return CoVoiturage
+     */
+    public function setDepartLng($departLng)
+    {
+        $this->departLng = $departLng;
+
+        return $this;
+    }
+
+    /**
+     * Get departLng
+     *
+     * @return \double
+     */
+    public function getDepartLng()
+    {
+        return $this->departLng;
     }
 }
