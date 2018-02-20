@@ -89,14 +89,14 @@
         </div>
 
         <div class="panel-body">
-
+            {% if cov is defined and cov |length != 0 %}
             <div class="pull-right">
                 <input type="text" class="search form-control" placeholder="Qu'est ce que vous recherchez ?">
             </div>
             <span class="counter pull-right"></span>
 
             <table id="device-table" class="results table table-striped table-fw-widget table-hover">
-                {% if cov is defined %}
+
                 <thead>
                 <tr>
                     <th></th>
@@ -157,9 +157,13 @@
 
                     </tr>
                 {% endfor %}
-                {% endif %}
+
                 </tbody>
             </table>
+
+            {% else %}
+                Aucune demande de co-voiturage n'est disponible.
+            {% endif %}
 
 
         </div>
@@ -247,13 +251,15 @@
                     lng: position.coords.longitude
                 };
                 var t = [0];
+                var i = 0;
                 {% if cov is defined %}
                 {% for c in cov %}
                 {% if c.user != app.user %}
                 var latc = Math.abs(Math.abs(pos.lat)-Math.abs({{ c.departlat }}));
                 var lngc = Math.abs(Math.abs(pos.lng)-Math.abs({{ c.departlng }}));
                 var place = {id:'{{ c.id }}' ,username:'{{ c.user.username }}' ,depart:'{{ c.depart }}' ,destination:'{{ c.destination }}' , value:latc+lngc};
-                t[{{ loop.index0 }}] = place;
+                t[i] = place;
+                i = i + 1;
                 {% endif %}
                 {% endfor %}
                 {% else %}
@@ -262,10 +268,13 @@
                 t.sort(function(a, b){return a.value-b.value});
 
                 //var suggContent ="";
-
-                $.each(t,function (index) {
-                    $('#n'+(index+1)).html($('#'+t[index].id).html());
-                });
+                if (i == 0){
+                    $('#n1').html("Aucune suggestion pour vous.");
+                } else {
+                    $.each(t, function (index) {
+                        $('#n' + (index + 1)).html($('#' + t[index].id).html());
+                    });
+                }
 
                 //$('#repcontent').html(suggContent);
 

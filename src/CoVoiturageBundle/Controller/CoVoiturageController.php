@@ -189,7 +189,7 @@ class CoVoiturageController extends Controller
             $em->remove($cod[0]);
         }
         if ($cor){
-            $em->remove($cor[0]);
+            $em->remove($cor);
         }
 
         $em->remove($co);
