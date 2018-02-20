@@ -91,37 +91,25 @@
 
 </style>
 
-
-    <div class="am-content">
+<form name="form" method="post" action="{{ path('recherche') }}" >
+    <div class="form-group">
+        <div class="col-sm-3"></div>
+        <div class="col-sm-6">
+            <input  placeholder="Recherche" name="chose" class="form-control" data-parsley-id="28" type="text">
+        </div>
+    </div>
+</form>
+<div class="am-content">
 
     <div class="container">
         <div class="row">
             <div class="col-xs-8 col-xs-offset-2">
-                <form name="form" method="post" action="{{ path('recherche') }}" >
-                    <div class="form-group">
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-6">
-                            <label>Vile </label> <select name="ville">
-                                <option vaue="tunis">Tunis</option>
-                                <option name="Ariane">Ariana</option>
-                                <option >Béja</option>
-                                <option>Nabeul</option>
-                                <option>Ben arous</option>
-                                <option>Gabés</option>
-                                <option>Mednin</option>
-                                <option>Gafsa</option>
-                                <option value="Tozeur">Tozeur</option>
-                            </select>
-                            <a href="colocation_homepage" ><button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Chercher</button></a>
-
-                        </div>
-                    </div>
-                </form>
+                <h4>Made with <i class="fa fa-fw fa-heart text-danger"></i> by <a href="http://twitter.com/AlexMahrt" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-fw fa-twitter"></i> @AlexMahrt</a></h4>
             </div>
         </div>
         <hr>
         <!-- Begin of rows -->
-    {% for colocation  in colocations %}
+        {% for colocation  in colocations %}
         <div class="row carousel-row">
             <div class="col-xs-8 col-xs-offset-2 slide-row">
                 <div id="carousel-2" class="carousel slide slide-carousel" data-ride="carousel">
@@ -153,8 +141,7 @@
                 </div>
                 <div class="slide-footer">
                 <span class="pull-right buttons">
-                    <a href="{{ path('show_specific_colocation', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Afficher</button></a>
-                    <a href="{{ path('reponse_offre', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Repondre</button></a>
+                    <a href="{{ path('show_specific_colocation', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Show</button></a>
                 </span>
                 </div>
             </div>
@@ -164,7 +151,8 @@
     {% endfor %}
     </div>
 
-{% endblock %}
+
+    {% endblock %}
 
 
 
