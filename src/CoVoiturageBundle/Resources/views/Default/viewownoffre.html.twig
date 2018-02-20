@@ -47,9 +47,9 @@
                             <td style="width: 320px;"><span class="labels">Depart : </span> {{ c.depart }}</td>
                             <td><span class="labels">Destination : </span> {{ c.destination }}</td>
                             {% if c.updated == null %}
-                                <td>{{ c.created | date }}</td>
+                                <td>{{ c.created |ago }}</td>
                             {% else %}
-                                <td>{{ c.updated | date }}</td>
+                                <td>{{ c.updated |ago }}</td>
                             {% endif %}
 
 
@@ -84,7 +84,7 @@
                                     <td style="width: 320px;"><span
                                                 class="labels">Demande de la part de  : </span>{{ r.user.username | upper }}
                                     </td>
-                                    <td style="width: 200px;">{{ r.created | date }}</td>
+                                    <td style="width: 200px;">{{ r.created |ago }}</td>
                                     <td style="width: 190px;">
                                         <span class="labels">Etat : </span>
                                         {% if r.etat == "a" %}
@@ -159,9 +159,9 @@
                                     <td style="width: 320px;"><span class="labels">Depart : </span> {{ c.depart }}</td>
                                     <td><span class="labels">Destination : </span> {{ c.destination }}</td>
                                     {% if c.updated == null %}
-                                        <td>{{ c.created | date }}</td>
+                                        <td>{{ c.created |ago }}</td>
                                     {% else %}
-                                        <td>{{ c.updated | date }}</td>
+                                        <td>{{ c.updated |ago }}</td>
                                     {% endif %}
 
                                     <td style="width: 190px;">
