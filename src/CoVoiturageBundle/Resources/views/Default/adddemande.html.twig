@@ -101,6 +101,7 @@
             if ($('#swt6').is(':checked')){
                 $('#dateheure').hide();
                 $('#jours').show();
+
             }
             else {
                 $('#jours').hide();
@@ -261,6 +262,30 @@
 
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8w507O9U90-M_IIeytsa4weIBO_yAjhI&libraries=places&callback=initMap"
             async defer></script>
+
+    <script>
+        {% if success is defined %}
+            {% if success == 1 %}
+            $.gritter.add({
+                title: "Erreur",
+                text: "Veillez remplir tout les champs nécessaires.",
+                class_name: "color alt3"
+            });
+            {% elseif success == 2 %}
+            $.gritter.add({
+                title: "Erreur",
+                text: "Google maps ne s'est pas chargé correctement.",
+                class_name: "color alt3"
+            });
+            {% elseif success == 3 %}
+            $.gritter.add({
+                title: "Erreur",
+                text: "Veuillez spécifier la date",
+                class_name: "color alt3"
+            });
+            {% endif %}
+        {% endif %}
+    </script>
 
 
 

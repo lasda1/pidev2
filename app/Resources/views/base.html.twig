@@ -189,9 +189,20 @@
                 </li>
                 <li class="parent {% block CoVoiturageActive %} {% endblock %}"><a href="{{ path('co_voiturage_homepage') }}"><i class="icon s7-graph"></i><span>Co-voiturage</span></a>
                     <ul class="sub-menu">
-                        <li><a href="{{ path('co_voiturage_viewoffre') }}">Offre</a>
+                        <li class="{% block CoVoiturageViewOffreActive %} {% endblock %}" >
+                            <a href="{{ path('co_voiturage_viewoffre') }}">Offre</a>
+
                         </li>
-                        <li><a href="{{ path('co_voiturage_viewdemande') }}">Demande</a>
+                        <li class="{% block CoVoiturageViewOwnOffreActive %} {% endblock %}">
+                            <a href="{{ path('co_voiturage_viewownoffre') }}">Mes offre</a>
+
+                        </li>
+                        <li class="{% block CoVoiturageViewDemandeActive %} {% endblock %}">
+                            <a href="{{ path('co_voiturage_viewdemande') }}">Demande</a>
+                        </li>
+                        <li class="{% block CoVoiturageViewOwnDemandeActive %} {% endblock %}">
+                            <a href="{{ path('co_voiturage_viewowndemande') }}">Mes demandes</a>
+
                         </li>
                     </ul>
                 </li>

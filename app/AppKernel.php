@@ -25,6 +25,9 @@ class AppKernel extends Kernel
             new Mgilet\NotificationBundle\MgiletNotificationBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new \ColocationBundle\ColocationBundle(),
+            new Knp\Bundle\TimeBundle\KnpTimeBundle(),
+
+
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

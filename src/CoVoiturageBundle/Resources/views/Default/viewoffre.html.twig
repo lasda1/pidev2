@@ -12,6 +12,9 @@
         {% block CoVoiturageActive %}
             active
         {% endblock %}
+        {% block CoVoiturageViewOffreActive %}
+            active
+        {% endblock %}
     </div>
 
     <div class="panel panel-dark">
@@ -46,9 +49,9 @@
                         <td style="width: 320px;"><span class="labels">Depart : </span> {{ c.depart }}</td>
                         <td><span class="labels">Destination : </span> {{ c.destination }}</td>
                         {% if c.updated == null %}
-                            <td>{{ c.created | date }}</td>
+                            <td>{{ c.created |ago }}</td>
                         {% else %}
-                            <td>{{ c.updated | date }}</td>
+                            <td>{{ c.updated |ago }}</td>
                         {% endif %}
 
                         <td>
@@ -117,9 +120,9 @@
                         <td>{{ c.depart }}</td>
                         <td>{{ c.destination }}</td>
                         {% if c.updated == null %}
-                            <td>{{ c.created | date }}</td>
+                            <td>{{ c.created |ago }}</td>
                         {% else %}
-                            <td>{{ c.updated | date }}</td>
+                            <td>{{ c.updated |ago }}</td>
                         {% endif %}
 
                         <td>
@@ -244,14 +247,17 @@
                     lng: position.coords.longitude
                 };
                 var t = [0];
+                var i = 0;
                 {% if cov is defined %}
                     {% for c in cov %}
                         {% if c.user != app.user %}
                         var latc = Math.abs(Math.abs(pos.lat)-Math.abs({{ c.departlat }}));
                         var lngc = Math.abs(Math.abs(pos.lng)-Math.abs({{ c.departlng }}));
                         var place = {id:'{{ c.id }}' ,username:'{{ c.user.username }}' ,depart:'{{ c.depart }}' ,destination:'{{ c.destination }}' , value:latc+lngc};
-                        t[{{ loop.index0 }}] = place;
+                        t[i] = place;
+                        i = i + 1;
                         {% endif %}
+
                     {% endfor %}
                 {% else %}
                     t = null;

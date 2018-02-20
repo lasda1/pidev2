@@ -13,9 +13,14 @@ class CoVoiturageController extends Controller
 {
     public function addOffreAction(Request $request)
     {
-        if ($request->get("depart") == null || $request->get("destination") == null || $request->get('idDepart') == null || $request->get('idDestination') == null || $request->get("placesdisponibles") == null) {
-            return $this->render('CoVoiturageBundle:Default:addoffre.html.twig');
+        if ($request->get("depart") == null || $request->get("destination") == null || $request->get("placesdisponibles") == null) {
+            return $this->render('CoVoiturageBundle:Default:addoffre.html.twig' ,['success' => 1]);
+        } else if ($request->get('idDepart') == null || $request->get('idDestination') == null ){
+            return $this->render('CoVoiturageBundle:Default:addoffre.html.twig' ,['success' => 2]);
+        } else if ($request->get("onetime") != "on" && ! $request->get("date")){
+            return $this->render('CoVoiturageBundle:Default:addoffre.html.twig' ,['success' => 3]);
         }
+
 
         $em = $this->getDoctrine()->getManager();
         $co = new CoVoiturage();
@@ -37,6 +42,7 @@ class CoVoiturageController extends Controller
         $co->setDepartLng($request->get('lngDepart'));
 
         $jours = $request->get("jour");
+
         if ($request->get("onetime") == "on") {
             $co->setOnetime($request->get('onetime'));
         } else {
@@ -74,8 +80,13 @@ class CoVoiturageController extends Controller
 
     public function addDemandeAction(Request $request)
     {
-        if ($request->get("depart") == null || $request->get("destination") == null || $request->get('idDepart') == null || $request->get('idDestination') == null) {
-            return $this->render('CoVoiturageBundle:Default:adddemande.html.twig');
+
+        if ($request->get("depart") == null || $request->get("destination") == null) {
+            return $this->render('CoVoiturageBundle:Default:adddemande.html.twig' ,['success' => 1]);
+        } else if ($request->get('idDepart') == null || $request->get('idDestination') == null ){
+            return $this->render('CoVoiturageBundle:Default:adddemande.html.twig' ,['success' => 2]);
+        } else if ($request->get("onetime") != "on" && ! $request->get("date")){
+            return $this->render('CoVoiturageBundle:Default:adddemande.html.twig' ,['success' => 3]);
         }
 
         $em = $this->getDoctrine()->getManager();
