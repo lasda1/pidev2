@@ -1,8 +1,19 @@
 {% extends "base.html.twig" %}
 {% block pageName %}
-    Co-Voiturage
+    <h2>Ajouter offre</h2>
+    <ol class="breadcrumb">
+        <li><a href="{{ path('co_voiturage_homepage') }}">Co-Voiturage</a></li>
+        <li><a href="{{ path('co_voiturage_viewoffre') }}">Offres</a></li>
+        <li class="active">Ajouter offre</li>
+    </ol>
 {% endblock %}
 {% block body %}
+
+    <div style="display: none">
+    {% block CoVoiturageActive %}
+        active
+    {% endblock %}
+    </div>
 
     <form role="form" method="POST" action="{{ path('co_voiturage_addoffre') }}">
         <div class="row">
@@ -60,7 +71,7 @@
 
                 <div class="form-group">
                     <label>Places disponibles</label>
-                    <input  name="placesdisponibles" type="number" placeholder="Entrez le nombre de places disponibles" class="form-control">
+                    <input required min="1" max="6"  name="placesdisponibles" type="number" placeholder="Entrez le nombre de places disponibles" class="form-control">
                 </div>
 
 
@@ -77,6 +88,8 @@
         <input type="hidden" id="idDepart" name="idDepart">
         <input type="hidden" id="idDestination" name="idDestination">
         <input type="hidden" id="formatted_addr" name="formattedaddr">
+        <input type="hidden" id="latDepart" name="latDepart">
+        <input type="hidden" id="lngDepart" name="lngDepart">
 
         </div>
         <center style="margin-top: 50px;">
@@ -84,7 +97,6 @@
             <button type="submit" class="btn btn-primary">Proceed</button>
         </center>
     </form>
-    <button id="test">dsds</button>
 {% endblock %}
 
 
@@ -261,6 +273,13 @@
 
                 $('#idDepart').val(this.originPlaceId);
                 $('#idDestination').val(this.destinationPlaceId);
+
+                var pathJson = "https://maps.googleapis.com/maps/api/geocode/json?place_id="+this.originPlaceId+"&key=AIzaSyA8w507O9U90-M_IIeytsa4weIBO_yAjhI";
+
+                $.getJSON(pathJson, function(data) {
+                    $('#latDepart').val(data.results[0].geometry.location.lat);
+                    $('#lngDepart').val(data.results[0].geometry.location.lng);
+                });
 
 
                 this.directionsService.route({

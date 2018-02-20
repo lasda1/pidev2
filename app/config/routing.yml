@@ -1,14 +1,18 @@
+espace_etude:
+    resource: "@EspaceEtudeBundle/Resources/config/routing.yml"
+    prefix:   /etude
+
 event:
     resource: "@EventBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /event
 
 objet:
     resource: "@ObjetBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /objet
 
 co_voiturage:
     resource: "@CoVoiturageBundle/Resources/config/routing.yml"
-    prefix:   /
+    prefix:   /covoiturage
 
 user:
     resource: "@UserBundle/Resources/config/routing.yml"
