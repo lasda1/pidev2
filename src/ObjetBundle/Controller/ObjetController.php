@@ -3,6 +3,7 @@
 namespace ObjetBundle\Controller;
 
 use Ob\HighchartsBundle\Highcharts\Highchart;
+use ObjetBundle\Entity\Interaction;
 use ObjetBundle\Entity\Objet;
 use ObjetBundle\Form\ObjetType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -43,7 +44,7 @@ class ObjetController extends Controller
 
         return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form' => $form->createView()
             // ...
-        ));
+       ,['success' => 1] ));
     }
 
     public function ajoutobjperdAction(Request $request, UserInterface $username)
@@ -192,6 +193,87 @@ class ObjetController extends Controller
         ));
     }
 
+    public function reclamerObjAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $objet = $em->getRepository(Objet::class)->find($id);
+        if ($objet->getNature() == "Objet Perdu") {
+
+                $inter = new Interaction();
+                $inter->setIdUser($this->getUser());
+                $inter->setIdObjet($objet);
+                $inter->setStatut("Perdu-->Trouvé par");
+                $em->persist($inter);
+                $em->flush();
+                return $this->redirectToRoute('affichobjperd');
+        }
+            else
+                {
+                $inter = new Interaction();
+                $inter->setIdUser($this->getUser());
+                $inter->setIdObjet($objet);
+                $inter->setStatut("Trouvé-->propriétaire de");
+                $em->persist($inter);
+                $em->flush();
+                return $this->redirectToRoute('affichobjtrouv');
+
+                }
+    }
 
 
+/*
+    public function acceptOffreRequestAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
+        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
+        if ($co->getType() == "o") {
+            if ($co->getPlacedisponibles() == 0) {
+                return $this->redirectToRoute('co_voiturage_viewownoffreparam', ['success' => 3]);
+            }
+            $co->setPlacedisponibles($co->getPlacedisponibles() - 1);
+            $cor->setEtat("c");
+            $em->flush();
+            return $this->redirectToRoute('co_voiturage_viewownoffreparam', ['success' => 1]);
+        }
+    }
+
+    public function acceptDemandeRequestAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
+        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
+        if ($co->getType() == "d") {
+            $cor->setEtat("c");
+            $em->flush();
+            return $this->redirectToRoute('co_voiturage_viewowndemandeparam', ['success' => 1]);
+        }
+    }
+
+    public function refuseOffreRequestAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
+        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
+        if ($co->getType() == "o") {
+            $cor->setEtat("r");
+            $em->flush();
+            return $this->redirectToRoute('co_voiturage_viewownoffreparam', ['success' => 5]);
+        }
+    }
+
+    public function refuseDemandeRequestAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
+        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
+        if ($co->getType() == "d") {
+            $cor->setEtat("r");
+            $em->flush();
+            return $this->redirectToRoute('co_voiturage_viewowndemandeparam', ['success' => 5]);
+        }
+    }
+
+
+*/
     }
