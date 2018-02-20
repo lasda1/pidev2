@@ -8,10 +8,15 @@ use EspaceEtudeBundle\Entity\Section;
 use EspaceEtudeBundle\Enum\Niveau;
 use EspaceEtudeBundle\Form\DocumentsType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 use Org_Heigl\Ghostscript\Ghostscript;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Serializer\Encoder\JsonEncode;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints\Date;
 use UserBundle\Entity\User;
 
@@ -81,8 +86,9 @@ class DocumentController extends Controller
         $documents=$em->getRepository(Documents::class)->findBy( ['matiere' => $id]);
         $niveau=$niveau->getAvailableTypes();
         $section=$em->getRepository(Section::class)->findAll();
+        $countAll=$em->getRepository(Documents::class)->countAll();
         return $this->render('EspaceEtudeBundle:Document:afficher_documents.html.twig', array(
-            'niveaux'=>$niveau,'sections'=>$section,'form' => $form->createView(),'id'=>$id,'docs'=>$documents,
+            'niveaux'=>$niveau,'sections'=>$section,'form' => $form->createView(),'id'=>$id,'docs'=>$documents,'all'=>$countAll,
         ));
     }
     public function supprimerDocumentAction(Request $request){
@@ -103,5 +109,45 @@ class DocumentController extends Controller
             $em->persist($doc);
             $em->flush();
         return $this->redirectToRoute("afficher_documents",array('id'=>$request->attributes->get('idMatiere')));
+    }
+
+    public function rechercheAction(Request $request){
+
+        if($request->isXmlHttpRequest()){
+            $docName=$request->get('docName');
+            $em=$this->getDoctrine()->getManager();
+            $docs=$em->getRepository('EspaceEtudeBundle\Entity\Documents')->findBy(['libelle'=>$docName]);
+            //initialisation du serialisable
+
+            $serializer=new Serializer(array(new ObjectNormalizer()));
+            //n7otou el data
+            $data=$serializer->normalize($docs);
+            $response=new Response(json_encode($data));
+            $response->headers->set("content-type","application/json");
+            return $response;
+/*
+
+            $tabDocs = array();
+            $i = 0;
+
+            foreach ($docs as $doc)
+            {
+                $tabDocs[$i]['path'] = $doc->getPath();
+                $tabDocs[$i]['libelle'] = $doc->getLibelle();
+                $tabDocs[$i]['img'] = $doc->getImg();
+                $tabDocs[$i]['id'] = $doc->getId();
+                $tabDocs[$i]['user'] = $doc->getUser();
+                $i++;
+            }
+
+            $response = new Response();
+            $docs = json_encode(array('docs' => $tabDocs));
+            $response->headers->set('Content-Type', 'application/json');
+            $response->setContent($docs);
+            return $this->render('EspaceEtudeBundle:Document:afficher_documents.html.twig',array('docs'=>$response));
+
+*/
+        }
+        return $this->render('EspaceEtudeBundle:Document:afficher_documents.html.twig');
     }
 }

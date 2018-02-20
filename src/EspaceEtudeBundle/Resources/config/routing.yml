@@ -1,6 +1,9 @@
 espace_etude_homepage:
     path:     /
     defaults: { _controller: EspaceEtudeBundle:Default:index }
+recherche_document:
+    path:     /rechercheDocument
+    defaults: { _controller: EspaceEtudeBundle:Document:recherche }
 
 afficher_matiere:
     path:     /afficherMatiere/{section}
@@ -16,7 +19,6 @@ supp_documents:
 modif_documents:
     path:     /modif/{idDoc}/{idMatiere}
     defaults: { _controller: EspaceEtudeBundle:Document:modifierDocument }
-
 
 
 

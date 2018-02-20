@@ -67,7 +67,7 @@
                             <li><a href="{{ path('objet_homepage') }}">Objets perdus</a></li>
                             <li><a href="#">Colocation</a></li>
                             <li><a href="#">Co-voiturage</a></li>
-                            <li><a href="#">Espace educatif</a></li>
+                            <li><a href="{{ path('espace_etude_homepage') }}">Espace educatif</a></li>
                             <li><a href="{{ path('e_index') }}">Evennements</a></li>
                         </ul>
                     </li>
@@ -205,7 +205,7 @@
                         </li>
                     </ul>
                 </li>
-                <li class="parent"><a href="#"><i class="icon s7-box2"></i><span>Etudes</span></a>
+                <li class="parent"><a href="{{ path('espace_etude_homepage') }}"><i class="icon s7-box2"></i><span>Etudes</span></a>
                     <ul class="sub-menu">
                         <li><a href="#">Documents</a>
                         </li>
@@ -229,13 +229,14 @@
     <div class="am-content">
         <div class="page-head">
             {% block pageName %}
+
                     {% if  app.request.attributes.get('_route') =='e_index' %}
                         Evennements
                     {% elseif app.request.attributes.get('_route') =='e_edit' %}
                         Modifier l'evennement
                     {% endif %}
 
-                {% endblock %}
+             {% endblock %}
 
         </div>
         <div class="main-content">

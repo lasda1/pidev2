@@ -23,11 +23,19 @@
             </div>
         </div>
     {% endblock %}
-{% block body %}{% set i=0 %}
+{% block body %}
+    {% set i=0 %}
+    <div id="recherche-content">
+        <h3>Resultat du recherche</h3>
+        <div id="recherche-elements">
+
+        </div>
+    </div>
+    <input id="all" type="text" value="{{ all }}" hidden >
     {% for doc in docs %}
 
         {% set i=i+1 %}
-        <div class="col-sm-2">
+        <div class="col-sm-2" id="{{ i }}">
             <div class="panel panel-default">
                 <div class="panel-body">
                     {% if doc.typeDocument=="docx" %}
@@ -35,9 +43,11 @@
                                                              src="{{ asset(doc.img) }}"/></a>
                     {% endif %}
                     {% if doc.typeDocument=="pdf" %}
-                        <a onclick="modal3({{ i }});"><img style="width: 125px;height: 80px;" src="{{ asset(doc.img) }}"/></a>
+                        <a onclick="modal3({{ i }});"><img style="width: 125px;height: 80px;"
+                                                           src="{{ asset(doc.img) }}"/></a>
                     {% endif %}
                 </div>
+
                 {% if doc.user.id==app.user.id %}
                 <div class="panel-footer" id="test{{ i }}" onmouseover="test({{ i }});" onmouseleave="test2({{ i }});"
                      style="padding: 2px;">
@@ -47,23 +57,19 @@
                             <a href="{{ path('supp_documents',{'idDoc': doc.id,'idMatiere':doc.matiere.id}) }}"><img
                                         style="width: 25px;height: 25px; margin-left:10px;"
                                         src="{{ asset('/img/del.png') }}"/></a>
-                            <a onclick="modal2({{ i }});" ><img style="width: 25px;height: 25px; margin-left:20px;"
-                                                         src="{{ asset('/img/update.png') }}"/></a>
+                            <a onclick="modal2({{ i }});"><img style="width: 25px;height: 25px; margin-left:20px;"
+                                                               src="{{ asset('/img/update.png') }}"/></a>
                         </div>
                     </center>
-
-                    {% else %}
-                        <div class="panel-footer" style="padding: 2px;">
-                            <center><p id="name{{ i }}">{{ doc.libelle }}</p></center>
-                        </div>
-                    {% endif %}
-
-
                 </div>
+                    {% else %}
+                <div class="panel-footer" style="padding: 2px;">
+                            <center><p id="name{{ i }}">{{ doc.libelle }}</p></center>
+                </div>
+                    {% endif %}
 
             </div>
         </div>
-
         <div id="update{{ i }}" class="modal">
             <!-- Modal content -->
             <div class="modal-content">
@@ -101,10 +107,10 @@
             <div class="modal-content2">
                 <span class="close"><a onclick="out2({{ i }});">&times;</a></span>
 
-                    <object  type="application/PDF" width="100%" height="200%">
-                        <param name="src" value="{{ doc.path }}"  />
-                    </object>
-                
+                <object type="application/PDF" width="100%" height="200%">
+                    <param name="src" value="{{ doc.path }}"/>
+                </object>
+
             </div>
 
         </div>
@@ -115,8 +121,6 @@
                 <div class="icon" style="    background-color:transparent;"><span class="s7-plus"></span></div>
             </div>
         </a></div>
-
-
 
     <!-- The Modal -->
     <div id="myModal" onclick="modal1();" class="modal">
@@ -158,3 +162,51 @@
 
 
 {% endblock %}
+{% block pageName %}
+    <div>
+
+
+        <div class="icon-container" id="recherche-icon-container">
+            <div class="icon" id="recherche-icon"><span class="s7-search"></span></div>
+        </div>
+        <div id="recherche-input">
+            <form><input type="text" id="docName" name="docName" placeholder="taper le nom du votre document"
+                         class="form-control"></form>
+        </div>
+    </div>
+
+{% endblock pageName %}
+
+
+{% block customScript %}
+    <script>
+        $("#docName").keyup(function () {
+            var input = $("#docName").val();
+            var all =$("#all").val();
+            all++;
+            if(input===""){
+                for (var j=1;j<all;j++){
+                    $("#"+j).show();
+                }
+            }else {
+                for (var i=1;i<all;i++){
+                    var name=$("#name"+i).text();
+                    if (!(name.indexOf(input) + 1 )){
+
+                        $("#"+i).hide();
+                    }else{
+                        $("#"+i).show();
+                    }
+
+                }
+            }
+
+
+
+
+
+        });
+
+
+    </script>
+{% endblock customScript %}
