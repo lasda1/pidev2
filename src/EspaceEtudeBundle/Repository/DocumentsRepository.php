@@ -10,4 +10,11 @@ namespace EspaceEtudeBundle\Repository;
  */
 class DocumentsRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function countAll()
+    {
+        return $this->createQueryBuilder('a')
+            ->select('COUNT(a)')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }

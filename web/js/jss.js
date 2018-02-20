@@ -75,3 +75,21 @@ function test2(i) {
     document.getElementById("action"+i).style.display="none";
 
 }
+$("#recherche-content").hide();
+function recherche() {
+
+
+
+        var input=$("#docName").val();
+        $.ajax({
+            url:"{{ path('recherche_document') }}",
+            type: "POST",
+            data:{'docName':input},
+            success : function (data){
+                alert(data);
+
+            }
+        })
+
+
+}

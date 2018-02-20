@@ -112,3 +112,17 @@ margin : 30px;
     padding: 1px;
     background-color: transparent;
 }
+#recherche-icon-container{
+    width: 5px;
+    height: 5px;
+    margin-left: -35px;
+    margin-top: -36px;
+}
+#recherche-icon{
+    background-color: transparent;
+}
+#recherche-input{
+    margin-left: 90px;
+    width: 1053px;
+    margin-top: -22px;
+}
