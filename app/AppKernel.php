@@ -21,6 +21,8 @@ class AppKernel extends Kernel
             new CoVoiturageBundle\CoVoiturageBundle(),
             new ObjetBundle\ObjetBundle(),
             new EventBundle\EventBundle(),
+            new EspaceEtudeBundle\EspaceEtudeBundle(),
+            new Mgilet\NotificationBundle\MgiletNotificationBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new \ColocationBundle\ColocationBundle(),
         ];

@@ -29,7 +29,7 @@ class EventController extends Controller
         $pagination = $paginator->paginate(
             $events, /* query NOT result */
             $request->query->getInt('page', 1),
-            $request->query->getInt('limit', 7));
+            $request->query->getInt('limit', 6));
 
         return $this->render('@Event/event/index.html.twig', array(
             'events' => $events,
@@ -245,7 +245,7 @@ class EventController extends Controller
         $pagination = $paginator->paginate(
             $events, /* query NOT result */
             $request->query->getInt('page',1 ),
-            $request->query->getInt('limit', 7));
+            $request->query->getInt('limit', 6));
 
         return $this->render('@Event/event/recherche.html.twig', array(
             'events' => $events,
