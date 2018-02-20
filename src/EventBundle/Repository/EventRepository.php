@@ -22,4 +22,12 @@ class EventRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery();
         return $query->getResult();
     }
+
+    function date(){
+        $query = EventRepository::createQueryBuilder('e')
+            ->where('e.datedebut'>'sysdate')
+            ->orderBy('e.datedebut', 'DESC')
+            ->getQuery();
+        return $query->getResult();
+    }
 }

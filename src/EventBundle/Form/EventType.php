@@ -40,7 +40,7 @@ class EventType extends AbstractType
             ->add('y',NumberType::class,array(
                 'scale'=>15
             ))
-            ->add('photo', FileType::class, array('label' => 'Photo'))
+            ->add('photo', FileType::class, array('attr' => array('class' => 'form-control file'),'data_class' => null,'label'=>'Photo'))
             ->add('nbMax',NumberType::class)
 
             ->add('categorie',ChoiceType::class,array(
