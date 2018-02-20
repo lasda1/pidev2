@@ -74,6 +74,20 @@ class Colocation
     private $ville;
 
     /**
+     * @var float
+     *
+     * @ORM\Column(name="x", type="float")
+     */
+    private $x;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="y", type="float")
+     */
+    private $y;
+
+    /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="colocations")
      * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
      */
@@ -386,5 +400,53 @@ class Colocation
     public function getUtilisateur()
     {
         return $this->utilisateur;
+    }
+
+    /**
+     * Set x
+     *
+     * @param float $x
+     *
+     * @return Colocation
+     */
+    public function setX($x)
+    {
+        $this->x = $x;
+
+        return $this;
+    }
+
+    /**
+     * Get x
+     *
+     * @return float
+     */
+    public function getX()
+    {
+        return $this->x;
+    }
+
+    /**
+     * Set y
+     *
+     * @param float $y
+     *
+     * @return Colocation
+     */
+    public function setY($y)
+    {
+        $this->y = $y;
+
+        return $this;
+    }
+
+    /**
+     * Get y
+     *
+     * @return float
+     */
+    public function getY()
+    {
+        return $this->y;
     }
 }

@@ -1,0 +1,111 @@
+{% extends '::base.html.twig' %}
+{% block body %}
+
+<center>
+    <form action="{{ path('e_recherche') }}?chose=" class="form-horizontal group-border-dashed" novalidate="">
+        <div class="form-group">
+            <div class="col-sm-3"></div>
+            <div class="col-sm-6">
+                <input placeholder="Recherche" name="chose" class="form-control" data-parsley-id="28" type="text">
+            </div>
+        </div>
+    </form>
+    <div class="am-content">
+
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="widget widget-fullwidth widget-small">
+                    <div class="widget-head">
+                        <div class="tools"><span class="icon s7-upload"></span><span class="icon s7-edit"></span><span
+                                    class="icon s7-close"></span></div>
+                    </div>
+                    <div class="row">
+                        <div id="map" class="col-sm-5" style="width: 50%;height: 500px;position: relative;overflow: hidden;">
+
+                        </div>
+                    </div>
+                    <a href="{{ path('reponse_offre', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Réponsre</button></a>
+
+                    <table id="table3" class="table table-striped table-hover table-fw-widget">
+
+
+                        <tr class="even gradeC">
+                            <td><h1>{{ colocation.titre }}</h1></td>
+                        </tr>
+                        <tr class="odd gradeX">
+                            <td
+                                    width=70% height=70%><img src="{{ asset('uploads/photos/'~colocation.photo) }}"
+                                                              width="300px"/></td>
+                            <td width=70% height=70%><img src="{{ asset('uploads/photos/'~colocation.photo1) }}"
+                                                          width="300px"/></td>
+                            <td width=70% height=70%><img src="{{ asset('uploads/photos/'~colocation.photo2) }}"
+                                                          width="300px"/></td>
+
+
+                        </tr>
+                        <tr class="even gradeC">
+                            <td> prix : {{ colocation.loyer }}DT</td>
+                            <td>{{ colocation.meuble }}</td>
+
+                        </tr>
+                        <tr>
+                            <td>Type :{{ colocation.type }}</td>
+                        </tr>
+
+
+                        <tr class="even gradeA">
+                            <td COLSPAN=3>{{ colocation.description }}</td>
+
+                        </tr>
+                        <tr class="odd gradeA">
+                            <td height=100%><a href="{{ path('supprimer',{'id':colocation.id}) }}">supprimer
+                                    l'annonce</a></td>
+                        </tr>
+
+                        <tr class="odd gradeA">
+                            <td></td>
+                        </tr>
+                        <tr class="odd gradeA">
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td></td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <script>
+            var marker;
+
+            function myMap() {
+                var myCenter = new google.maps.LatLng({{ colocation.y }}, {{ colocation.x }});
+                var mapCanvas = document.getElementById("map");
+                var mapOptions = {center: myCenter, zoom: 5};
+                var map = new google.maps.Map(mapCanvas, mapOptions);
+
+                var infowindow = new google.maps.InfoWindow();
+                var marker = new google.maps.Marker({
+                    map: map,
+                    anchorPoint: new google.maps.Point(0, -29)
+
+                });
+                marker = new google.maps.Marker({
+                    map: map,
+                    animation: google.maps.Animation.DROP,
+                    position: map.center
+                });
+                marker.setMap(map);
+                marker.setMap(map);
+
+            }
+        </script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWb0i4faRZm8P5oEN-ukUF_CACQzWt480&libraries=places&callback=myMap"></script>
+
+        {% endblock %}
+
+
+

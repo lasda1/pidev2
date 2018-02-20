@@ -83,6 +83,48 @@ class DefaultController extends Controller
         return($this->redirectToRoute('colocation_homepage'));
     }
 
+    public function rechercheAction(Request $request)
+    {
+
+
+        if($request->isMethod('Post')){
+
+
+            $em=$this->getDoctrine()->getManager();
+            $ville=$request->get('ville');
+            $colocation=$em->getRepository(Colocation::class)->findBy(['ville' => $ville]);
+
+            return $this->render('ColocationBundle:Default:index.html.twig',array("colocations"=>$colocation));
+
+
+        }
+        $em=$this->getDoctrine()->getManager();			///pour afficher une autre fois dans la page recherche
+        $colocation=$em->getRepository(Colocation::class)->findAll();     ///pour afficher une autre fois dans la page recherche
+        return $this->render('ColocationBundle:Default:index.html.twig',array("colocations"=>$colocation));
+        ///pour afficher une autre fois dans la page recherche
+    }
+
+    public function  showAction($id)
+    {
+        $colocation = $this->getDoctrine()->getRepository(Colocation::class)->find($id);
+        return $this->render('@Colocation/Default/show.html.twig', ['colocation' => $colocation]);
+    }
+    public  function  mesoffresAction(){
+        $user = $this->getUser();
+        $colocations = $this->getDoctrine()->getRepository(Colocation::class)->findByUtilisateur($user);
+        return $this->render('@Colocation/Default/mesoffres.html.twig', ['colocations' => $colocations]);
+    }
+
+
+    public function  reponseAction($id)
+    {
+        $colocation = $this->getDoctrine()->getRepository(Colocation::class)->find($id);
+        dump($colocation);die;
+        return $this->render('@Colocation/Default/show.html.twig', ['colocation' => $colocation]);
+    }
+
+
+
 
 
 }
