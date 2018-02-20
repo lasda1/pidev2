@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+{% block customStyle %}
+
+{% endblock %}
+{% block title %}
+    {{ 'home.meta.title'|trans }}
+{% endblock %}
+{% block body %}
+
+
+      {% for label, flashes in app.session.flashbag.all %}
+        {% for flash in flashes %}
+          <div class="alert alert-{{ label }}">{{ flash }}</div>
+        {% endfor %}
+      {% endfor %}
+
+      {% block body1 %}{% endblock %}
+
+{% endblock %}
+{% block customScript %}
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+
+{% endblock %}
