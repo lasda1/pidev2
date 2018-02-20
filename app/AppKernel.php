@@ -24,8 +24,10 @@ class AppKernel extends Kernel
             new EspaceEtudeBundle\EspaceEtudeBundle(),
             new Mgilet\NotificationBundle\MgiletNotificationBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new \ColocationBundle\ColocationBundle(),
+            new ColocationBundle\ColocationBundle(),
             new Knp\Bundle\TimeBundle\KnpTimeBundle(),
+            new Nomaya\SocialBundle\NomayaSocialBundle(),
+            new Ob\HighchartsBundle\ObHighchartsBundle(),
 
 
         ];
