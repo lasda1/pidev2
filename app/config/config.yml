@@ -15,6 +15,7 @@ imports:
 
 parameters:
     locale: fr
+    photos_directory: '%kernel.project_dir%/web/uploads/photos'
 
 
 framework:

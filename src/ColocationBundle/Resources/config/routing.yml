@@ -14,6 +14,25 @@ annonces:
       path:     /user/colocation/MesAnnonce
       defaults: { _controller: ColocationBundle:Default:supprimer }
 
+recherche:
+      path:     /user/colocation/recherche
+      defaults: { _controller: ColocationBundle:Default:recherche }
+
+show_specific_colocation:
+      path:     /user/colocation/show/{id}
+      defaults: { _controller: ColocationBundle:Default:show }
+
+mesoffres:
+      path:     /user/colocation/mesoffres
+      defaults: { _controller: ColocationBundle:Default:mesoffres}
+
+reponse_offre:
+      path:     /user/colocation/reponse/{id}
+      defaults: { _controller: ColocationBundle:Default:reponse}
+
+
+
+
 
 
 

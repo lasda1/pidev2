@@ -3,3 +3,4 @@ services :
         class: UserBundle\Form\RegistrationType
         tags:
             - { name: form.type, alias: app_user_registration }
+
