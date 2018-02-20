@@ -26,6 +26,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new EspaceEtudeBundle\EspaceEtudeBundle(),
             new ColocationBundle\ColocationBundle(),
+            new Knp\Bundle\TimeBundle\KnpTimeBundle(),
 
 
         ];
