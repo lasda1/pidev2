@@ -91,23 +91,14 @@
 
 </style>
 
-<form name="form" method="post" action="{{ path('recherche') }}" >
-    <div class="form-group">
-        <div class="col-sm-3"></div>
-        <div class="col-sm-6">
-            <input  placeholder="Recherche" name="chose" class="form-control" data-parsley-id="28" type="text">
-        </div>
-    </div>
-</form>
+
 <div class="am-content">
 
     <div class="container">
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-                <h4>Made with <i class="fa fa-fw fa-heart text-danger"></i> by <a href="http://twitter.com/AlexMahrt" class="btn btn-primary btn-xs" target="_blank"><i class="fa fa-fw fa-twitter"></i> @AlexMahrt</a></h4>
-            </div>
-        </div>
+
         <hr>
+
+
         <!-- Begin of rows -->
         {% for colocation  in colocations %}
         <div class="row carousel-row">
@@ -141,8 +132,11 @@
                 </div>
                 <div class="slide-footer">
                 <span class="pull-right buttons">
+                    <a href="{{ path('reponse_offre', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Modifier</button></a>
+                    <a href="{{ path('supprimer',{'id':colocation.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Supprimer</button></a>
                     <a href="{{ path('show_specific_colocation', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Show</button></a>
                 </span>
+
                 </div>
             </div>
         </div>
