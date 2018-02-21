@@ -80,7 +80,7 @@ class DefaultController extends Controller
         $colocation=$em->getRepository(Colocation::class)->find($id);
         $em->remove($colocation);
         $em->flush();
-        return($this->redirectToRoute('colocation_homepage'));
+        return($this->redirectToRoute("mesoffres"));
     }
 
     public function rechercheAction(Request $request)

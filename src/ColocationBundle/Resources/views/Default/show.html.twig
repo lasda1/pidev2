@@ -9,7 +9,7 @@
      }
 
      body {
-         background: #efefef;
+         background:white;
          color: #333;
          font-family: "Raleway";
          height: 100%;
@@ -306,60 +306,154 @@
 
 
  </style>
-<body>
+<body class="body">
+<div class="am-content">
 
-    <h1>Pure CSS Gallery</h1>
-    <section class="gallery">
-        <div class="carousel">
+    <div class="row">
 
-            <input type="radio" id="image1" name="gallery-control" checked>
-            <input type="radio" id="image2" name="gallery-control">
-            <input type="radio" id="image3" name="gallery-control">
-            <input type="radio" id="image4" name="gallery-control">
+            <h1>{{ colocation.titre }}</h1>
+            <section class="gallery">
+                <div class="carousel">
+
+                    <input type="radio" id="image1" name="gallery-control" checked>
+                    <input type="radio" id="image2" name="gallery-control">
+                    <input type="radio" id="image3" name="gallery-control">
+                    <input type="radio" id="image4" name="gallery-control">
 
 
-            <input type="checkbox" id="fullscreen" name="gallery-fullscreen-control"/>
+                    <input type="checkbox" id="fullscreen" name="gallery-fullscreen-control"/>
 
-            <div class="wrap">
+                    <div class="wrap">
 
-                <figure>
-                    <label for="fullscreen">
-                        <img src="{{ asset('uploads/photos/'~colocation.photo) }}" alt="image1"/>
-                    </label>
-                </figure>
+                        <figure>
+                            <label for="fullscreen">
+                                <img src="{{ asset('uploads/photos/'~colocation.photo) }}" alt="image1"/>
+                            </label>
+                        </figure>
 
-                <figure>
-                    <label for="fullscreen">
-                        <img src="{{ asset('uploads/photos/'~colocation.photo1) }}" alt="image2"/>
-                    </label>
-                </figure>
+                        <figure>
+                            <label for="fullscreen">
+                                <img src="{{ asset('uploads/photos/'~colocation.photo1) }}" alt="image2"/>
+                            </label>
+                        </figure>
 
-                <figure>
-                    <label for="fullscreen">
-                        <img src="{{ asset('uploads/photos/'~colocation.photo2) }}" alt="image3" />
-                    </label>
-                </figure>
+                        <figure>
+                            <label for="fullscreen">
+                                <img src="{{ asset('uploads/photos/'~colocation.photo2) }}" alt="image3" />
+                            </label>
+                        </figure>
 
-                <figure>
-                    <label for="fullscreen">
-                        <img src="https://unsplash.it/2000/1400/?random" alt="image4"/>
-                    </label>
-                </figure>
-            </div>
+                        <figure>
+                            <label for="fullscreen">
+                                <img src="https://unsplash.it/2000/1400/?random" alt="image4"/>
+                            </label>
+                        </figure>
+                    </div>
 
-            <div class="thumbnails">
+                    <div class="thumbnails">
 
-                <div class="slider"><div class="indicator"></div></div>
+                        <div class="slider"><div class="indicator"></div></div>
 
-                <label for="image1" class="thumb" style="background-image: url('https://unsplash.it/700/480/?random')"></label>
+                        <label for="image1" class="thumb" style="background-image: url('https://unsplash.it/700/480/?random')"></label>
 
-                <label for="image2" class="thumb" style="background-image: url('https://unsplash.it/700/400/?random')"></label>
+                        <label for="image2" class="thumb" style="background-image: url('https://unsplash.it/700/400/?random')"></label>
 
-                <label for="image3" class="thumb" style="background-image: url('https://unsplash.it/700/410/?random')"></label>
+                        <label for="image3" class="thumb" style="background-image: url('https://unsplash.it/700/410/?random')"></label>
 
-            </div>
+                    </div>
+                </div>
+            </section>
+
+        <div  class="col-xs-6 col-sm-3" >
+        <div id="map" class="col-sm-5" style="width: 90%;height: 400px;position: relative;overflow: hidden;"></div>
+        </div><br><br><br><br><br>
+        <div class="col-sm-5 col-sm-offset-2 col-md-6 col-md-offset-0">
+            <table class="table">
+                <thead>
+                <tbody>
+
+                <tr>
+                    <th scope="col">Type : {{ colocation.type }}</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">Prix : {{ colocation.loyer }}DT</th>
+                </tr>
+                </thead>
+                <tr>
+                    <th scope="col">Etat : {{ colocation.meuble }}</th>
+                    <th scope="col"></th>
+                    <th scope="col"></th>
+                    <th scope="col">Ville : {{ colocation.ville }} </th>
+
+                </tr>
+                <tr>
+                    <th scope="col" colspan="4"> {{ colocation.description }}</th>
+
+                </tr>
+                <tr>
+                    <th scope="col">
+
+                    </th>
+                    <th scope="col">
+
+                    </th>
+                    <th scope="col">
+
+                    </th>
+                    <th scope="col">
+                        <a href="{{ path('reponse_offre', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Repondre</button></a>
+
+                    </th>
+
+
+
+                </tr>
+
+                </tbody>
+            </table>
+
+
+
         </div>
-    </section>
+        </div>
+
+
+
+    </div>
+
+
+
+    </div>
+
+    <script>
+        var marker;
+
+        function myMap() {
+            var myCenter = new google.maps.LatLng({{ colocation.y }}, {{ colocation.x }});
+            var mapCanvas = document.getElementById("map");
+            var mapOptions = {center: myCenter, zoom: 5};
+            var map = new google.maps.Map(mapCanvas, mapOptions);
+
+            var infowindow = new google.maps.InfoWindow();
+            var marker = new google.maps.Marker({
+                map: map,
+                anchorPoint: new google.maps.Point(0, -29)
+
+            });
+            marker = new google.maps.Marker({
+                map: map,
+                animation: google.maps.Animation.DROP,
+                position: map.center
+            });
+            marker.setMap(map);
+            marker.setMap(map);
+
+        }
+    </script>
+
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWb0i4faRZm8P5oEN-ukUF_CACQzWt480&libraries=places&callback=myMap"></script>
+
+
 
 </body>
 

@@ -47,6 +47,7 @@ class ColocationType extends AbstractType
                     'Zaghouan' => 'Zaghouan',
                     'Béja' => 'Béja',
                     'Médenine' => 'Médenine',
+                    'Hammamet'=>'Hammamet',
                 )))
             ->add('x',NumberType::class,array(
                 'scale'=>15
