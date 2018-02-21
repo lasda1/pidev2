@@ -123,36 +123,36 @@
 
 
 
-        $('#test').click(function () {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    var pos = {
-                        lat: position.coords.latitude,
-                        lng: position.coords.longitude
-                    };
-                    geocoder = new google.maps.Geocoder;
-                    var latlng = {lat: parseFloat(pos.lat), lng: parseFloat(pos.lng)};
-
-                    geocoder.geocode({'location': latlng}, function (results, status, lol) {
-                        if (status === google.maps.GeocoderStatus.OK) {
-                            if (results[1]) {
-                                lol = results[1].place_id.toString();
-                                $('#start').val(results[1].formatted_address);
-                                $('#formatted_addr').val(results[1].formatted_address);
-
-                                //new AutocompleteDirectionsHandlerDefault(map,locationId);
-                            } else {
-                                window.alert('Pas de résultat trouvé');
-                                //new AutocompleteDirectionsHandler(map);
-                            }
-                        } else {
-                            window.alert('Echec : ' + status);
-                            //new AutocompleteDirectionsHandler(map);
-                        }
-                    });
-                });
-            }
-        });
+//        $('#test').click(function () {
+//            if (navigator.geolocation) {
+//                navigator.geolocation.getCurrentPosition(function(position) {
+//                    var pos = {
+//                        lat: position.coords.latitude,
+//                        lng: position.coords.longitude
+//                    };
+//                    geocoder = new google.maps.Geocoder;
+//                    var latlng = {lat: parseFloat(pos.lat), lng: parseFloat(pos.lng)};
+//
+//                    geocoder.geocode({'location': latlng}, function (results, status, lol) {
+//                        if (status === google.maps.GeocoderStatus.OK) {
+//                            if (results[1]) {
+//                                lol = results[1].place_id.toString();
+//                                $('#start').val(results[1].formatted_address);
+//                                $('#formatted_addr').val(results[1].formatted_address);
+//
+//                                //new AutocompleteDirectionsHandlerDefault(map,locationId);
+//                            } else {
+//                                window.alert('Pas de résultat trouvé');
+//                                //new AutocompleteDirectionsHandler(map);
+//                            }
+//                        } else {
+//                            window.alert('Echec : ' + status);
+//                            //new AutocompleteDirectionsHandler(map);
+//                        }
+//                    });
+//                });
+//            }
+//        });
 
 
         function initMap(lol) {

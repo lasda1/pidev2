@@ -6,6 +6,10 @@ user_news:
     path:     /home
     defaults: { _controller: UserBundle:Default:news }
 
+admin:
+    path:     /admin
+    defaults: { _controller: UserBundle:Default:admin }
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 

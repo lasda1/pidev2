@@ -23,4 +23,8 @@ class DefaultController extends Controller
         $co = $em->getRepository(CoVoiturage::class)->getLastThree();
         return $this->render('UserBundle::news.html.twig', ['cov' => $co]);
     }
+
+    public function adminAction(){
+        return $this->render('UserBundle::admin.html.twig');
+    }
 }
