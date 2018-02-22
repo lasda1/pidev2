@@ -41,4 +41,11 @@ search_objet_ajax:
     path:     /objets/search
     defaults: { _controller: ObjetBundle:Objet:search }
 
+reclamer_obj:
+    path:     /objets/reclamer_obj/{id}
+    defaults: { _controller: ObjetBundle:Objet:reclamerObj }
+
+
+
+
 

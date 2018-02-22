@@ -2,6 +2,54 @@ user_homepage:
     path:     /
     defaults: { _controller: UserBundle:Default:index }
 
+user_news:
+    path:     /home
+    defaults: { _controller: UserBundle:Default:news }
+
+admin:
+    path:     /admin
+    defaults: { _controller: UserBundle:Default:admin }
+
+admincovoffres:
+    path:     /admin/offres
+    defaults: { _controller: UserBundle:Default:CoVoiturageOffre }
+
+admincovdemande:
+    path:     /admin/demandes
+    defaults: { _controller: UserBundle:Default:CoVoiturageDemande }
+
+admincovoffresparam:
+    path:     /admin/offres/p
+    defaults: { _controller: UserBundle:Default:CoVoiturageViewOffreParam }
+
+admincovdemandesparam:
+    path:     /admin/demandes/p
+    defaults: { _controller: UserBundle:Default:CoVoiturageViewDemandeParam }
+
+admincovoffredelete:
+    path:     /admin/offres/delete
+    defaults: { _controller: UserBundle:Default:CoVoiturageDeleteOffre }
+
+admincovdemandedelete:
+    path:     /admin/demandes/delete
+    defaults: { _controller: UserBundle:Default:CoVoiturageDeleteDemande }
+
+admincovoffrerequestdelete:
+    path:     /admin/offres/deleterequest
+    defaults: { _controller: UserBundle:Default:CoVoiturageDeleteOffreRequest }
+
+admincovdemanderequestdelete:
+    path:     /admin/demandes/deleterequest
+    defaults: { _controller: UserBundle:Default:CoVoiturageDeleteDemandeRequest }
+
+admininfooffres:
+    path:     /admin/offres/info
+    defaults: { _controller: UserBundle:Default:CoVoiturageInfoOffre }
+
+admininfodemande:
+    path:     /admin/demandes/info
+    defaults: { _controller: UserBundle:Default:CoVoiturageInfoDemande }
+
 fos_user_security:
     resource: "@FOSUserBundle/Resources/config/routing/security.xml"
 

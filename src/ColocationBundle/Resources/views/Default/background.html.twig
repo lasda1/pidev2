@@ -1,134 +1,121 @@
-{#
-
 {% extends '::base.html.twig' %}
 {% block body %}
 
+    <style>
 
+        /*   #map {
+               height: 400px;
 
-    <html lang="en">
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>Contact Form HTML/CSS Template - reusable form</title>
-        <link rel="stylesheet" type="text/css" href="{{ asset('lib/theme-switcher/style.css') }}"/>
+           }
+   */
+        .pac-container {
+            font-family: Roboto;
+        }
 
-    </head>
-    <body >
-    <div class="jumbotron jumbotron-sm">
-        <div class="container">
-            <div class="row">
-                <div class="col-sm-12 col-lg-12">
-                    <h1 class="h1">
-                        Trouvez votre Colocation idéale</h1><br>
-                    <p>Décrivez nous votre style de vie et vos attentes, pour cibler au mieux votre recherche.</p>
-                </div>
+        #type-selector {
+            color: #fff;
+            background-color: #4d90fe;
+            padding: 5px 11px 0px 11px;
+        }
+
+        #type-selector label {
+            font-family: Roboto;
+            font-size: 13px;
+            font-weight: 300;
+        }
+    </style>
+    <div class="row">
+        <div class="col-sm-6">
+            {{ form_start(form) }}
+            <div class="form-group">
+                <label>Titre</label>
+                {{ form_widget(form.titre,{'attr':{'class':'form-control','placeholder':"Entrer titre"}}) }}
             </div>
+            <div class="form-group">
+                <label>Loyer</label>
+                {{ form_widget(form.loyer,{'attr':{'class':'form-control','placeholder':"Entrer prix"}}) }}
+            </div>
+            <div class="form-group">
+                <label>Meublé</label>
+                {{ form_widget(form.meuble,{'attr':{'class':'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                <label>Description</label>
+                {{ form_widget(form.description,{'attr':{'class':'form-control','placeholder':"Entrer description"}}) }}
+            </div>
+            <div class="form-group">
+                <label>Type</label>
+                {{ form_widget(form.type,{'attr':{'class':'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                <label>Ville</label>
+                {{ form_widget(form.ville,{'attr':{'class':'form-control'}}) }}
+            </div>
+            <div class="form-group">
+                <label>lng</label>
+                {{ form_widget(form.x,{'attr':{'class':'form-control','placeholder':"lng"}}) }}
+            </div>
+            <div class="form-group">
+                <label>lat</label>
+                {{ form_widget(form.y,{'attr':{'class':'form-control','placeholder':"lat"}}) }}
+            </div>
+            <div class="form-group">
+                <label>photo1</label>
+                {{ form_widget(form.photo,{'attr':{'class':'form-control','placeholder':"lat"}}) }}
+                {{ form_widget(form.photo1,{'attr':{'class':'form-control','placeholder':"lat"}}) }}
+                {{ form_widget(form.photo2,{'attr':{'class':'form-control','placeholder':"lat"}}) }}
+
+
+            </div>
+
+
+            <br>
+
+
+            <input type="submit" class="btn btn-primary" value="Publier l'annonce" onclick="xy()"/>
+            {{ form_end(form) }}
+            {{ form_end(form) }}
         </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-8">
-                <div class="well well-sm">
-                    <form name="form" method="post">
-                        <div class="row">
-                            <div class="col-md-6">
+        <div id="map" class="col-sm-5" style="width: 50%;height: 500px;position: relative;overflow: hidden;">
 
-                                #}
-{#<div class="form-group">
-
-                                    <div class="form-group">
-                                        <label for="Tire">Titre</label>
-                                        <div class="input-group">
-                                            <input type="text" name="titre" class="form-control" id="email" placeholder="Titre" required="required" /></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="Prix">Loyer</label>
-                                        <div class="input-group">
-                                            <input type="text" name="loyer" class="form-control" id="email" placeholder="DT / mois" required="required" /></div>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                         <label for="subject" name="type">Type</label>
-                                           <select id="subject" name="subject" class="form-control" required="required">
-                                              <option value="na" name="appartement" selected="">Appartement</option>
-                                              <option value="service" name="maison">Maison</option>
-                                               <option value="suggestions" name="studio">Studio</option>
-                                           </select>
-                                     </div>
-                                    <div class="form-group">
-                                        <label for="subject" name="meuble">Meublé</label>
-                                        <select id="subject"  name="subject" class="form-control" required="required">
-                                            <option value="na" name="meuble" selected=""> Meublé</option>
-                                            <option value="service" name="nom meuble">Non </option>
-                                            <option value="suggestions" name="partiellement">¨Partiellement Meublé</option>
-                                        </select>
-                                    </div>
-
-
-                                    <div class="form-group">
-                                        <label for="subject">Description</label>
-                                             <textarea name="desciption"  id="message" class="form-control" rows="9" cols="25" required="required"
-                                              placeholder="Parlez un peu de vous,de votre style:3-4 phrases basiques a propos de vous et de ce que vous recherchez"></textarea>
-                                     </div>
-                                    <div class="form-group">
-                                        <label for="email"> Email Address</label>
-                                        <div class="input-group">
-                                           <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span>
-                                           </span>
-                                            <input type="email" class="form-control" name="email" id="email" placeholder="Enter email" required="required" /></div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="file">Photos </label>
-                                        <input type="file" name="photo" class="form-control" id="name" placeholder="Enter name" required="required" />
-                                        <input type="file" name="photo1" class="form-control" id="name" placeholder="Enter name" required="required" />
-                                           <input type="file" name="photo2" class="form-control" id="name" placeholder="Enter name" required="required" />
-                                    </div>
-
-
-                                   </div>#}{#
-
-                        </div>
-                            </div>
-                    </form>
-                </div>
-            </div>
-            <div class="col-md-4">
-                <form>
-                    <legend><span class="glyphicon glyphicon-globe"></span> Our office</legend>
-                    <address>
-                        <strong>Twitter, Inc.</strong><br>
-                        795 Folsom Ave, Suite 600<br>
-                        San Francisco, CA 94107<br>
-                        <abbr title="Phone">
-                            P:</abbr>
-                        (123) 456-7890
-                    </address>
-                    <address>
-                        <strong>Full Name</strong><br>
-                        <a href="mailto:#">first.last@example.com</a>
-                    </address>
-                </form>
-            </div>
         </div>
+
+        <script>
+            var marker;
+
+            function myMap() {
+                var myCenter = new google.maps.LatLng(36.847218, 10.136408);
+                var mapCanvas = document.getElementById("map");
+                var mapOptions = {center: myCenter, zoom: 5};
+                var map = new google.maps.Map(mapCanvas, mapOptions);
+
+                var infowindow = new google.maps.InfoWindow();
+                var marker = new google.maps.Marker({
+                    map: map,
+                    anchorPoint: new google.maps.Point(0, -29)
+
+                });
+                marker = new google.maps.Marker({
+                    map: map,
+                    draggable: true,
+                    animation: google.maps.Animation.DROP,
+                    position: map.center
+                });
+                marker.setMap(map);
+                //  marker.addListener('click', toggleBounce);
+                google.maps.event.addListener(marker, 'drag', function (event) {
+                    $("#colocationbundle_colocation_x").val(event.latLng.lng());
+                    $("#colocationbundle_colocation_y").val(event.latLng.lat());
+                });
+                /////
+
+                /////
+                marker.setMap(map);
+
+            }
+        </script>
+
+        <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWb0i4faRZm8P5oEN-ukUF_CACQzWt480&libraries=places&callback=myMap"></script>
     </div>
-    <div></div>
-
-
-    </body>
-    </html>
-
-{% endblock %}#}
-
-{% extends '::base.html.twig' %}
-{% block body %}
- {{ form_start(form) }}
-                                {{ form_widget(form) }}
-<div class="col-md-12">
-    <input type="submit"  value="Publier Mon annonce" class="btn btn-primary pull-right" id="btnContactUs" >
-</div>
-{{ form_end(form) }}
 
 {% endblock %}

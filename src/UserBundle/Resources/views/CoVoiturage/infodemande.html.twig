@@ -1,18 +1,10 @@
-{% extends "base.html.twig" %}
-{% block pageName %}
-    <h2>Informations offre</h2>
-    <ol class="breadcrumb">
-        <li><a href="{{ path('co_voiturage_homepage') }}">Co-Voiturage</a></li>
-        <li><a href="{{ path('co_voiturage_viewdemande') }}">Demandes</a></li>
-        <li class="active">Informations demande</li>
-    </ol>
-{% endblock %}
+{% extends "baseBack.html.twig" %}
 {% block body %}
     <div style="display: none">
-        {% block CoVoiturageActive %}
+        {% block demandeActiveCov %}
             active
         {% endblock %}
-        {% block CoVoiturageViewDemandeActive %}
+        {% block ActiveCov %}
             active
         {% endblock %}
     </div>
@@ -51,10 +43,9 @@
 
 
 
-
         </div>
         <div class="col-md-6">
-            <div style="height: 400px; width: 700px;" id="map"></div>
+            <div style="height: 400px; width: 580px;" id="map"></div>
         </div>
 
     </div>
@@ -64,22 +55,7 @@
     <input value="{{ co.destinationid }}" type="hidden" id="idDestination" name="idDestination">
     <input type="hidden" id="formatted_addr" name="formattedaddr">
 
-    {% if co.user.id != app.user.id %}
-        {% if cor is defined and cor is not null %}
-            {% if co.id == cor.idc.id %}
-                <span style="font-size: 10px">Vous avez déjà envoyé une demande</span>
-            {% endif %}
-        {% else %}
-            <a href="{{ path('co_voiturage_requestdemande',{'id':co.id}) }}">
-                <button class="btn btn-warning">Request</button>
-            </a>
-        {% endif %}
-
-    {% else %}
-
-            <a href="{{ path('co_voiturage_modifydemandeview',{'id':co.id}) }}"><button class="btn btn-warning">Modifier</button></a>
-            <a href="{{ path('co_voiturage_deletedemande',{'id':co.id}) }}"><button class="btn btn-danger">Supprimer</button></a>
-    {% endif %}
+    <a href="{{ path('admincovdemandedelete',{'id':co.id}) }}"><button class="btn btn-danger">Supprimer</button></a>
 
     </div>
 {% endblock %}

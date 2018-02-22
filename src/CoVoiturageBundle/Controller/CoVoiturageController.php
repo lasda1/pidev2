@@ -13,9 +13,14 @@ class CoVoiturageController extends Controller
 {
     public function addOffreAction(Request $request)
     {
-        if ($request->get("depart") == null || $request->get("destination") == null || $request->get('idDepart') == null || $request->get('idDestination') == null || $request->get("placesdisponibles") == null) {
-            return $this->render('CoVoiturageBundle:Default:addoffre.html.twig');
+        if ($request->get("depart") == null || $request->get("destination") == null || $request->get("placesdisponibles") == null) {
+            return $this->render('CoVoiturageBundle:Default:addoffre.html.twig' ,['success' => 1]);
+        } else if ($request->get('idDepart') == null || $request->get('idDestination') == null ){
+            return $this->render('CoVoiturageBundle:Default:addoffre.html.twig' ,['success' => 2]);
+        } else if ($request->get("onetime") != "on" && ! $request->get("date")){
+            return $this->render('CoVoiturageBundle:Default:addoffre.html.twig' ,['success' => 3]);
         }
+
 
         $em = $this->getDoctrine()->getManager();
         $co = new CoVoiturage();
@@ -37,6 +42,7 @@ class CoVoiturageController extends Controller
         $co->setDepartLng($request->get('lngDepart'));
 
         $jours = $request->get("jour");
+
         if ($request->get("onetime") == "on") {
             $co->setOnetime($request->get('onetime'));
         } else {
@@ -74,8 +80,13 @@ class CoVoiturageController extends Controller
 
     public function addDemandeAction(Request $request)
     {
-        if ($request->get("depart") == null || $request->get("destination") == null || $request->get('idDepart') == null || $request->get('idDestination') == null) {
-            return $this->render('CoVoiturageBundle:Default:adddemande.html.twig');
+
+        if ($request->get("depart") == null || $request->get("destination") == null) {
+            return $this->render('CoVoiturageBundle:Default:adddemande.html.twig' ,['success' => 1]);
+        } else if ($request->get('idDepart') == null || $request->get('idDestination') == null ){
+            return $this->render('CoVoiturageBundle:Default:adddemande.html.twig' ,['success' => 2]);
+        } else if ($request->get("onetime") != "on" && ! $request->get("date")){
+            return $this->render('CoVoiturageBundle:Default:adddemande.html.twig' ,['success' => 3]);
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -178,7 +189,7 @@ class CoVoiturageController extends Controller
             $em->remove($cod[0]);
         }
         if ($cor){
-            $em->remove($cor[0]);
+            $em->remove($cor);
         }
 
         $em->remove($co);
@@ -213,6 +224,25 @@ class CoVoiturageController extends Controller
 
     }
 
+    public function viewOffrePaginateAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->getAllDesc('o');
+        $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $co, /* query NOT result */
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 4));
+        if ($cor) {
+            $cor = $cor[0];
+        } else {
+            $cor = null;
+        }
+
+        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig', ['cov' => $co,'cor' => $cor, 'pagination' => $pagination]);
+    }
+
     public function viewDemandeAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -222,6 +252,27 @@ class CoVoiturageController extends Controller
             return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co, 'cor' => $cor[0]]);
         }
         return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co, 'cor' => null]);
+
+    }
+
+    public function viewDemandePaginateAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->getAllDescD('d');
+        $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $co, /* query NOT result */
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 4));
+        if ($cor) {
+            $cor = $cor[0];
+        } else {
+            $cor = null;
+        }
+        return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co,'cor' => $cor, 'pagination' => $pagination]);
+
+        //return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co, 'cor' => null]);
 
     }
 
@@ -273,12 +324,17 @@ class CoVoiturageController extends Controller
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->getAllDesc('o');
         $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $co, /* query NOT result */
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 4));
         if ($cor) {
             $cor = $cor[0];
         } else {
             $cor = null;
         }
-        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig', ['cov' => $co, 'cor' => $cor, 'success' => $request->get('success')]);
+        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig', ['cov' => $co, 'cor' => $cor ,'pagination' => $pagination, 'success' => $request->get('success')]);
     }
 
     public function viewDemandeParamAction(Request $request)
@@ -286,26 +342,20 @@ class CoVoiturageController extends Controller
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->getAllDescD('d');
         $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $co, /* query NOT result */
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 4));
         if ($cor) {
             $cor = $cor[0];
         } else {
             $cor = null;
         }
-        return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co, 'cor' => $cor, 'success' => $request->get('success')]);
+        return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co, 'cor' => $cor,'pagination' => $pagination, 'success' => $request->get('success')]);
     }
 
-    public function viewOffrePaginateAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $co = $em->getRepository(CoVoiturage::class)->getAllDesc2('o');
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $co, /* query NOT result */
-            $request->query->getInt('page', 1),
-            $request->query->getInt('limit', 2));
 
-        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig', ['cov' => $co, 'pagination' => $pagination]);
-    }
 
 
     public function modifyOffreAction(Request $request)

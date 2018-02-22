@@ -19,10 +19,10 @@
             {% if app.user==event.user %}
                 <div class="col-md-4     col-sm-6 col-xs-12 block">
                     <div class="thumbnail thumbnailContent">
-                        {%  if event.enable==0 %}
-                            <a href="{{ path('e_show', { 'id': event.id }) }}"><img style="-webkit-filter: blur(5px)" src="{{ asset(event.photo) }}" alt="image" class="img-responsive"></a>
+                        {%  if event.enable==0  %}
+                            <a href="{{ path('e_show', { 'id': event.id }) }}"><img style="-webkit-filter: blur(5px)" src="{{ asset(event.photo) }}" alt="image" class="img-responsive" height="70%" width="70%"></a>
                         {% else %}
-                            <a href="{{ path('e_show', { 'id': event.id }) }}"><img src="{{ asset(event.photo) }}" alt="image" class="img-responsive"></a>
+                            <a href="{{ path('e_show', { 'id': event.id }) }}"><img src="{{ asset(event.photo) }}" alt="image" class="img-responsive" height="70%" width="70%"></a>
                         {% endif %}
 
                         <div class="caption border-color-1">
@@ -39,10 +39,10 @@
                         </div>
                     </div>
                 </div>
-            {% elseif event.enable==1 and app.user!=event.user and event.datefin > 'now'|date('d - m -Y')  %}
+            {% elseif event.enable==1 and app.user!=event.user and event.datefin < 'now'|date('d - m -Y')  %}
                 <div class="col-md-4     col-sm-6 col-xs-12 block">
                     <div class="thumbnail thumbnailContent">
-                        <a href="{{ path('e_show', { 'id': event.id }) }}"><img  src="{{ asset(event.photo) }}" alt="image" class="img-responsive"></a>
+                        <a href="{{ path('e_show', { 'id': event.id }) }}"><img  src="{{ asset(event.photo) }}" alt="image" class="img-responsive" height="70%" width="70%"></a>
 
                         <div class="caption border-color-1">
                             <h3><a href="{{ path('e_show', { 'id': event.id }) }}" class="color-1">{{ event.titre|capitalize  }}</a></h3>

@@ -92,38 +92,15 @@
 </style>
 
 
-    <div class="am-content">
+<div class="am-content">
 
     <div class="container">
-        <div class="row">
-            <div class="col-xs-8 col-xs-offset-2">
-                <form name="form" method="post" action="{{ path('recherche') }}" >
-                    <div class="form-group">
-                        <div class="col-sm-3"></div>
-                        <div class="col-sm-6">
-                            <label>Vile </label> <select  class="selectpicker" data-style="btn-danger" name="ville">
-                                <option vaue="tunis">Tunis</option>
-                                <option name="Ariane">Ariana</option>
-                                <option >Béja</option>
-                                <option>Nabeul</option>
-                                <option>Ben arous</option>
-                                <option>Gabés</option>
-                                <option>Mednin</option>
-                                <option>Gafsa</option>
-                                <option>Hammamet</option>
 
-                                <option value="Tozeur">Tozeur</option>
-                            </select>
-                            <a href="colocation_homepage" ><button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Chercher</button></a>
-
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
         <hr>
+
+
         <!-- Begin of rows -->
-    {% for colocation  in colocations %}
+        {% for colocation  in colocations %}
         <div class="row carousel-row">
             <div class="col-xs-8 col-xs-offset-2 slide-row">
                 <div id="carousel-2" class="carousel slide slide-carousel" data-ride="carousel">
@@ -155,9 +132,11 @@
                 </div>
                 <div class="slide-footer">
                 <span class="pull-right buttons">
-                    <a href="{{ path('show_specific_colocation', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Afficher</button></a>
-                    <a href="{{ path('reponse_offre', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Repondre</button></a>
+                    <a href="{{ path('reponse_offre', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Modifier</button></a>
+                    <a href="{{ path('supprimer',{'id':colocation.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Supprimer</button></a>
+                    <a href="{{ path('show_specific_colocation', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Show</button></a>
                 </span>
+
                 </div>
             </div>
         </div>
@@ -166,7 +145,8 @@
     {% endfor %}
     </div>
 
-{% endblock %}
+
+    {% endblock %}
 
 
 
