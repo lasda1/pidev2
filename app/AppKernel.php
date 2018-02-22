@@ -21,15 +21,16 @@ class AppKernel extends Kernel
             new CoVoiturageBundle\CoVoiturageBundle(),
             new ObjetBundle\ObjetBundle(),
             new EventBundle\EventBundle(),
-            new EspaceEtudeBundle\EspaceEtudeBundle(),
-            new Mgilet\NotificationBundle\MgiletNotificationBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
-            new ColocationBundle\ColocationBundle(),
-            new Knp\Bundle\TimeBundle\KnpTimeBundle(),
-            new Nomaya\SocialBundle\NomayaSocialBundle(),
             new Ob\HighchartsBundle\ObHighchartsBundle(),
-
-
+            new Nomaya\SocialBundle\NomayaSocialBundle(),
+            new Knp\Bundle\TimeBundle\KnpTimeBundle(),
+            new ColocationBundle\ColocationBundle(),
+            new EspaceEtudeBundle\EspaceEtudeBundle(),
+            new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
+            new Discutea\DForumBundle\DForumBundle(),
+            new ForumBundle\ForumBundle(),       
+            
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

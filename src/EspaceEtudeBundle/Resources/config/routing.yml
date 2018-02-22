@@ -19,6 +19,12 @@ supp_documents:
 modif_documents:
     path:     /modif/{idDoc}/{idMatiere}
     defaults: { _controller: EspaceEtudeBundle:Document:modifierDocument }
+valider_documents:
+    path:     /valid/{idDoc}/{idMatiere}
+    defaults: { _controller: EspaceEtudeBundle:Document:validerDocument }
+afficher_section:
+    path:     /sections/{niveau}
+    defaults: { _controller: EspaceEtudeBundle:Matieres:afficherSection }
 
 
 
