@@ -1,0 +1,119 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block body %}
+
+    <div style="display: none">
+        {% block demandeActiveCov %}
+            active
+        {% endblock %}
+        {% block ActiveCov %}
+            active
+        {% endblock %}
+    </div>
+
+    <div class="panel panel-alt2">
+        <div class="panel-heading">
+            <span class="title">Demandes de Co-Voiturage</span>
+        </div>
+
+
+        {% if cov is defined and cov |length != 0 %}
+
+            {% for c in cov %}
+                {% if c.type == "d" %}
+                <div style="padding-bottom: 2px;">
+                    <table class="table table-striped table-fw-widget table-hover">
+                        <tbody class="no-border-x">
+                        <tr>
+                            <td class="onhovericon" style="font-size:20px; width: 30px;">
+                                <a href="{{ path('admininfodemande',{'id':c.id}) }}">
+                                    <span class="icon s7-info onhovericon" data-toggle="tooltip" data-placement="top"
+                                          title="" data-original-title="Informations"></span>
+                                </a>
+                            </td>
+                            <td style="width: 100px;">{{ c.user.username | upper }}</td>
+                            <td style="width: 320px;"><span class="labels">Depart : </span> {{ c.depart }}</td>
+                            <td><span class="labels">Destination : </span> {{ c.destination }}</td>
+                            {% if c.updated == null %}
+                                <td>{{ c.created |ago }}</td>
+                            {% else %}
+                                <td>{{ c.updated |ago }}</td>
+                            {% endif %}
+
+
+                            <td class="onhovericon" style="font-size:25px;">
+                                <a href="{{ path('admincovdemandedelete',{'id':c.id}) }}"><span
+                                            class="icon s7-close" data-toggle="tooltip" data-placement="top"
+                                            title="" data-original-title="Suppression"></span></a>
+                            </td>
+
+
+
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+                {% for r in cor %}
+                    {% if r.idc == c  %}
+                        <div style="padding-left: 60px;">
+                            <table class="table table-striped table-fw-widget table-hover">
+                                <tbody class="no-border-x">
+                                <tr>
+                                    <td style="width: 320px;"><span
+                                                class="labels">Demande de la part de  : </span>{{ r.user.username | upper }}
+                                    </td>
+                                    <td style="width: 200px;">{{ r.created |ago }}</td>
+                                    <td style="width: 190px;">
+                                        <span class="labels">Etat : </span>
+                                        {% if r.etat == "a" %}
+                                            En attente
+                                        {% elseif r.etat == "c" %}
+                                            Accepté
+                                        {% elseif r.etat == "r" %}
+                                            Refusé
+                                        {% endif %}
+                                    </td>
+
+
+                                    <td class="onhovericon" style="font-size:25px; width: 50px;">
+                                        <a href="{{ path('admincovdemanderequestdelete',{'id':r.id}) }}"><span
+                                                    class="icon s7-close-circle" data-toggle="tooltip"
+                                                    data-placement="top" title=""
+                                                    data-original-title="Supprimer"></span></a>
+                                    </td>
+                                    <td></td>
+
+
+                                </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                    {% endif %}
+            {% endfor %}
+        {% else %}
+            <div class="panel-body">
+                Aucune demande disponible
+            </div>
+        {% endif %}
+
+    </div>
+{% endblock %}
+
+{% block customScript %}
+    <script>
+        {% if success is defined %}
+        {% if success == 3 %}
+        $.gritter.add({
+            title: "Succès",
+            text: "Suppression faite avec succès.",
+            class_name: "success"
+        });
+        {% endif %}
+        {% endif %}
+    </script>
+{% endblock %}
