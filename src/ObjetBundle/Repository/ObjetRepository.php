@@ -22,17 +22,17 @@ class ObjetRepository extends \Doctrine\ORM\EntityRepository
         return $q->getResult();
     }
 
-    public function nbobjperd(){
+    public function nbobjperd($date){
         $q = $this->getEntityManager()
-            ->createQuery("select COUNT (o) from ObjetBundle:Objet o WHERE o.type='Chargeur'");
+            ->createQuery("select COUNT (o) from ObjetBundle:Objet o WHERE o.date =:date AND o.nature='Objet Perdu'")->setParameter('date',$date);
         return $q->getSingleScalarResult();;
 
     }
 
-    public function nbobjtrouv(){
+    public function nbobjtrouv($date){
         $q = $this->getEntityManager()
-            ->createQuery("select o from ObjetBundle:Objet o WHERE o.nature='Objet Trouvé' COUNT ");
-        return $q->getResult();
+            ->createQuery("select COUNT (o) from ObjetBundle:Objet o WHERE o.date =:date AND o.nature='Objet Trouvé'")->setParameter('date',$date);
+        return $q->getSingleScalarResult();;
     }
 
     function recherche($search){
