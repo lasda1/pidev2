@@ -285,24 +285,6 @@ class EventController extends Controller
     }
 
 
-    public function participantsAction(Event $event){
-
-        global $kernel;
-        $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
-
-
-        $em = $this->getDoctrine()->getManager();
-        //$event = $em->getRepository('EventBundle:Event')->find($event);
-        $avis = $em->getRepository('EventBundle:Avis')->findAll($event->getId());
-
-
-        return $this->render('@Event/event/showAvis.html.twig', array(
-
-            'avis'=>$avis,
-
-        ));
-    }
-
 
 
 }
