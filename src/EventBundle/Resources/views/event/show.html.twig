@@ -16,7 +16,15 @@
     <link rel="stylesheet"  href="{{ asset('fontawesome-free-5.0.6/web-fonts-with-css/css/fa-brands.min.css') }}"/>
     <link rel="stylesheet"  href="{{ asset('fontawesome-free-5.0.6/web-fonts-with-css/css/fa-regular.css') }}"/>
 
-
+    {% if app.request.hasPreviousSession %}
+        {% for type, messages in app.session.flashbag.all() %}
+            {% for message in messages %}
+                <div  class="alert alert-{{ type }}">
+                   <center><strong>{{ message }}</strong></center>
+                </div>
+            {% endfor %}
+        {% endfor %}
+    {% endif %}
 
     <div class="container">
     <div class="row">
@@ -40,19 +48,19 @@
                     <div class="col-md-3">
 
                         <div class="btnArea">
-                            <a href="{{ path('e_index') }}" class="btn btn-primary">Tout les evennements</a>
+                            <a href="{{ path('e_index') }}" class="btn btn-primary">Tout les Evennements</a>
                         </div>
                     </div>
                     <div class="col-md-3">
                         <div class="btnArea">
-                            <a href="{{ path('e_edit', { 'id': event.id }) }}" class="btn btn-success">Modifier l'evennement</a>
+                            <a href="{{ path('e_edit', { 'id': event.id }) }}" class="btn btn-success">Modifier l'Evennement</a>
                         </div>
                     </div>
                     {% if event.enable %}
                         <div class="col-md-3">
                             <div class="btnArea">
                                 {{ form_start(delete_form) }}
-                                <input class="btn btn-primary" type="submit" value="Désactiver l'evennement">
+                                <input class="btn btn-primary" type="submit" value="Désactiver l'Evennement">
                                 {{ form_end(delete_form) }}
                             </div>
                         </div>
@@ -91,7 +99,7 @@
                                         <i class="fa fa-calendar" aria-hidden="true"></i>
                                     </div>
                                     <div class="media-body iconContent">
-                                        <h4 class="media-heading color-2">Start Date</h4>
+                                        <h4 class="media-heading color-2">Date Début</h4>
                                         <p>{% if event.datedebut %}{{ event.datedebut|date('Y-m-d H:i:s') }}{% endif %}</p>
                                     </div>
                                 </li>
@@ -102,7 +110,7 @@
                                             <i class="fa fa-calendar" aria-hidden="true"></i>
                                         </div>
                                         <div class="media-body iconContent">
-                                            <h4 class="media-heading color-3">end Date</h4>
+                                            <h4 class="media-heading color-3">Date Fin</h4>
                                             <p>{{ event.datefin|date('Y-m-d H:i:s') }}</p>
                                         </div>
 
@@ -114,8 +122,8 @@
                                             <i class="fa fa-anchor" aria-hidden="true"></i>
                                         </div>
                                         <div class="media-body iconContent">
-                                            <h4 class="media-heading color-4">Available Seats</h4>
-                                            <p>Ouvert</p>
+                                            <h4 class="media-heading color-4">Places Restantes</h4>
+                                            <p>Pas de place</p>
                                         </div>
                                     </li>
                                 {% else %}
@@ -124,7 +132,7 @@
                                             <i class="fa fa-anchor" aria-hidden="true"></i>
                                         </div>
                                         <div class="media-body iconContent">
-                                            <h4 class="media-heading color-4">Available Seats</h4>
+                                            <h4 class="media-heading color-4">Places Restantes</h4>
                                             <p>{{ event.nbMax }}</p>
                                         </div>
                                     </li>
@@ -148,8 +156,11 @@
                             <div class="btnPart">
                                 <a href="{{ path('e_participate', { 'id': event.id }) }}" class="btn btn-primary btn-block bg-color-6">Participer</a>
                             </div>
-
-                        {% elseif app.user and avis.idevent==event.id %}
+                        {% elseif app.user and avis.idevent==event.id and event.datefin > 'now'|date('d - m -Y') %}
+                            <div class="btnPart">
+                                <a href="{{ path('e_annuler', { 'id': event.id }) }}" class="btn btn-primary btn-block bg-color-6">Annuler Participation</a>
+                            </div>
+                        {% elseif app.user and avis.idevent==event.id and (event.datefin <= 'now'|date('d - m -Y') or event.datedebut <= 'now'|date('d - m -Y') ) %}
                             <div class="btnPart" align="center">
                                 <h1><strong> Rating</strong></h1>
                         <a href="{{ path('e_rating', {'val': 1, 'id': event.id}) }}" class="btn"><i style="font-size: 30px" class="far fa-star">{% if avis.avis>0 %}<strong></strong>{% else %}{% endif %}</i></a>
