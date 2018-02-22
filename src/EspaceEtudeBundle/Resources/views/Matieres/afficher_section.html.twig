@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+
+    {% for section in sections %}
+        {% if section.niveau == niveau  %}
+        <div class="ffolder medium cyan">
+             <span ><a href="{{ path('afficher_matiere', {'section': section.id}) }}" style="color: #FFFFFF;text-decoration: none;"  >{{ section.libelle }}</a></span>
+        </div>
+        {% endif %}&nbsp;
+    {% endfor %}
+{% endblock %}
