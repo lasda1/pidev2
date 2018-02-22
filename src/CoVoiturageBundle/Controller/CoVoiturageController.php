@@ -224,6 +224,25 @@ class CoVoiturageController extends Controller
 
     }
 
+    public function viewOffrePaginateAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->getAllDesc('o');
+        $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $co, /* query NOT result */
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 4));
+        if ($cor) {
+            $cor = $cor[0];
+        } else {
+            $cor = null;
+        }
+
+        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig', ['cov' => $co,'cor' => $cor, 'pagination' => $pagination]);
+    }
+
     public function viewDemandeAction()
     {
         $em = $this->getDoctrine()->getManager();
@@ -233,6 +252,27 @@ class CoVoiturageController extends Controller
             return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co, 'cor' => $cor[0]]);
         }
         return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co, 'cor' => null]);
+
+    }
+
+    public function viewDemandePaginateAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->getAllDescD('d');
+        $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $co, /* query NOT result */
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 4));
+        if ($cor) {
+            $cor = $cor[0];
+        } else {
+            $cor = null;
+        }
+        return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co,'cor' => $cor, 'pagination' => $pagination]);
+
+        //return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co, 'cor' => null]);
 
     }
 
@@ -284,12 +324,17 @@ class CoVoiturageController extends Controller
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->getAllDesc('o');
         $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $co, /* query NOT result */
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 4));
         if ($cor) {
             $cor = $cor[0];
         } else {
             $cor = null;
         }
-        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig', ['cov' => $co, 'cor' => $cor, 'success' => $request->get('success')]);
+        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig', ['cov' => $co, 'cor' => $cor ,'pagination' => $pagination, 'success' => $request->get('success')]);
     }
 
     public function viewDemandeParamAction(Request $request)
@@ -297,26 +342,20 @@ class CoVoiturageController extends Controller
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->getAllDescD('d');
         $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        $paginator = $this->get('knp_paginator');
+        $pagination = $paginator->paginate(
+            $co, /* query NOT result */
+            $request->query->getInt('page', 1),
+            $request->query->getInt('limit', 4));
         if ($cor) {
             $cor = $cor[0];
         } else {
             $cor = null;
         }
-        return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co, 'cor' => $cor, 'success' => $request->get('success')]);
+        return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co, 'cor' => $cor,'pagination' => $pagination, 'success' => $request->get('success')]);
     }
 
-    public function viewOffrePaginateAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $co = $em->getRepository(CoVoiturage::class)->getAllDesc2('o');
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $co, /* query NOT result */
-            $request->query->getInt('page', 1),
-            $request->query->getInt('limit', 2));
 
-        return $this->render('CoVoiturageBundle:Default:viewoffre.html.twig', ['cov' => $co, 'pagination' => $pagination]);
-    }
 
 
     public function modifyOffreAction(Request $request)

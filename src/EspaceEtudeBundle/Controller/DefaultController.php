@@ -15,6 +15,8 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
+        $user = $this->getUser();
+        if ($user) {
         $em=$this->getDoctrine()->getManager();
         $niveau=new Niveau();
         $niveau=$niveau->getAvailableTypes();
@@ -22,6 +24,8 @@ class DefaultController extends Controller
 
         return $this->render('@EspaceEtude/layout.html.twig',array('niveaux'=>$niveau,'sections'=>$section
         ));
+        }
+        return $this->redirectToRoute('fos_user_security_login');
     }
 
 

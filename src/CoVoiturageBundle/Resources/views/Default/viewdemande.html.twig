@@ -108,7 +108,7 @@
                 </thead>
                 <tbody class="no-border-x">
 
-                {% for c in cov %}
+                {% for c in pagination %}
                     <tr>
                         <td class="onhovericon" style="font-size:20px;">
                             <a href="{{ path('co_voiturage_infodemande',{'id':c.id}) }}">
@@ -168,6 +168,12 @@
 
         </div>
     </div>
+
+    <center>
+        <div class="navigation">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    </center>
 
 
 
