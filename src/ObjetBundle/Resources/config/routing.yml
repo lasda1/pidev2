@@ -49,6 +49,10 @@ etat_obj:
     path:     /objets/etat/{$idObjet}
     defaults: { _controller: ObjetBundle:Objet:viewetat }
 
+showsingle:
+    path:     /objets/showsingle/{id}
+    defaults: { _controller: ObjetBundle:Objet:showsingle }
+
 
 
 

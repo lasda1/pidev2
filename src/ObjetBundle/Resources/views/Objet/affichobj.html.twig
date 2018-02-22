@@ -24,7 +24,7 @@
 
             <tbody> <thead>
             <tr>
-                <th>User</th>
+                {#<th>User</th>#}
                 <th>Photo</th>
                 <th>Date</th>
                 <th>Type</th>
@@ -47,24 +47,18 @@
 
 
                 <tr class="odd gradeX">
-                    <td>{{ objet.User }}</td>
+                    {#<td>{{ objet.User }}</td>#}
                     <td class="center"><img id="photo" src="{{ asset(objet.Photo) }}"  height="120" width="120"></td>
                     <td>{{ objet.Date |date }}</td>
                     <td>{{ objet.Type }}</td>
                     <td class="center">{{ objet.Description }}</td>
                     <td>{{ objet.Lieu }}</td>
-                    <td align="center" id="modifier">{% if objet.User.id==app.user.id %}<a href="{{ path("updateobj", { "id":objet.id }) }}" ><button class="btn btn-alt1"><div class="icon" data-toggle="modal" data-target="#Modifier"><span class="s7-note2" data-toggle="tooltip" data-placement="top" data-original-title="Modifier"></span></div></button></a>{% endif %}</td>
-                    <td align="center" id="supprimer">{% if objet.User.id==app.user.id %}<a href="{{ path("deleteobj", { "id":objet.id }) }}" ><button class="btn btn-danger"><div class="icon" data-toggle="modal" data-target="#Supprimer"><span class="s7-trash" data-toggle="tooltip" data-placement="top" data-original-title="Supprimer"></span></div></button></a>{% endif %}</td>
-                    {% if objet.User.id!=app.user.id %}
-                        {% if i==0  %}
-                    <td><button class="btn btn-alt2"><a href="{{ path("reclamer_obj", { "id":objet.id })}}" ><div class="icon" data-toggle="modal" data-target="#Modifier"><span class="s7-back-2" data-toggle="tooltip" data-placement="top" data-original-title="Votre Objet??!"></span></div></a></button></td>
-                        {% else %}
-                            <td></td>
-                            {% endif %}
-                        {% elseif objet.User.id==app.user.id %}
-                    <td><button class="btn btn-alt4"><a href="{{ path("etat_obj",{"id":objet.id})}}" ><div class="icon" data-toggle="modal" data-target="#Modifier"><span class="s7-info" data-toggle="tooltip" data-placement="top" data-original-title="view état"></span></div></a></button></td>
+                    <td><button class="btn btn-alt4"><a href="{{ path("showsingle",{"id":objet.id})}}" ><div class="icon" data-toggle="modal" data-target="#Modifier"><span class="s7-info" data-toggle="tooltip" data-placement="top" data-original-title="Informations"></span></div></a></button></td>
+                    {% if objet.User.id==app.user.id  %}
+                    <td align="center" id="modifier"><a href="{{ path("updateobj", { "id":objet.id }) }}" ><button class="btn btn-alt1"><div class="icon" data-toggle="modal" data-target="#Modifier"><span class="s7-note2" data-toggle="tooltip" data-placement="top" data-original-title="Modifier"></span></div></button></a></td>
+                    <td align="center" id="supprimer"><a href="{{ path("deleteobj", { "id":objet.id }) }}" ><button class="btn btn-danger"><div class="icon" data-toggle="modal" data-target="#Supprimer"><span class="s7-trash" data-toggle="tooltip" data-placement="top" data-original-title="Supprimer"></span></div></button></a>      </td>
                     {% endif %}
-                    <td>""{{ socialButtons() }}""</td>
+                    {#<td>""{{ socialButtons() }}""</td>#}
                 </tr>
 
             {% endfor %}
