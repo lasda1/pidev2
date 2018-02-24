@@ -804,17 +804,30 @@
 
                                 <li><a href="#"><span class="glyphicon glyphicon-send"></span> Link</a></li>
                                 <li><a href="#"><span class="glyphicon glyphicon-plane"></span> Active Link</a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-cloud"></span> Link</a></li>
+                                <li><a href="{{ path('discutea_forum_admin_dashboard') }}"><span class="glyphicon glyphicon-cloud"></span> Forum</a></li>
 
                                 <li class="panel panel-default {% block ActiveCov %} {% endblock %}" id="dropdown">
-                                    <a data-toggle="collapse" href="#dropdown-lvl1">
+                                    <a data-toggle="collapse" href="#dropdown-lv1">
                                         <span class=" glyphicon glyphicon-road"></span> CoVoiturage <span class="caret"></span>
                                     </a>
-                                    <div id="dropdown-lvl1" class="panel-collapse collapse">
+                                    <div id="dropdown-lv1" class="panel-collapse collapse">
                                         <div class="panel-body">
                                             <ul class="nav navbar-nav">
                                                 <li class="{% block offreActiveCov %} {% endblock %}"><a href="{{ path('admincovoffres') }}">Offres</a></li>
                                                 <li class="{% block demandeActiveCov %} {% endblock %}"><a href="{{ path('admincovdemande') }}">Demandes</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="panel panel-default" id="dropdown1">
+                                    <a data-toggle="collapse" href="#dropdown1-lv1">
+                                        <span class=" glyphicon glyphicon-road"></span> Espace Educatif <span class="caret"></span>
+                                    </a>
+                                    <div id="dropdown1-lv1" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <ul class="nav navbar-nav">
+                                                <li class=""><a href="{{ path('afficher_section_admin') }}">Section</a></li>
+                                                <li class=""><a href="{{ path('admincovdemande') }}">Matiere</a></li>
                                             </ul>
                                         </div>
                                     </div>

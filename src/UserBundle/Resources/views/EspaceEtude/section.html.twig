@@ -1,0 +1,80 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block body %}
+    <div class="panel panel-alt2">
+        <div class="panel-heading">
+            <span class="title">Sections</span>
+            <button id="myBtn" style="float: right;margin-top: -31px;" class="btn btn-warning">nouvelle section</button>
+        </div>
+            <div class="panel-body">
+                {% for n in niveaux %}
+                <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="widget widget-fullwidth widget-small">
+                                        <div class="widget-head">
+                                            <div class="title">{{ n }}</div>
+                                        </div>
+                                        <div class="table-responsive noSwipe">
+                                            <table class="table table-striped table-fw-widget table-hover">
+                                                <thead>
+                                                <tr>
+                                                    <th width="25%">libelle</th>
+                                                    <th width="10%">niveau</th>
+                                                    <th width="10%">supprimer</th>
+                                                </tr>
+                                                </thead>
+                                                <tbody class="no-border-x">
+                                                {% for section in sections %}
+                                                    {% if section.niveau== n %}
+                                                <tr>
+                                                    <td>{{ section.libelle }}</td>
+                                                    <td>{{ section.niveau }}</td>
+                                                    <td><a href="{{ path('delete_section',{'id': section.id}) }}"> supprimer</a></td>
+                                                </tr>
+                                                    {% endif %}
+                                                {% endfor %}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                </div>
+                {% endfor %}
+            </div>
+
+
+    </div>
+    <div id="myModal" onclick="modal1();" class="modal">
+
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span id="out" class="close">&times;</span>
+            <h3 id="title">Ajouter un document</h3>
+            <div class="wrap">
+                {{ form_start(form, {'method': 'post', 'action': path('afficher_section_admin'), 'attr': {'class': 'form-horizontal group-border-dashed','style':'border-radius: 0px;' }}) }}
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">liblle du fichier :</label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.libelle,{'attr':{'class':'form-control','placeholder':'Saisir le nom du nouvelle section'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">language :</label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.niveau,{'attr':{'class':'form-control',}}) }}
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-space btn-primary">Ajouter</button>
+
+                </div>
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
