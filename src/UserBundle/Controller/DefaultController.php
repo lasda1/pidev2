@@ -11,6 +11,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use EspaceEtudeBundle\Form\SectionType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class DefaultController extends Controller
 {
@@ -31,6 +32,9 @@ class DefaultController extends Controller
     }
 
     public function adminAction(){
+        if (false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            return $this->redirectToRoute('fos_user_security_logout');
+             }
         return $this->render('UserBundle::admin.html.twig');
     }
 
@@ -188,6 +192,6 @@ class DefaultController extends Controller
         $sec=$em->getRepository(Section::class)->find($request->attributes->get('id'));
         $em->remove($sec);
         $em->flush();
-        return $this->redirectToRoute("afficher_section");
+        return $this->redirectToRoute("afficher_section_admin");
     }
 }
