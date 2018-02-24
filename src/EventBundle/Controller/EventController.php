@@ -121,7 +121,7 @@ class EventController extends Controller
             return $this->redirectToRoute('e_index');
         } else {
             $date=new \DateTime("now + 3 day");
-            var_dump($date);
+
             if ($event->getDatedebut()<=$date){
                 $this->addFlash('danger','Vous ne pouvez pas modifier cet evennement');
                 return $this->redirectToRoute('e_show', array('id' => $event->getId()));
