@@ -159,16 +159,16 @@ class ObjetController extends Controller
             return ($a->getDate() > $b->getDate());
         });
         $period = new DatePeriod(
-            (new DateTime($objets[0]->getDate()->format('Y-m-d'))),
+            (new DateTime($objets[0]->getDate()->format('Y-m-d')))->modify('-1 day'),
             new DateInterval('P1D'),
-            (new DateTime($objets[count($objets)-1]->getDate()->format('Y-m-d')))
-        );
+            (new DateTime($objets[count($objets)-1]->getDate()->format('Y-m-d')))->modify('+1 day')
+);
         $dates = array();
         foreach ($period as $key => $value) {
             $date = $value->format('Y-m-d')  ;
             array_push($dates,$date);
         }
-        return new Response($date);
+        //return new Response($date);
         $categories = array();
         $tab = array() ;
         foreach ($objets as $object)
@@ -257,6 +257,16 @@ class ObjetController extends Controller
             $msg='Aucune Réclamation';
         }
         return $this->render('ObjetBundle:Objet:updateobj.html.twig',array('msg'=>$msg));
+
+    }
+
+    public function showsingleAction($id)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $objet=$em->getRepository(Objet::class)->find($id);
+        $interaction= new Interaction();
+
+        return $this->render('ObjetBundle:Objet:showsingle.html.twig',array('objet'=>$objet,'interaction'=>$interaction));
 
     }
 
