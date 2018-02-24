@@ -68,4 +68,11 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
+afficher_section_admin:
+    path:     /admin/section
+    defaults: { _controller: UserBundle:Default:section }
+delete_section:
+    path:     /admin/section/{id}
+    defaults: { _controller: UserBundle:Default:delete }
+
 
