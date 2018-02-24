@@ -5,8 +5,11 @@ namespace UserBundle\Controller;
 use CoVoiturageBundle\Entity\CoVoiturage;
 use CoVoiturageBundle\Entity\CoVoiturageDays;
 use CoVoiturageBundle\Entity\CoVoiturageRequests;
+use EspaceEtudeBundle\Entity\Section;
+use EspaceEtudeBundle\Enum\Niveau;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use EspaceEtudeBundle\Form\SectionType;
 use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends Controller
@@ -157,4 +160,34 @@ class DefaultController extends Controller
         return $this->redirectToRoute('admincovdemandesparam', ['success' => 3]);
     }
 
+    public function sectionAction(Request $request){
+        $user = $this->getUser();
+        if ($user) {
+            $sections=new Section();
+            $em=$this->getDoctrine()->getManager();
+            $form = $this->createForm(SectionType::class, $sections);
+            $form->handleRequest($request);
+
+            if ($form->isSubmitted() && $form->isValid()) {
+                $s=$form->getData();
+                $em->persist($s);
+                $em->flush();
+            }
+            $em=$this->getDoctrine()->getManager();
+            $niveau=new Niveau();
+            $niveau=$niveau->getAvailableTypes();
+            $section=$em->getRepository(Section::class)->findAll();
+
+            return $this->render('@User/EspaceEtude/section.html.twig',array('niveaux'=>$niveau,'sections'=>$section,'form'=>$form->createView(),
+            ));
+        }
+        return $this->redirectToRoute('fos_user_security_login');
+    }
+    public function deleteAction(Request $request){
+        $em=$this->getDoctrine()->getManager();
+        $sec=$em->getRepository(Section::class)->find($request->attributes->get('id'));
+        $em->remove($sec);
+        $em->flush();
+        return $this->redirectToRoute("afficher_section");
+    }
 }
