@@ -28,7 +28,7 @@ class AppKernel extends Kernel
             new Knp\Bundle\TimeBundle\KnpTimeBundle(),
             new Nomaya\SocialBundle\NomayaSocialBundle(),
             new Ob\HighchartsBundle\ObHighchartsBundle(),
-
+            new MyAppMailBundle\MyAppMailBundle(),
 
         ];
 

@@ -11,6 +11,12 @@ web_profiler:
     toolbar: true
     intercept_redirects: false
 
+swiftmailer:
+    transport: "%mailer_transport%"
+    username: "%mailer_user%"
+    password: "%mailer_password%"
+
+
 monolog:
     handlers:
         main:

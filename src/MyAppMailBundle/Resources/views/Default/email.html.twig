@@ -1,0 +1,21 @@
+
+
+{% extends '::base.html.twig' %}
+
+{% block pageName %}
+    <h2>Mes offres</h2>
+    <ol class="breadcrumb">
+        <li><a href="{{ path('co_voiturage_homepage') }}">Colocation</a></li>
+        <li class="active">Mes offres</li>
+    </ol>
+{% endblock %}
+
+
+
+
+
+{% block body %}
+Bonjour Mr/Mme {{ nom }} {{ prenom }}
+<br>
+Merci de nous avoir contactés
+{% endblock %}
