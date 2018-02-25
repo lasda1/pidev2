@@ -16,7 +16,6 @@ class EventRepository extends \Doctrine\ORM\EntityRepository
             ->orWhere('UPPER(e.categorie) Like UPPER(:valeur)')
             ->orWhere('UPPER(e.description) Like UPPER(:valeur)')
             ->orWhere('UPPER(e.lieu) Like UPPER(:valeur)')
-
             ->setParameter('valeur', '%'.$valeur.'%')
             ->orderBy('e.datedebut', 'DESC')
             ->getQuery();

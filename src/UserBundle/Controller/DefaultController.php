@@ -212,7 +212,6 @@ class DefaultController extends Controller
     public function indexAdminAction(Request $request)
     {
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
-
             $em = $this->getDoctrine()->getManager();
             $value=0;
             $events = $em->getRepository('EventBundle:Event')->createQueryBuilder('e')
@@ -221,15 +220,8 @@ class DefaultController extends Controller
                 ->setParameter('valeur', '%'.$value.'%')
                 ->getQuery()
                 ->execute();
-            $paginator = $this->get('knp_paginator');
-            $pagination = $paginator->paginate(
-                $events, /* query NOT result */
-                $request->query->getInt('page', 1),
-                $request->query->getInt('limit', 6));
-
             return $this->render('@User/event/indexAdmin.html.twig', array(
-                'events' => $events,
-                'pagination' => $pagination
+                'events' => $events
             ));
         }
 
@@ -249,15 +241,9 @@ class DefaultController extends Controller
                 ->setParameter('valeur', '%'.$value.'%')
                 ->getQuery()
                 ->execute();
-            $paginator = $this->get('knp_paginator');
-            $pagination = $paginator->paginate(
-                $events, /* query NOT result */
-                $request->query->getInt('page', 1),
-                $request->query->getInt('limit', 6));
 
             return $this->render('@User/event/indexAdminNonApprouver.html.twig', array(
-                'events' => $events,
-                'pagination' => $pagination
+                'events' => $events
             ));
         }
 
