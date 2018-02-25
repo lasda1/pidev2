@@ -75,4 +75,22 @@ delete_section:
     path:     /admin/section/{id}
     defaults: { _controller: UserBundle:Default:delete }
 
+admin_index:
+    path:     /adminIndex
+    defaults: { _controller: "UserBundle:Default:indexAdmin" }
+    methods:  GET
 
+admin_show:
+    path:     /{id}/adminShow
+    defaults: { _controller: "UserBundle:Default:showAdmin" }
+    methods:  GET
+
+admin_approuver:
+    path:     /{id}/adminApprouver
+    defaults: { _controller: "UserBundle:Default:approuver" }
+    methods:  GET
+
+admin_index_approuve:
+    path:     /adminIndexApprouver
+    defaults: { _controller: "UserBundle:Default:indexAdminApprouver" }
+    methods:  GET

@@ -37,6 +37,9 @@ class EventController extends Controller
         ));
     }
 
+
+
+
     /**
      * Creates a new event entity.
      *
@@ -66,6 +69,7 @@ class EventController extends Controller
                 );
                 $em = $this->getDoctrine()->getManager();
                 $event->setCreatedAt(new \DateTime());
+                $event->setEnable(0);
                 $event->setUser($user);
                 $event->setPhoto($fileName);
                 $em->persist($event);
@@ -102,6 +106,8 @@ class EventController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
+
 
     /**
      * Displays a form to edit an existing event entity.
