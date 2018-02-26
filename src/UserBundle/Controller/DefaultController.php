@@ -233,31 +233,32 @@ class DefaultController extends Controller
         return $this->redirectToRoute("afficher_matiere_admin",array('id'=>$request->attributes->get('ids')));
 
     }
-    public function updateMatiereAction(Request $request){
-        if($request->isXmlHttpRequest()){
-        $id=$request->get("id");
-        $champ=$request->get("champs");
-        $val=$request->get("val");
-        $em=$this->getDoctrine()->getManager();
-        if($champ=="libelle"){
-            $matiere=$em->getRepository(Matiere::class)->find($id);
-            $matiere=$matiere->setLibelle($val);
-            $em->persist($matiere);
-            $em->flush();
-        }elseif ($champ=="coefficient"){
-            $matiere=$em->getRepository(Matiere::class)->find($id);
-            $matiere=$matiere->setCoefficient($val);
-            $em->persist($matiere);
-            $em->flush();
-        }else{
-            $matiere=$em->getRepository(Matiere::class)->find($id);
-            $matiere=$matiere->setType($val);
-            $em->persist($matiere);
-            $em->flush();
-        }
+    public function updateMatiereAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+            $id = $request->get("id");
+            $champ = $request->get("champs");
+            $val = $request->get("val");
+            $em = $this->getDoctrine()->getManager();
+            if ($champ == "libelle") {
+                $matiere = $em->getRepository(Matiere::class)->find($id);
+                $matiere = $matiere->setLibelle($val);
+                $em->persist($matiere);
+                $em->flush();
+            } elseif ($champ == "coefficient") {
+                $matiere = $em->getRepository(Matiere::class)->find($id);
+                $matiere = $matiere->setCoefficient($val);
+                $em->persist($matiere);
+                $em->flush();
+            } else {
+                $matiere = $em->getRepository(Matiere::class)->find($id);
+                $matiere = $matiere->setType($val);
+                $em->persist($matiere);
+                $em->flush();
+            }
             return new JsonResponse("success");
         }
-
+    }
 
 
     public function showAdminAction(Event $event){
