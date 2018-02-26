@@ -23,14 +23,16 @@ class AppKernel extends Kernel
             new EventBundle\EventBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Ob\HighchartsBundle\ObHighchartsBundle(),
+            new MyAppMailBundle\MyAppMailBundle(),
+
             new Nomaya\SocialBundle\NomayaSocialBundle(),
             new Knp\Bundle\TimeBundle\KnpTimeBundle(),
             new ColocationBundle\ColocationBundle(),
             new EspaceEtudeBundle\EspaceEtudeBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Discutea\DForumBundle\DForumBundle(),
-            new ForumBundle\ForumBundle(),       
-            
+            new ForumBundle\ForumBundle(),
+
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
