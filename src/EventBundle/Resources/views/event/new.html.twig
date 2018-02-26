@@ -5,15 +5,18 @@
 
         #map {
             height: 400px;
+
         }
         .pac-container {
             font-family: Roboto;
         }
+
         #type-selector {
             color: #fff;
             background-color: #4d90fe;
             padding: 5px 11px 0px 11px;
         }
+
         #type-selector label {
             font-family: Roboto;
             font-size: 13px;
@@ -23,40 +26,27 @@
 <div class="col-md-1"></div>
 <div class="col-md-6">
     {{ form_start(form) }}
-    <label>Nom de l'évennement</label>
     {{ form_widget(form.titre,{'attr':{'class':'form-control','placeholder':"Nom de l'evennement"}}) }}
-    <br>
-    <label>Description de l'évennement</label>
     {{ form_widget(form.description,{'attr':{'class':'form-control','placeholder':"description de l'evennement"}}) }}
-    <br>
-    <label>Date de l'évennement</label>
-<br>
-    {{ form_widget(form.datedebut,{'attr':{'class':'','placeholder':"Date de l'evennement"}}) }}
-
-
-    {{ form_widget(form.datefin,{'attr':{'class':'','placeholder':"Date de Fin de l'evennement s'il y a plusieurs jours"}}) }}
-    <br>
-    <label>Logo de l'évennement</label>
-    {{ form_widget(form.photo,{'attr':{'class':'form-control','placeholder':"Logo de l'evennement"}}) }}
-    <br>
-    <label>Nombre de place</label>
+    {{ form_widget(form.datedebut,{'attr':{'class':'form-control ','placeholder':"Date de l'evennement"}}) }}
+    {{ form_widget(form.datefin,{'attr':{'class':'form-control ','placeholder':"Date de Fin de l'evennement s'il y a plusieurs jours"}}) }}
+    {{ form_widget(form.photo,{'attr':{'class':'form-control ','placeholder':"Logo de l'evennement"}}) }}
     {{ form_widget(form.nbMax,{'attr':{'class':'form-control ','placeholder':"Nombre de place"}}) }}
-    <br>
-    <label>Lieu de l'évennement</label>
-    {{ form_widget(form.lieu,{'attr':{'class':'form-control controls','placeholder':'Où vas se passer?'}}) }}
-    <br>
 
+    {{ form_widget(form.lieu,{'attr':{'class':'form-control controls','placeholder':'Où vas se passer?'}}) }}
     <div class="col-md-6">
         {{ form_widget(form.x,{'attr':{'class':'form-control','placeholder':'x'}}) }}
     </div>
     <div class="col-md-6">
         {{ form_widget(form.y,{'attr':{'class':'form-control','placeholder':'y'}}) }}
-        <br>
+
     </div>
     {{ form_widget(form.categorie,{'attr':{'class':'form-control ','placeholder':"Categorie de l'evennement"}}) }}
-    <br>
+
+
 {{ form_widget(form) }}
-        <input type="submit" class="btn btn-primary" value="Publier l'evennement" onclick="xy()" />
+
+        <input type="submit" value="Publier l'evennement" onclick="xy()" />
     {{ form_end(form) }}
     </div>
 
@@ -67,7 +57,12 @@
 
 
     <script>
+        function xy() {
 
+            document.getElementById('eventbundle_event_x').value=map.center.lat();
+
+            document.getElementById('eventbundle_event_y').value=map.center.lng();
+        }
 
 
 
@@ -99,14 +94,24 @@ var marker;
                 draggable: true,
                 animation: google.maps.Animation.DROP,
                 position: map.center
+
+
             });
             marker.setMap(map);
             marker.addListener('click', toggleBounce);
+
+
             google.maps.event.addListener(marker, 'drag', function(event) {
                 document.getElementById('eventbundle_event_x').value =event.latLng.lat();
                 document.getElementById('eventbundle_event_y').value= event.latLng.lng();
 
             });
+
+
+
+
+
+
             autocomplete.addListener('place_changed', function() {
                 infowindow.close();
                 marker.setVisible(false);
@@ -118,11 +123,18 @@ var marker;
                     map.fitBounds(place.geometry.viewport);
 
                 } else {
+
                     map.setCenter(place.geometry.location);
                     map.setZoom(10);  // Why 17? Because it looks good.
-                };
+
+                }
+
+
+                ;
                 marker.setPosition(place.geometry.location);
                 marker.setVisible(true);
+
+
                 var address = '';
                 if (place.address_components) {
                     address = [
@@ -131,9 +143,11 @@ var marker;
                         (place.address_components[2] && place.address_components[2].short_name || '')
                     ].join(' ');
                 }
+
                 infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
                 infowindow.open(map, marker);
             });
+
             // Sets a listener on a radio button to change the filter type on Places
             // Autocomplete.
             function setupClickListener(id, types) {
@@ -142,6 +156,8 @@ var marker;
                     autocomplete.setTypes(types);
                 });
             }
+
+
         }
         function toggleBounce() {
             if (marker.getAnimation() !== null) {
@@ -153,65 +169,5 @@ var marker;
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWb0i4faRZm8P5oEN-ukUF_CACQzWt480&libraries=places&callback=initMap"
             async defer></script>
-
-
-    <base href="https://demos.telerik.com/kendo-ui/datepicker/rangeselection">
-    <style>html { font-size: 14px; font-family: Arial, Helvetica, sans-serif; }</style>
-    <title></title>
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.common-material.min.css" />
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.material.min.css" />
-    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.material.mobile.min.css" />
-
-    <script src="https://kendo.cdn.telerik.com/2018.1.221/js/jquery.min.js"></script>
-    <script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.all.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            function startChange() {
-                var startDate = start.value(),
-                    endDate = end.value();
-
-                if (startDate) {
-                    startDate = new Date(startDate);
-                    startDate.setDate(startDate.getDate());
-                    end.min(startDate);
-                } else if (endDate) {
-                    start.max(new Date(endDate));
-                } else {
-                    endDate = new Date();
-                    start.max(endDate);
-                    end.min(endDate);
-                }
-            }
-
-            function endChange() {
-                var endDate = end.value(),
-                    startDate = start.value();
-
-                if (endDate) {
-                    endDate = new Date(endDate);
-                    endDate.setDate(endDate.getDate());
-                    start.max(endDate);
-                } else if (startDate) {
-                    end.min(new Date(startDate));
-                } else {
-                    endDate = new Date();
-                    start.max(endDate);
-                    end.min(endDate);
-                }
-            }
-
-            var start = $("#eventbundle_event_datedebut").kendoDatePicker({
-                change: startChange
-            }).data("kendoDatePicker");
-
-            var end = $("#eventbundle_event_datefin").kendoDatePicker({
-                change: endChange
-            }).data("kendoDatePicker");
-
-            start.max(end.value());
-            end.min(start.value());
-        });
-    </script>
 
 {% endblock %}

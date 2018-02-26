@@ -37,6 +37,9 @@ class EventController extends Controller
         ));
     }
 
+
+
+
     /**
      * Creates a new event entity.
      *
@@ -66,6 +69,7 @@ class EventController extends Controller
                 );
                 $em = $this->getDoctrine()->getManager();
                 $event->setCreatedAt(new \DateTime());
+                $event->setEnable(0);
                 $event->setUser($user);
                 $event->setPhoto($fileName);
                 $em->persist($event);
@@ -103,6 +107,8 @@ class EventController extends Controller
         ));
     }
 
+
+
     /**
      * Displays a form to edit an existing event entity.
      *
@@ -121,7 +127,7 @@ class EventController extends Controller
             return $this->redirectToRoute('e_index');
         } else {
             $date=new \DateTime("now + 3 day");
-            var_dump($date);
+
             if ($event->getDatedebut()<=$date){
                 $this->addFlash('danger','Vous ne pouvez pas modifier cet evennement');
                 return $this->redirectToRoute('e_show', array('id' => $event->getId()));
@@ -284,24 +290,6 @@ class EventController extends Controller
         ));
     }
 
-
-    public function participantsAction(Event $event){
-
-        global $kernel;
-        $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
-
-
-        $em = $this->getDoctrine()->getManager();
-        //$event = $em->getRepository('EventBundle:Event')->find($event);
-        $avis = $em->getRepository('EventBundle:Avis')->findAll($event->getId());
-
-
-        return $this->render('@Event/event/showAvis.html.twig', array(
-
-            'avis'=>$avis,
-
-        ));
-    }
 
 
 
