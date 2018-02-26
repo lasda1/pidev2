@@ -124,4 +124,6 @@ class Interaction
     {
         return $this->idObjet;
     }
+
+
 }

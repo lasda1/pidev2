@@ -74,6 +74,8 @@ afficher_section_admin:
 delete_section:
     path:     /admin/section/{id}
     defaults: { _controller: UserBundle:Default:delete }
+
+
 afficher_matiere_admin:
     path:     /admin/matiere/{id}
     defaults: { _controller: UserBundle:Default:matiere }
@@ -83,3 +85,24 @@ delete_matiere:
 update_matiere:
     path: /admin/update
     defaults: {_controller: UserBundle:Default:updateMatiere}
+
+
+admin_index:
+    path:     /adminIndex
+    defaults: { _controller: "UserBundle:Default:indexAdmin" }
+    methods:  GET
+
+admin_show:
+    path:     /{id}/adminShow
+    defaults: { _controller: "UserBundle:Default:showAdmin" }
+    methods:  GET
+
+admin_approuver:
+    path:     /{id}/adminApprouver
+    defaults: { _controller: "UserBundle:Default:approuver" }
+    methods:  GET
+
+admin_index_approuve:
+    path:     /adminIndexApprouver
+    defaults: { _controller: "UserBundle:Default:indexAdminApprouver" }
+    methods:  GET

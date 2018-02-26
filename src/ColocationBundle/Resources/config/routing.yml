@@ -29,7 +29,15 @@ mesoffres:
 
 reponse_offre:
       path:     /user/colocation/reponse/{id}
-      defaults: { _controller: ColocationBundle:Default:reponse}
+      defaults: { _controller: MyAppMailBundle:Default:reponse}
+
+indexColocation:
+      path:     /user/colocation/indexColocation
+      defaults: { _controller: ColocationBundle:Default:indexColocation}
+mail:
+      path:     /mail
+      defaults: { _controller: ColocationBundle:Default:mail}
+
 
 
 

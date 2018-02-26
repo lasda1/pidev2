@@ -39,7 +39,7 @@
                         </div>
                     </div>
                 </div>
-            {% elseif event.enable==1 and app.user!=event.user  %}
+            {% elseif event.enable==1 and app.user!=event.user and event.datedebut < 'now'|date('d - m -Y')  %}
                 <div class="col-md-4     col-sm-6 col-xs-12 block">
                     <div class="thumbnail thumbnailContent">
                         <a href="{{ path('e_show', { 'id': event.id }) }}"><img  src="{{ asset(event.photo) }}" alt="image" class="img-responsive" height="70%" width="70%"></a>
