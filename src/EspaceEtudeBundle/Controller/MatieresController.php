@@ -17,8 +17,8 @@ class MatieresController extends Controller
         $user = $this->getUser();
         if ($user) {
         $em=$this->getDoctrine()->getManager();
-        $matiere=$em->getRepository(Section::class)->findOneBy(array('id' =>$request->attributes->get('section')));
-        $matiere=$matiere->getMatiere();
+        $section=$em->getRepository(Section::class)->findOneBy(array('id' =>$request->attributes->get('section')));
+        $matiere=$section->getMatiere();
         return $this->render('EspaceEtudeBundle:Matieres:afficher_matiere.html.twig', array(
             'matieres'=>$matiere
         ));

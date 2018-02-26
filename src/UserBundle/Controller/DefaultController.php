@@ -5,10 +5,13 @@ namespace UserBundle\Controller;
 use CoVoiturageBundle\Entity\CoVoiturage;
 use CoVoiturageBundle\Entity\CoVoiturageDays;
 use CoVoiturageBundle\Entity\CoVoiturageRequests;
+use EspaceEtudeBundle\Entity\Matiere;
 use EspaceEtudeBundle\Entity\Section;
 use EspaceEtudeBundle\Enum\Niveau;
+use EspaceEtudeBundle\Form\MatiereType;
 use EventBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use EspaceEtudeBundle\Form\SectionType;
 use Symfony\Component\HttpFoundation\Response;
@@ -195,8 +198,65 @@ class DefaultController extends Controller
         $em->flush();
         return $this->redirectToRoute("afficher_section_admin");
     }
+    public function matiereAction(Request $request){
+        $user = $this->getUser();
+        if ($user) {
+            $newMatiere=new Matiere();
+            $form = $this->createForm(MatiereType::class, $newMatiere);
+            $form->handleRequest($request);
+            $em=$this->getDoctrine()->getManager();
+            $section=$em->getRepository(Section::class)->findOneBy(array('id' =>$request->attributes->get('id')));
+            if ($form->isSubmitted() && $form->isValid()) {
+                $newMatiere=$form->getData();
+                $em->persist($newMatiere);
+                $em->flush();
+                $section->addMatiere($newMatiere);
+                $em->persist($section);
+                $em->flush();
+            }
+            $matiere=$section->getMatiere();
+            return $this->render('@User/EspaceEtude/matiere.html.twig',array('matiere'=>$matiere,'section'=>$section,'form'=>$form->createView(),
+            ));
+        }
+        return $this->redirectToRoute('fos_user_security_login');
 
+    }
+    public function deleteMatiereAction(Request $request){
+        $em=$this->getDoctrine()->getManager();
+        $mat=$em->getRepository(Matiere::class)->find($request->attributes->get('id'));
+        $sec=$em->getRepository(Section::class)->find($request->attributes->get('ids'));
+        $sec=$sec->removeMatiere($mat);
+       /* $em->persist($sec);
+        $em->flush();*/
+        $em->remove($mat);
+        $em->flush();
+        return $this->redirectToRoute("afficher_matiere_admin",array('id'=>$request->attributes->get('ids')));
 
+    }
+    public function updateMatiereAction(Request $request){
+        if($request->isXmlHttpRequest()){
+        $id=$request->get("id");
+        $champ=$request->get("champs");
+        $val=$request->get("val");
+        $em=$this->getDoctrine()->getManager();
+        if($champ=="libelle"){
+            $matiere=$em->getRepository(Matiere::class)->find($id);
+            $matiere=$matiere->setLibelle($val);
+            $em->persist($matiere);
+            $em->flush();
+        }elseif ($champ=="coefficient"){
+            $matiere=$em->getRepository(Matiere::class)->find($id);
+            $matiere=$matiere->setCoefficient($val);
+            $em->persist($matiere);
+            $em->flush();
+        }else{
+            $matiere=$em->getRepository(Matiere::class)->find($id);
+            $matiere=$matiere->setType($val);
+            $em->persist($matiere);
+            $em->flush();
+        }
+            return new JsonResponse("success");
+        }
 
 
 

@@ -75,6 +75,18 @@ delete_section:
     path:     /admin/section/{id}
     defaults: { _controller: UserBundle:Default:delete }
 
+
+afficher_matiere_admin:
+    path:     /admin/matiere/{id}
+    defaults: { _controller: UserBundle:Default:matiere }
+delete_matiere:
+    path:     /admin/matiere/{id}/{ids}
+    defaults: { _controller: UserBundle:Default:deleteMatiere }
+update_matiere:
+    path: /admin/update
+    defaults: {_controller: UserBundle:Default:updateMatiere}
+
+
 admin_index:
     path:     /adminIndex
     defaults: { _controller: "UserBundle:Default:indexAdmin" }
