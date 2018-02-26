@@ -25,7 +25,7 @@
             {% endfor %}
         {% endfor %}
     {% endif %}
-{% set i=0 %}
+            {% set i=0 %}
             {% for interaction in interaction %}
                 {% if interaction.idobjet.id==objet.id %}
                     {% set i=1 %}
@@ -43,8 +43,9 @@
                     <p style="width:max-content;  word-wrap: break-word">{{ objet.Description }}</p>
                 </div>
 
-              </div>
+            </div>
             {% if objet.User.id==app.user.id %}
+
             <div class="row">
                 <div class="col-md-3">
                     <div class="btnArea">
@@ -66,28 +67,43 @@
                         <a href="{{ path("objet_homepage")}}" class="btn btn-success">Voir La liste des Objets</a>
                     </div>
                 </div>
-                {% else %}
-                {% if i==0  %}
-                <div class="col-md-3">
-                    <div class="btnArea">
-                        <a href="{{ path("reclamer_obj", { "id":objet.id })}}" class="btn btn-success">{% if objet.nature=='Objet Perdu' %}Tu as Trouvé l'Objet?{% else %}C'est Ton Objet{% endif %}</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="btnArea">
-                        <a href="{{ path("objet_homepage")}}" class="btn btn-success">Voir La liste des Objets</a>
-                    </div>
-                </div>
-                {% else %}
-                <div class="col-md-3">
-                    <div class="btnArea">
-                        <a href="{{ path("objet_homepage")}}" class="btn btn-success">Voir La liste des Objets</a>
-                    </div>
-                </div>
-                {% endif %}
-                {% endif %}
             </div>
+            {% else  %}
+                <div class="row">
+                <div class="col-md-3">
+                    <div class="btnArea">
+                        <a href="{{ path("objet_homepage")}}" class="btn btn-success">Voir La liste des Objets</a>
+                    </div>
+                </div>
+
+                {% if interaction is defined and interaction is not null%}
+
+                    {% if objet.id==interaction.idobjet.id %}
+                        <span style="font-size: 10px">Vous avez fait déjà une réclamation</span>
+                    {% else %}
+                    <div class="col-md-3">
+                    <div class="btnArea">
+                        <a href="{{ path("reclamer_obj", { "id":objet.id })}}" class="btn btn-success">{% if objet.nature=='Objet Trouvé' %}C'est Ton Objet?{% else %}Tu as trouvé l'objet?{% endif %}</a>
+                    </div>
+                    </div>
+                    {% endif %}
+
+                {% else %}
+                    <div class="col-md-3">
+                        <div class="btnArea">
+                            <a href="{{ path("reclamer_obj", { "id":objet.id })}}" class="btn btn-success">{% if objet.nature=='Objet Trouvé' %}C'est Ton Objet?{% else %}Tu as trouvé l'objet?{% endif %}</a>
+                        </div>
+                    </div>
+                {% endif %}
+                </div>
+            {% endif %}
+
+
+
+
         </div>
+
+
         <div class="col-md-4 col-sm-4 col-xs-12">
 
             <aside>
@@ -99,63 +115,63 @@
                             <h3 class="panel-title">Informations de l'Objet</h3>
                         </div>
                         <div class="panel-body">
-                            <ul class="media-list">
-                                <li class="media iconContet">
-                                    <div class="media-left iconContent bg-color-4">
-                                        <i class="fa fa-anchor" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="media-body iconContent">
-                                        <h4 class="media-heading color-4">Posté Par</h4>
-                                        <p>{{ objet.User }}</p>
-                                    </div>
-                                </li><li class="media iconContet">
-                                    <div class="media-left iconContent bg-color-4">
-                                        <i class="fa fa-anchor" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="media-body iconContent">
-                                        <h4 class="media-heading color-4">Type</h4>
-                                        <p>{{ objet.Type }}</p>
-                                    </div>
-                                </li>
-                                <li class="media">
-                                    <div class="media-left iconContent bg-color-3">
-                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="media-body iconContent">
-                                        <h4 class="media-heading color-3">Lieu</h4>
-                                        <p>{{ objet.Lieu }}</p>
-                                    </div>
-
-                                </li>
-                                <li class="media">
-                                    <div class="media-left iconContent bg-color-2">
-                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="media-body iconContent">
-                                        <h4 class="media-heading color-2">Date</h4>
-                                        <p>{{ objet.Date |date ('Y-m-d H:i:s') }}</p>
-                                    </div>
-                                </li>
-                                <li class="media iconContet">
+                                <ul class="media-list">
+                                    <li class="media iconContet">
                                         <div class="media-left iconContent bg-color-4">
                                             <i class="fa fa-anchor" aria-hidden="true"></i>
                                         </div>
                                         <div class="media-body iconContent">
-                                            <h4 class="media-heading color-4">Partager Sur</h4>
-                                            <p>{{ facebookButton() }}</p>
+                                            <h4 class="media-heading color-4">Posté Par</h4>
+                                            <p>{{ objet.User|upper }}</p>
                                         </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                    <li class="media iconContet">
+                                        <div class="media-left iconContent bg-color-4">
+                                            <i class="fa fa-anchor" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body iconContent">
+                                            <h4 class="media-heading color-4">Type</h4>
+                                            <p>{{ objet.Type }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="media">
+                                        <div class="media-left iconContent bg-color-3">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body iconContent">
+                                            <h4 class="media-heading color-3">Lieu</h4>
+                                            <p>{{ objet.Lieu }}</p>
+                                        </div>
+
+                                    </li>
+                                    <li class="media">
+                                        <div class="media-left iconContent bg-color-2">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body iconContent">
+                                            <h4 class="media-heading color-2">Date</h4>
+                                            <p>{{ objet.Date |date ('Y-m-d H:i:s') }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="media iconContet">
+                                            <div class="media-left iconContent bg-color-4">
+                                                <i class="fa fa-anchor" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="media-body iconContent">
+                                                <h4 class="media-heading color-4">Partager Sur</h4>
+                                                <p>{{ facebookButton() }}</p>
+                                            </div>
+                                    </li>
+                                </ul>
                         </div>
                     </div>
-
                 </div>
             </aside>
         </div>
     </div>
 
 
-        </div>
+</div>
 {% endblock %}
 
 
