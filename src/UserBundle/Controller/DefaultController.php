@@ -197,18 +197,6 @@ class DefaultController extends Controller
     }
 
 
-
-
-
-    public function showAdminAction(Event $event){
-
-        $em = $this->getDoctrine()->getManager();
-        $event = $em->getRepository('EventBundle:Event')->find($event);
-        return $this->render('@User/event/showAdmin.html.twig', array(
-            'event' => $event
-        ));
-    }
-
     public function indexAdminAction(Request $request)
     {
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {

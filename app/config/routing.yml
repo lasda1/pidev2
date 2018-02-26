@@ -33,3 +33,7 @@ colocation:
 discutea_forum:
     resource: "@DForumBundle/Resources/config/routing.yml"
     prefix:   /
+
+mgilet_notifications:
+    resource: "@MgiletNotificationBundle/Controller/"
+    prefix: /notifications
