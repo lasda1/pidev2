@@ -320,4 +320,58 @@ class DefaultController extends Controller
         $em->flush();
         return $this->redirectToRoute('admin_index');
     }
+
+    public function indexAdminObjetAction(Request $request)
+    {
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            $em = $this->getDoctrine()->getManager();
+            $value=0;
+            $objets = $em->getRepository('ObjetBundle:Objet')->createQueryBuilder('e')
+                ->where('e.enable LIKE :valeur')
+                ->addORderBy('e.Date', 'DESC')
+                ->setParameter('valeur', '%'.$value.'%')
+                ->getQuery()
+                ->execute();
+            return $this->render('@User/objet/objetAdmin.html.twig', array(
+                'objets' => $objets
+            ));
+        }
+
+        return $this->redirectToRoute('admin_index');
+
+    }
+
+    public function indexAdminObjetApprouverAction(Request $request)
+    {
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+            $em = $this->getDoctrine()->getManager();
+            $value=1;
+            $objets = $em->getRepository('EventBundle:Event')->createQueryBuilder('e')
+                ->where('e.enable LIKE :valeur')
+                ->addORderBy('e.Date', 'DESC')
+                ->setParameter('valeur', '%'.$value.'%')
+                ->getQuery()
+                ->execute();
+
+            return $this->render('@User/objet/indexAdminObjetNonApprouver.html.twig', array(
+                'objets' => $objets
+            ));
+        }
+
+        return $this->redirectToRoute('admin_index');
+
+    }
+
+    public function approuverObjetAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $objet = $em->getRepository('ObjetBundle:Objet')->find($id);
+        $objet->setEnable(1);
+        $em->persist($objet);
+        $em->flush();
+        return $this->redirectToRoute('admin_index');
+    }
+
+
 }
