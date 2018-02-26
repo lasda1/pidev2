@@ -83,3 +83,6 @@ delete_matiere:
 update_matiere:
     path: /admin/update
     defaults: {_controller: UserBundle:Default:updateMatiere}
+update_section:
+    path: /admin/sectionupdate
+    defaults: {_controller: UserBundle:Default:updateSection}
