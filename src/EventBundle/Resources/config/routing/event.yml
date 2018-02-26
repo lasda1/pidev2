@@ -28,6 +28,11 @@ e_participate:
     defaults: { _controller: "EventBundle:Event:participer" }
     methods:  GET
 
+e_annuler:
+    path:     /{id}/annuler
+    defaults: { _controller: "EventBundle:Event:annulerParticipation" }
+    methods:  GET
+
 e_rating:
     path:     /{id}/{val}
     defaults: { _controller: "EventBundle:Event:rating" }
@@ -36,4 +41,9 @@ e_rating:
 e_recherche:
     path:     /recherche
     defaults: { _controller: "EventBundle:Event:recherche" }
+    methods:  GET
+
+avis:
+    path:     /avis
+    defaults: { _controller: "EventBundle:Event:participants" }
     methods:  GET

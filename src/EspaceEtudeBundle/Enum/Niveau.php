@@ -45,15 +45,15 @@ class Niveau
      public static function getAvailableTypes()
      {
          return [
-             self::TYPE_1A,
-             self::TYPE_2A,
-             self::TYPE_2B,
-             self::TYPE_3A,
-             self::TYPE_3B,
-             self::TYPE_4A,
-             self::TYPE_4B,
-             self::TYPE_5A,
-             self::TYPE_5B
+             self::TYPE_1A    => '1A',
+             self::TYPE_2A => '2A',
+             self::TYPE_2B => '2B',
+             self::TYPE_3A  => '3A',
+             self::TYPE_3B=> '3B',
+             self::TYPE_4A=> '4A',
+             self::TYPE_4B=> '4B',
+             self::TYPE_5A=> '5A',
+             self::TYPE_5B=> '5B'
          ];
      }
  }

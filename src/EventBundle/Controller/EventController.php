@@ -120,6 +120,12 @@ class EventController extends Controller
 
             return $this->redirectToRoute('e_index');
         } else {
+            $date=new \DateTime("now + 3 day");
+            var_dump($date);
+            if ($event->getDatedebut()<=$date){
+                $this->addFlash('danger','Vous ne pouvez pas modifier cet evennement');
+                return $this->redirectToRoute('e_show', array('id' => $event->getId()));
+            }else{
             $deleteForm = $this->createDeleteForm($event);
             $editForm = $this->createForm('EventBundle\Form\EventType', $event);
             $editForm->handleRequest($request);
@@ -145,7 +151,7 @@ class EventController extends Controller
                 'form' => $editForm->createView(),
                 'delete_form' => $deleteForm->createView(),
             ));
-        }
+        }}
     }
 
     /**
@@ -194,6 +200,11 @@ class EventController extends Controller
                 $em = $this->getDoctrine()->getManager();
 
             $event = $em->getRepository('EventBundle:Event')->find($id);
+            if ($event->getNbMax()==0 or $user===$event->getUser()){
+                $this->addFlash('success','Vous ne pouvez pas participer');
+                return $this->redirectToRoute('e_show', array('id' => $id));
+
+            }else{
             $event->setNbMax($event->getNbMax()-1);
             $em->persist($event);
             $em->flush();
@@ -204,11 +215,31 @@ class EventController extends Controller
 
                 $em->persist($avis);
                 $em->flush();
-                return $this->redirectToRoute('e_show', array('id' => $avis->getIdevent()));
-            }
+                return $this->redirectToRoute('e_show', array('id' => $id));
+            }}
             else
                 return $this->redirectToRoute('e_index');
 
+    }
+
+    public function annulerParticipationAction($id)
+    {
+        global $kernel;
+        $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
+        if ($user !== 'anon.') {
+
+            $em = $this->getDoctrine()->getManager();
+
+            $event = $em->getRepository('EventBundle:Event')->find($id);
+            $avis = $em->getRepository('EventBundle:Avis')->findOneBy(array('idevent'=>$id,'iduser'=>$user));
+            $em->remove($avis);
+            $event->setNbMax($event->getNbMax()+1);
+            $em->persist($event);
+                $em->flush();
+            return $this->redirectToRoute('e_show', array('id' => $id));
+        }
+        else
+            return $this->redirectToRoute('e_index');
     }
 
 
@@ -250,6 +281,25 @@ class EventController extends Controller
         return $this->render('@Event/event/recherche.html.twig', array(
             'events' => $events,
             'pagination' => $pagination
+        ));
+    }
+
+
+    public function participantsAction(Event $event){
+
+        global $kernel;
+        $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
+
+
+        $em = $this->getDoctrine()->getManager();
+        //$event = $em->getRepository('EventBundle:Event')->find($event);
+        $avis = $em->getRepository('EventBundle:Avis')->findAll($event->getId());
+
+
+        return $this->render('@Event/event/showAvis.html.twig', array(
+
+            'avis'=>$avis,
+
         ));
     }
 

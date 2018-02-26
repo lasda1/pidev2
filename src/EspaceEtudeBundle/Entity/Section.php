@@ -4,6 +4,7 @@ namespace EspaceEtudeBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use EspaceEtudeBundle\Enum\Niveau;
 use EspaceEtudeBundle\Enum\NiveauEnum;
 
 /**
@@ -56,7 +57,7 @@ class Section
      */
     public function setNiveau($niveau)
     {
-        if (!in_array($niveau, NiveauEnum::getAvailableTypes())) {
+        if (!in_array($niveau, Niveau::getAvailableTypes())) {
             throw new \InvalidArgumentException("Invalid type");
         }
 

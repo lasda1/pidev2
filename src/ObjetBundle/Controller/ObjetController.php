@@ -2,12 +2,18 @@
 
 namespace ObjetBundle\Controller;
 
+use DateInterval;
+use DatePeriod;
+use DateTime;
 use Ob\HighchartsBundle\Highcharts\Highchart;
+use ObjetBundle\Entity\Interaction;
 use ObjetBundle\Entity\Objet;
 use ObjetBundle\Form\ObjetType;
+use ObjetBundle\Repository\ObjetRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -43,7 +49,7 @@ class ObjetController extends Controller
 
         return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form' => $form->createView()
             // ...
-        ));
+       ,['success' => 1] ));
     }
 
     public function ajoutobjperdAction(Request $request, UserInterface $username)
@@ -80,8 +86,9 @@ class ObjetController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->objtrouv();
+        $interaction=$em->getRepository(Interaction::class)->findAll();
 
-        return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 1
+        return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 1,'interaction'=>$interaction
             // ...
         ));
     }
@@ -90,7 +97,8 @@ class ObjetController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->objperd();
-        return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 2
+        $interaction=$em->getRepository(Interaction::class)->findAll();
+        return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 2,'interaction'=>$interaction
             // ...
         ));
     }
@@ -143,20 +151,52 @@ class ObjetController extends Controller
     public function objetAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $objets = $em->getRepository(Objet::class)->objperd();
-        $tab = array();
+        $objets = $em->getRepository(Objet::class)->objtrouv();
+
+
+        usort($objets, function ($a, $b)
+        {
+            return ($a->getDate() > $b->getDate());
+        });
+        $period = new DatePeriod(
+            (new DateTime($objets[0]->getDate()->format('Y-m-d')))->modify('-1 day'),
+            new DateInterval('P1D'),
+            (new DateTime($objets[count($objets)-1]->getDate()->format('Y-m-d')))->modify('+1 day')
+);
+        $dates = array();
+        foreach ($period as $key => $value) {
+            $date = $value->format('Y-m-d')  ;
+            array_push($dates,$date);
+        }
+        //return new Response($date);
         $categories = array();
-        foreach ($objets as $objet)
-        { array_push($tab, $objet->getUser()->getId());
-        array_push($categories, $objet->getDate()->format('Y-m-d H:i:s')); }
-        $series = array( array("name" => "Nb étudiants", "data" => $tab) );
+        $tab = array() ;
+        foreach ($objets as $object)
+        {
+            $date = $object->getDate()->format('Y-m-d');
+            if (array_key_exists($date, $tab))
+            {
+                $tab[$date]++;
+            }
+            else
+            {
+                $tab[$date] = 1;
+            }
+
+            /*
+            $nbr = count(array_keys($objets,$objets[0]->getDate()));
+            array_push($tab,$nbr+1);
+            array_push($categories, $objet->getDate()->format('Y-m-d'));*/
+        }
+
+        $series = array( array("name" => "Nombre d'objets", "data" => array_values($tab)) );
         $ob = new Highchart();
         $ob->chart->renderTo('linechart');
         // #id du div où afficher le graphe
-        $ob->title->text('Nombre des étudiants par niveau');
-        $ob->xAxis->title(array('text' => "Classe"));
-        $ob->yAxis->title(array('text' => "Nb étudiants"));
-        $ob->xAxis->categories($categories);
+        $ob->title->text('Nombre D\'objet Trouvés par Date');
+        $ob->xAxis->title(array('text' => "Date"));
+        $ob->yAxis->title(array('text' => "Nombre D'objet Trouvés"));
+        $ob->xAxis->categories($dates);
         $ob->series($series);
         return $this->render('ObjetBundle:Objet:Objet.html.twig', array('chart' => $ob));
 
@@ -173,25 +213,118 @@ class ObjetController extends Controller
 
         return $this->render('ObjetBundle:Objet:coinobjtrouv.html.twig');
     }
-    public function searchAction(Request $request)
-    {
-        if($request->isXmlHttpRequest())
-        {
-            $search=$request->get('search');
-            $em=$this->getDoctrine()->getManager();
-            $objet=$em->getRepository(Objet::class)->recherche($search);
-            //initialiser Serializer
-            $se=new Serializer(array(new ObjectNormalizer()));
-            //Normaliser la liste
-            $data=$se->normalize($objet);
-            //Codage sous forme JSON
-            return new JsonResponse($data);
-        }
-        return $this->render('ObjetBundle:Objet:recherche.html.twig',array(
 
-        ));
+    public function reclamerObjAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $objet = $em->getRepository(Objet::class)->find($id);
+        if ($objet->getNature() == "Objet Perdu") {
+
+                $inter = new Interaction();
+                $inter->setIdUser($this->getUser());
+                $inter->setIdObjet($objet);
+                $inter->setStatut("Perdu-->Trouvé par");
+                $em->persist($inter);
+                $em->flush();
+                return $this->redirectToRoute('affichobjperd');
+        }
+            else
+                {
+                $inter = new Interaction();
+                $inter->setIdUser($this->getUser());
+                $inter->setIdObjet($objet);
+                $inter->setStatut("Trouvé-->propriétaire de");
+                $em->persist($inter);
+                $em->flush();
+                return $this->redirectToRoute('affichobjtrouv',array('inter'=>$inter));
+
+                }
+    }
+
+    public function viewetatAction(Request $request){
+        $em=$this->getDoctrine()->getManager();
+        $inter=$em->getRepository(Interaction::class)->findByidObjet($request->get("id"));
+        if($inter)
+        {
+            $msg= 'Votre objet perdu a été réclamé comme trouvé par '.$inter[0]->getIdUser()->getNom();
+        }
+        elseif ($inter&&$inter->getIdObjet()->getNature()=='Objet Trouvé')
+        {
+            $msg=$inter[0]->getIdUser()->getNom().'a trouvé ton Objet';
+        }
+        else
+        {
+            $msg='Aucune Réclamation';
+        }
+        return $this->render('ObjetBundle:Objet:updateobj.html.twig',array('msg'=>$msg));
+
+    }
+
+    public function showsingleAction($id)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $objet=$em->getRepository(Objet::class)->find($id);
+        $interaction= new Interaction();
+
+        return $this->render('ObjetBundle:Objet:showsingle.html.twig',array('objet'=>$objet,'interaction'=>$interaction));
+
     }
 
 
+/*
+    public function acceptOffreRequestAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
+        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
+        if ($co->getType() == "o") {
+            if ($co->getPlacedisponibles() == 0) {
+                return $this->redirectToRoute('co_voiturage_viewownoffreparam', ['success' => 3]);
+            }
+            $co->setPlacedisponibles($co->getPlacedisponibles() - 1);
+            $cor->setEtat("c");
+            $em->flush();
+            return $this->redirectToRoute('co_voiturage_viewownoffreparam', ['success' => 1]);
+        }
+    }
+
+    public function acceptDemandeRequestAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
+        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
+        if ($co->getType() == "d") {
+            $cor->setEtat("c");
+            $em->flush();
+            return $this->redirectToRoute('co_voiturage_viewowndemandeparam', ['success' => 1]);
+        }
+    }
+
+    public function refuseOffreRequestAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
+        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
+        if ($co->getType() == "o") {
+            $cor->setEtat("r");
+            $em->flush();
+            return $this->redirectToRoute('co_voiturage_viewownoffreparam', ['success' => 5]);
+        }
+    }
+
+    public function refuseDemandeRequestAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
+        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
+        if ($co->getType() == "d") {
+            $cor->setEtat("r");
+            $em->flush();
+            return $this->redirectToRoute('co_voiturage_viewowndemandeparam', ['success' => 5]);
+        }
+    }
+
+
+*/
 
     }

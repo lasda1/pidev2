@@ -45,11 +45,11 @@ co_voiturage_modifydemande:
 
 co_voiturage_viewoffre:
     path:     /offres
-    defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewOffre }
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewOffrePaginate }
 
 co_voiturage_viewdemande:
     path:     /demande
-    defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewDemande }
+    defaults: { _controller: CoVoiturageBundle:CoVoiturage:viewDemandePaginate }
 
 co_voiturage_viewownoffre:
     path:     /offres/own

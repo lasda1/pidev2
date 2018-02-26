@@ -7,6 +7,7 @@ imports:
     - { resource: "@ObjetBundle/Resources/config/services.yml" }
     - { resource: "@EventBundle/Resources/config/services.yml" }
     - { resource: "@EspaceEtudeBundle/Resources/config/services.yml" }
+    - { resource: "@ForumBundle/Resources/config/services.yml" }
     - { resource: "@MyAppMailBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
@@ -70,6 +71,8 @@ doctrine:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore
         auto_mapping: true
+        resolve_target_entities:
+                    Symfony\Component\Security\Core\User\UserInterface: UserBundle\Entity\User
 
 swiftmailer:
     transport: gmail
@@ -109,6 +112,24 @@ services:
        tags:
            - { name: twig.extension }
 
+
+
+stof_doctrine_extensions:
+    orm:
+        default:
+            sluggable: true
+discutea_forum:
+    preview:
+        enabled: true
+    knp_paginator:
+        page_name: page  #see knp_paginator.default_option.page_name
+        topics:
+            enabled: true
+            per_page: 10
+        posts:
+            enabled: true
+            per_page: 10
+
 nomaya_social:
     buttons:
         facebook:
@@ -138,6 +159,6 @@ nomaya_social:
         pinterest:
             url:            null
     links:
-        facebook:           "http://www.facebook.com/yann.chauvel"
+        facebook:           "http://www.facebook.com/bader.madridista"
         googleplus:         "https://plus.google.com/105931415830389032796"
     theme:                  'default' # optional

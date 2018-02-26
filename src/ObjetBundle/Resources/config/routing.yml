@@ -41,4 +41,19 @@ search_objet_ajax:
     path:     /objets/search
     defaults: { _controller: ObjetBundle:Objet:search }
 
+reclamer_obj:
+    path:     /objets/reclamer_obj/{id}
+    defaults: { _controller: ObjetBundle:Objet:reclamerObj }
+
+etat_obj:
+    path:     /objets/etat/{$idObjet}
+    defaults: { _controller: ObjetBundle:Objet:viewetat }
+
+showsingle:
+    path:     /objets/showsingle/{id}
+    defaults: { _controller: ObjetBundle:Objet:showsingle }
+
+
+
+
 

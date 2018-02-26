@@ -35,7 +35,12 @@ class Documents
      * @ORM\Column(name="libelle", type="string", length=255)
      */
     private $libelle;
-
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="flag", type="integer")
+     */
+    private $flag;
     /**
      * @var string
      *
@@ -82,6 +87,7 @@ class Documents
      * @ORM\JoinColumn(name="id_user", referencedColumnName="id")
      */
     private $user;
+
 
 
 
@@ -309,5 +315,29 @@ class Documents
     public function getImg()
     {
         return $this->img;
+    }
+
+    /**
+     * Set flag.
+     *
+     * @param int $flag
+     *
+     * @return Documents
+     */
+    public function setFlag($flag)
+    {
+        $this->flag = $flag;
+
+        return $this;
+    }
+
+    /**
+     * Get flag.
+     *
+     * @return int
+     */
+    public function getFlag()
+    {
+        return $this->flag;
     }
 }

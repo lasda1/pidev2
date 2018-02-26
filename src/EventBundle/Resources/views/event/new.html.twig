@@ -29,11 +29,12 @@
     <label>Description de l'évennement</label>
     {{ form_widget(form.description,{'attr':{'class':'form-control','placeholder':"description de l'evennement"}}) }}
     <br>
-    <label>Date de début de l'évennement</label>
-    {{ form_widget(form.datedebut,{'attr':{'class':'form-control ','placeholder':"Date de l'evennement"}}) }}
-    <br>
-    <label>Date de fin de l'évennement</label>
-    {{ form_widget(form.datefin,{'attr':{'class':'form-control ','placeholder':"Date de Fin de l'evennement s'il y a plusieurs jours"}}) }}
+    <label>Date de l'évennement</label>
+<br>
+    {{ form_widget(form.datedebut,{'attr':{'class':'','placeholder':"Date de l'evennement"}}) }}
+
+
+    {{ form_widget(form.datefin,{'attr':{'class':'','placeholder':"Date de Fin de l'evennement s'il y a plusieurs jours"}}) }}
     <br>
     <label>Logo de l'évennement</label>
     {{ form_widget(form.photo,{'attr':{'class':'form-control','placeholder':"Logo de l'evennement"}}) }}
@@ -152,5 +153,65 @@ var marker;
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCWb0i4faRZm8P5oEN-ukUF_CACQzWt480&libraries=places&callback=initMap"
             async defer></script>
+
+
+    <base href="https://demos.telerik.com/kendo-ui/datepicker/rangeselection">
+    <style>html { font-size: 14px; font-family: Arial, Helvetica, sans-serif; }</style>
+    <title></title>
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.common-material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.material.min.css" />
+    <link rel="stylesheet" href="https://kendo.cdn.telerik.com/2018.1.221/styles/kendo.material.mobile.min.css" />
+
+    <script src="https://kendo.cdn.telerik.com/2018.1.221/js/jquery.min.js"></script>
+    <script src="https://kendo.cdn.telerik.com/2018.1.221/js/kendo.all.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            function startChange() {
+                var startDate = start.value(),
+                    endDate = end.value();
+
+                if (startDate) {
+                    startDate = new Date(startDate);
+                    startDate.setDate(startDate.getDate());
+                    end.min(startDate);
+                } else if (endDate) {
+                    start.max(new Date(endDate));
+                } else {
+                    endDate = new Date();
+                    start.max(endDate);
+                    end.min(endDate);
+                }
+            }
+
+            function endChange() {
+                var endDate = end.value(),
+                    startDate = start.value();
+
+                if (endDate) {
+                    endDate = new Date(endDate);
+                    endDate.setDate(endDate.getDate());
+                    start.max(endDate);
+                } else if (startDate) {
+                    end.min(new Date(startDate));
+                } else {
+                    endDate = new Date();
+                    start.max(endDate);
+                    end.min(endDate);
+                }
+            }
+
+            var start = $("#eventbundle_event_datedebut").kendoDatePicker({
+                change: startChange
+            }).data("kendoDatePicker");
+
+            var end = $("#eventbundle_event_datefin").kendoDatePicker({
+                change: endChange
+            }).data("kendoDatePicker");
+
+            start.max(end.value());
+            end.min(start.value());
+        });
+    </script>
 
 {% endblock %}

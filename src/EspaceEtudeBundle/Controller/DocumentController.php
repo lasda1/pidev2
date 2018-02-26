@@ -25,6 +25,8 @@ class DocumentController extends Controller
     public function afficherDocumentsAction(Request $request)
     {
 
+        $user = $this->getUser();
+        if ($user) {
         $b=null;
         $id=$request->attributes->get('id');
         $documents=new Documents();
@@ -77,19 +79,23 @@ class DocumentController extends Controller
 
             $type =$file->getClientOriginalExtension ();
             $documents->setTypeDocument($type);
+            $documents->setFlag(0);
             $documents->setPath("/Documents/".$fileName);
             $em->persist($documents);
             $em->flush();
         }
 
         $niveau=new Niveau();
-        $documents=$em->getRepository(Documents::class)->findBy( ['matiere' => $id]);
-        $niveau=$niveau->getAvailableTypes();
+        $documents=$em->getRepository(Documents::class)->findBy( ['matiere' => $id,'flag' => 1]);
+        $documentEns=$em->getRepository(Documents::class)->findBy( ['matiere' => $id,'flag' => 0]);
+         $niveau=$niveau->getAvailableTypes();
         $section=$em->getRepository(Section::class)->findAll();
         $countAll=$em->getRepository(Documents::class)->countAll();
         return $this->render('EspaceEtudeBundle:Document:afficher_documents.html.twig', array(
-            'niveaux'=>$niveau,'sections'=>$section,'form' => $form->createView(),'id'=>$id,'docs'=>$documents,'all'=>$countAll,
+            'niveaux'=>$niveau,'sections'=>$section,'form' => $form->createView(),'id'=>$id,'docs'=>$documents,'docprofs'=>$documentEns,'all'=>$countAll,
         ));
+        }
+        return $this->redirectToRoute('fos_user_security_login');
     }
     public function supprimerDocumentAction(Request $request){
         $em=$this->getDoctrine()->getManager();
@@ -110,44 +116,16 @@ class DocumentController extends Controller
             $em->flush();
         return $this->redirectToRoute("afficher_documents",array('id'=>$request->attributes->get('idMatiere')));
     }
+    public function validerDocumentAction(Request $request)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $doc=$em->getRepository(Documents::class)->find($request->attributes->get('idDoc'));
 
-    public function rechercheAction(Request $request){
 
-        if($request->isXmlHttpRequest()){
-            $docName=$request->get('docName');
-            $em=$this->getDoctrine()->getManager();
-            $docs=$em->getRepository('EspaceEtudeBundle\Entity\Documents')->findBy(['libelle'=>$docName]);
-            //initialisation du serialisable
+        $doc=$doc->setFlag(1);
+        $em->persist($doc);
+        $em->flush();
+        return $this->redirectToRoute("afficher_documents",array('id'=>$request->attributes->get('idMatiere')));
 
-            $serializer=new Serializer(array(new ObjectNormalizer()));
-            //n7otou el data
-            $data=$serializer->normalize($docs);
-            $response=new Response(json_encode($data));
-            $response->headers->set("content-type","application/json");
-            return $response;
-/*
-
-            $tabDocs = array();
-            $i = 0;
-
-            foreach ($docs as $doc)
-            {
-                $tabDocs[$i]['path'] = $doc->getPath();
-                $tabDocs[$i]['libelle'] = $doc->getLibelle();
-                $tabDocs[$i]['img'] = $doc->getImg();
-                $tabDocs[$i]['id'] = $doc->getId();
-                $tabDocs[$i]['user'] = $doc->getUser();
-                $i++;
-            }
-
-            $response = new Response();
-            $docs = json_encode(array('docs' => $tabDocs));
-            $response->headers->set('Content-Type', 'application/json');
-            $response->setContent($docs);
-            return $this->render('EspaceEtudeBundle:Document:afficher_documents.html.twig',array('docs'=>$response));
-
-*/
-        }
-        return $this->render('EspaceEtudeBundle:Document:afficher_documents.html.twig');
     }
 }
