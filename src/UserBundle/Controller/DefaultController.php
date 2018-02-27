@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Request;
 use EspaceEtudeBundle\Form\SectionType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use UserBundle\Entity\User;
 
 class DefaultController extends Controller
 {
@@ -24,6 +25,11 @@ class DefaultController extends Controller
         
         $user = $this->getUser();
         if ($user) {
+
+
+            if ($user->hasRole("ROLE_ADMIN")){
+                return $this->render('UserBundle::admin.html.twig');
+            }
             $em = $this->getDoctrine()->getManager();
             $co = $em->getRepository(CoVoiturage::class)->getLastThree();
             return $this->render('UserBundle::news.html.twig', ['cov' => $co , 'user' => $user]);
