@@ -10,4 +10,12 @@ namespace ColocationBundle\Repository;
  */
 class ColocationRepository extends \Doctrine\ORM\EntityRepository
 {
+    function recherche($valeur)
+    {
+        $query = ColocationRepository::createQueryBuilder('r')
+            ->where('UPPER(r.ville) LIKE UPPER(:valeur)')
+            ->setParameter('valeur', '%'.$valeur.'%')
+            ->getQuery();
+        return $query->getResult();
+    }
 }

@@ -74,5 +74,13 @@ afficher_section_admin:
 delete_section:
     path:     /admin/section/{id}
     defaults: { _controller: UserBundle:Default:delete }
+affiche:
+    path:     /admin/colocation
+    defaults: { _controller: UserBundle:Default:colocation }
+supprimer:
+      path:     /user/colocation/supprimer/{id}
+      defaults: { _controller: UserBundle:Default:supprimer }
+
+
 
 

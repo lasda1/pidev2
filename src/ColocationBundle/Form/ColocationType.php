@@ -55,9 +55,9 @@ class ColocationType extends AbstractType
             ->add('y',NumberType::class,array(
                 'scale'=>15
             ))
-            ->add('photo', FileType::class)
-            ->add('photo1', FileType::class)
-            ->add('photo2', FileType::class);
+            ->add('photo', FileType::class, array('attr' => array('class' => 'form-control file'),'data_class' => null,'label'=>'Photo'))
+            ->add('photo1', FileType::class, array('attr' => array('class' => 'form-control file'),'data_class' => null,'label'=>'Photo'))
+            ->add('photo2', FileType::class, array('attr' => array('class' => 'form-control file'),'data_class' => null,'label'=>'Photo'));
 
 
     }

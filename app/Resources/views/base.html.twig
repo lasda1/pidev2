@@ -7,7 +7,7 @@
         {% block title %}<title>Esprit Entre'aide</title>{% endblock %}
     <link rel="stylesheet" type="text/css" href="{{ asset('lib/stroke-7/style.css') }}"/>
     <link rel="stylesheet" type="text/css" href="{{ asset('lib/theme-switcher/theme-switcher.min.css') }}"/>
-
+    <link rel="stylesheet" type="text/css" href="{{ asset('lib/summernote/summernote.css')}}">
 <link rel="stylesheet" type="text/css" href="{{ asset('lib/jquery.nanoscroller/css/nanoscroller.css') }}"/>
     <link href="{{ asset('css/ffolders.min.css') }}" rel="stylesheet">
     <!--[if lt IE 9]>
@@ -427,6 +427,8 @@
 <script src="{{ asset('lib/dropzone/dist/dropzone.js') }}" type="text/javascript"></script>
 <script src="{{ asset('lib/jquery.niftymodals/dist/jquery.niftymodals.js') }}" type="text/javascript"></script>
 <script src="{{ asset('lib/jquery.gritter/js/jquery.gritter.js') }}" type="text/javascript"></script>
+<script src="{{ asset('lib/summernote/summernote.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('lib/summernote/summernote-ext-amaretti.js') }}" type="text/javascript"></script>
 
 <script type="text/javascript">
     $(document).ready(function() {
@@ -443,7 +445,13 @@
 
     });
 </script>
-
+<script type="text/javascript">
+    $(document).ready(function(){
+        //initialize the javascript
+        App.init();
+        App.emailCompose();
+    });
+</script>
 {% block customScript %}
 {% endblock %}
 

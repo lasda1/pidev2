@@ -2,11 +2,13 @@
 
 namespace UserBundle\Controller;
 
+use ColocationBundle\Entity\Colocation;
 use CoVoiturageBundle\Entity\CoVoiturage;
 use CoVoiturageBundle\Entity\CoVoiturageDays;
 use CoVoiturageBundle\Entity\CoVoiturageRequests;
 use EspaceEtudeBundle\Entity\Section;
 use EspaceEtudeBundle\Enum\Niveau;
+use MyAppMailBundle\Entity\Reponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use EspaceEtudeBundle\Form\SectionType;
@@ -17,7 +19,7 @@ class DefaultController extends Controller
 {
     public function indexAction()
     {
-        
+
         $user = $this->getUser();
         if ($user) {
             return $this->render('@User/layout.html.twig', ['user' => $user]);
@@ -25,16 +27,18 @@ class DefaultController extends Controller
         return $this->redirectToRoute('fos_user_security_login');
     }
 
-    public function newsAction(){
+    public function newsAction()
+    {
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->getLastThree();
         return $this->render('UserBundle::news.html.twig', ['cov' => $co]);
     }
 
-    public function adminAction(){
+    public function adminAction()
+    {
         if (false === $this->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             return $this->redirectToRoute('fos_user_security_logout');
-             }
+        }
         return $this->render('UserBundle::admin.html.twig');
     }
 
@@ -43,7 +47,7 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->findAll();
         $cor = $em->getRepository(CoVoiturageRequests::class)->getOrderedBy();
-        return $this->render('UserBundle:CoVoiturage:viewoffre.html.twig', ['cov' => $co, 'cor' => $cor ,'success' => $request->get('success')]);
+        return $this->render('UserBundle:CoVoiturage:viewoffre.html.twig', ['cov' => $co, 'cor' => $cor, 'success' => $request->get('success')]);
     }
 
     public function CoVoiturageViewDemandeParamAction(Request $request)
@@ -51,10 +55,11 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->findAll();
         $cor = $em->getRepository(CoVoiturageRequests::class)->getOrderedBy();
-        return $this->render('UserBundle:CoVoiturage:viewdemande.html.twig', ['cov' => $co, 'cor' => $cor ,'success' => $request->get('success')]);
+        return $this->render('UserBundle:CoVoiturage:viewdemande.html.twig', ['cov' => $co, 'cor' => $cor, 'success' => $request->get('success')]);
     }
 
-    public function CoVoiturageOffreAction(){
+    public function CoVoiturageOffreAction()
+    {
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->findAll();
         $cor = $em->getRepository(CoVoiturageRequests::class)->getOrderedBy();
@@ -65,7 +70,8 @@ class DefaultController extends Controller
         //return $this->render('UserBundle::viewoffre.html.twig');
     }
 
-    public function CoVoiturageDemandeAction(){
+    public function CoVoiturageDemandeAction()
+    {
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->findAll();
         $cor = $em->getRepository(CoVoiturageRequests::class)->getOrderedBy();
@@ -88,7 +94,6 @@ class DefaultController extends Controller
         }
 
 
-
         return $this->render('UserBundle:CoVoiturage:infooffre.html.twig', ['co' => $co, 'cod' => $cod]);
     }
 
@@ -104,7 +109,6 @@ class DefaultController extends Controller
         }
 
 
-
         return $this->render('UserBundle:CoVoiturage:infodemande.html.twig', ['co' => $co, 'cod' => $cod]);
     }
 
@@ -118,7 +122,7 @@ class DefaultController extends Controller
         if ($cod) {
             $em->remove($cod[0]);
         }
-        if ($cor){
+        if ($cor) {
             $em->remove($cor);
         }
 
@@ -137,7 +141,7 @@ class DefaultController extends Controller
         if ($cod) {
             $em->remove($cod[0]);
         }
-        if ($cor){
+        if ($cor) {
             $em->remove($cor);
         }
 
@@ -164,34 +168,63 @@ class DefaultController extends Controller
         return $this->redirectToRoute('admincovdemandesparam', ['success' => 3]);
     }
 
-    public function sectionAction(Request $request){
+    public function sectionAction(Request $request)
+    {
         $user = $this->getUser();
         if ($user) {
-            $sections=new Section();
-            $em=$this->getDoctrine()->getManager();
+            $sections = new Section();
+            $em = $this->getDoctrine()->getManager();
             $form = $this->createForm(SectionType::class, $sections);
             $form->handleRequest($request);
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $s=$form->getData();
+                $s = $form->getData();
                 $em->persist($s);
                 $em->flush();
             }
-            $em=$this->getDoctrine()->getManager();
-            $niveau=new Niveau();
-            $niveau=$niveau->getAvailableTypes();
-            $section=$em->getRepository(Section::class)->findAll();
+            $em = $this->getDoctrine()->getManager();
+            $niveau = new Niveau();
+            $niveau = $niveau->getAvailableTypes();
+            $section = $em->getRepository(Section::class)->findAll();
 
-            return $this->render('@User/EspaceEtude/section.html.twig',array('niveaux'=>$niveau,'sections'=>$section,'form'=>$form->createView(),
+            return $this->render('@User/EspaceEtude/section.html.twig', array('niveaux' => $niveau, 'sections' => $section, 'form' => $form->createView(),
             ));
         }
         return $this->redirectToRoute('fos_user_security_login');
     }
-    public function deleteAction(Request $request){
-        $em=$this->getDoctrine()->getManager();
-        $sec=$em->getRepository(Section::class)->find($request->attributes->get('id'));
+
+    public function deleteAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $sec = $em->getRepository(Section::class)->find($request->attributes->get('id'));
         $em->remove($sec);
         $em->flush();
         return $this->redirectToRoute("afficher_section_admin");
     }
+
+    public function colocationAction()
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $colocation = $em->getRepository(Colocation::class)->findAll();
+        return $this->render('UserBundle::colocation.html.twig', array("colocations" => $colocation));
+    }
+
+    public function supprimerAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $colocation = $em->getRepository(Colocation::class)->find($id);
+        $response = $em->getRepository(Reponse::class)->findByColocation($id);
+        $em->remove($colocation);
+        foreach ($response as $r){
+            $em->remove($r);
+        }
+
+        $em->flush();
+       // return ($this->redirectToRoute("mesoffres"));
+    }
+
+
+
+
 }

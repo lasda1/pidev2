@@ -6,9 +6,16 @@
 <style>
 
 
+
+    /*bbbbbbbbbbbbbbbbbbbbbb*/
+
     body {
         padding-top: 15px;
         background-color: #f9f9f9;
+    }
+
+    .btn-product{
+        width: 100%;
     }
 
     /*REQUIRED*/
@@ -92,6 +99,7 @@
 </style>
 
 
+
     <div class="am-content">
 
     <div class="container">
@@ -121,49 +129,19 @@
                 </form>
             </div>
         </div>
-        <hr>
-        <h1>Liste des suggéstions:</h1>
-        {% for suggestion  in suggestions %}
-            <div class="row carousel-row">
-                <div class="col-xs-8 col-xs-offset-2 slide-row">
-                    <div id="carousel-2" class="carousel slide slide-carousel" data-ride="carousel">
-                        <!-- Indicators -->
-                        <ol class="carousel-indicators">
-                            <li data-target="#carousel-2" data-slide-to="0" class="active"></li>
-                            <li data-target="#carousel-2" data-slide-to="1"></li>
-                            <li data-target="#carousel-2" data-slide-to="2"></li>
-                        </ol>
-
-                        <!-- Wrapper for slides -->
-                        <div class="carousel-inner">
-                            <div class="item active">
-                                <img src="{{ asset('uploads/photos/'~suggestion.photo) }}" alt="Image">
-                            </div>
-                            <div class="item">
-                                <img src="{{ asset('uploads/photos/'~suggestion.photo1) }}"alt="Image">
-                            </div>
-                            <div class="item">
-                                <img src="{{ asset('uploads/photos/'~suggestion.photo2) }}" alt="Image">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="slide-content">
-                        <h4>{{ suggestion.titre}}</h4>
-                        <p>
-                            {{ suggestion.description }}
-                        </p>
-                    </div>
-                    <div class="slide-footer">
-                <span class="pull-right buttons">
-                    <a href="{{ path('show_specific_colocation', {'id' : suggestion.id}) }}" ><button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Afficher</button></a>
-                    <a href="{{ path('reponse_offre', {'id' : suggestion.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Repondre</button></a>
-                </span>
-                    </div>
-                </div>
-            </div>
 
 
-        {% endfor %}
+
+
+        <!------ Include the above in your HEAD tag ---------->
+
+
+
+
+
+
+
+
 
         <h1>Liste de toutes les colocations</h1>
         <!-- Begin of rows -->

@@ -22,36 +22,9 @@ class DefaultController extends Controller
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
      */
-    public function indexAction(Request $request)
-    {
-        $mail = new Mail();
-        $form = $this->createForm(MailType::class, $mail);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Accusé de réception')
-                ->setFrom('dhouha.boughanmi@esprit.tn')
-                ->setTo($mail->getEmail())
-                ->setBody(
-                    $this->renderView(
-                        'MyAppMailBundle:Default:email.html.twig',
-                        array('nom' => $mail->getNom(), 'prenom' => $mail->getPrenom())
-                    ),
-                    'text/html'
-                );
-            $this->get('mailer')->send($message);
-            return $this->redirect($this->generateUrl('my_app_mail_accuse'));
-        }
-        return $this->render('MyAppMailBundle:Default:index.html.twig',
-            array('form' => $form->createView()));
 
-    }
 
-    public function successAction()
-    {
-        return new Response("email envoyé avec succès, Merci de vérifier votre boite
-                         mail.");
-    }
+
 
     public function reponseAction($id, Request $request)
     {
@@ -79,8 +52,8 @@ class DefaultController extends Controller
     {
         $mailer = $this->get('mailer');
         $message = (new \Swift_Message($reponse->getTitre()))
-            ->setFrom("sendersender2018@gmail.com")
-            ->setTo("sendersender2018@gmail.com")
+            ->setFrom("dhouha.boughanmi@esprit.tn")
+            ->setTo($this->getUser()->getEmail())
             ->addCc('dhouhaboughanmi383@gmail.com', "administrator")
             ->setBody(
                 $this->renderView(

@@ -91,7 +91,12 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $colocation = $em->getRepository(Colocation::class)->find($id);
+        $response = $em->getRepository(Reponse::class)->findByColocation($id);
         $em->remove($colocation);
+        foreach ($response as $r){
+            $em->remove($r);
+    }
+
         $em->flush();
         return ($this->redirectToRoute("mesoffres"));
     }
@@ -105,7 +110,7 @@ class DefaultController extends Controller
 
             $em = $this->getDoctrine()->getManager();
             $ville = $request->get('ville');
-            $colocation = $em->getRepository(Colocation::class)->findBy(['ville' => $ville]);
+            $colocation = $em->getRepository(Colocation::class)->recherche($ville);
 
             return $this->render('ColocationBundle:Default:index.html.twig', array("colocations" => $colocation));
 
@@ -131,35 +136,24 @@ class DefaultController extends Controller
     }
 
 
-    public function indexColocationAction()
+
+    public function modifierAction(Request $request, $id)
     {
-        return $this->render('ColocationBundle:Default:indexColocation.html.twig', array());
+        $em=$this->getDoctrine()->getManager();
+        $colocation=$em->getRepository("ColocationBundle:Colocation")->find($id);
+        $Form=$this->createForm(ColocationType::class,$colocation);
 
-
-    }
-
-
-    public function mailAction(Request $request)
-    {
-
-
-        $mail = new Mail();
-        $form = $this->createForm(MailType::class, $mail);
-        $form->handleRequest($request);
-        if ($form->isValid()) {
-            $message = \Swift_Message::newInstance()
-                ->setSubject('Accusé de réception')
-                ->setFrom('dhouha.aa@esprit.tn')
-                ->setTo('nada.taieb@esprit.tn')
-                ->setBody(
-                    $this->renderView('@Colocation\mail.html.twig'), 'text/html'
-
-                );
-            $this->get('mailer')->send($message);
-            //return $this->redirect($this->generateUrl('/user/colocation/indexColocation'));
+        $Form->handleRequest($request);
+        if($Form->isSubmitted())
+        {
+            $em=$this->getDoctrine()->getManager();
+            $em->persist($colocation);
+            $em->flush();
+            return $this->redirectToRoute('colocation_homepage');
         }
-        return $this->render('@Colocation/mail.html.twig',
-            array('form' => $form->createView()));
+        return $this->render('ColocationBundle:Default:background.html.twig', array(
+            'form' => $Form->createView(),
+        ));
 
 
     }
