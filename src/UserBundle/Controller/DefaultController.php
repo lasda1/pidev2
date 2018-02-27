@@ -3,6 +3,7 @@
 namespace UserBundle\Controller;
 
 use ColocationBundle\Entity\Colocation;
+use ColocationBundle\Form\ColocationType;
 use CoVoiturageBundle\Entity\CoVoiturage;
 use CoVoiturageBundle\Entity\CoVoiturageDays;
 use CoVoiturageBundle\Entity\CoVoiturageRequests;
@@ -239,7 +240,29 @@ class DefaultController extends Controller
         }
 
         $em->flush();
-       // return ($this->redirectToRoute("mesoffres"));
+       return ($this->redirectToRoute("affiche"));
+    }
+
+    public function modifierAction(Request $request, $id)
+    {
+        $em=$this->getDoctrine()->getManager();
+        $colocation=$em->getRepository("ColocationBundle:Colocation")->find($id);
+        $Form=$this->createForm(ColocationType::class,$colocation);
+
+        $Form->handleRequest($request);
+        if($Form->isSubmitted())
+        {
+            $em=$this->getDoctrine()->getManager();
+            $em->persist($colocation);
+            $em->flush();
+            return $this->redirectToRoute('colocation_homepage');
+        }
+        return $this->render('UserBundle::colocation.html.twig', array(
+            "colocations" => $colocation,
+
+        ));
+
+
     }
 
     public function matiereAction(Request $request){
