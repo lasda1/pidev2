@@ -53,6 +53,14 @@ showsingle:
     path:     /objets/showsingle/{id}
     defaults: { _controller: ObjetBundle:Objet:showsingle }
 
+supprimerinteraction:
+    path:     /objets/showsingle/supprimerinteraction/{id}
+    defaults: { _controller: ObjetBundle:Objet:showsingle }
+
+signalerinteraction:
+    path:     /objets/showsingle/signalerinteraction/{id}
+    defaults: { _controller: ObjetBundle:Objet:showsingle }
+
 
 
 

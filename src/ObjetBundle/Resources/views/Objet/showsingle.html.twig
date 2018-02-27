@@ -74,8 +74,22 @@
                 {% if inter is defined and inter is not null%}
                     {% if app.user.id!=inter.iduser.id %}
                     <span style="font-size: 10px">{{ inter.Statut|upper }}</span>
+                        {#signaler interaction#}
+                        {% if objet.nature=='Objet Trouvé' %}
+                        <div class="col-md-3">
+                            <div class="btnArea">
+                                <a href="{{ path("signalerinteraction", { "id":objet.id })}}" class="btn btn-success">S'agit-il de votre Objet ?</a>
+                            </div>
+                        </div>
+                        {% endif %}
                     {% else %}
                     <span style="font-size: 10px">Vous avez Déja Fait Une Réclamation</span>
+                        {#supprimer interaction#}
+                        <div class="col-md-3">
+                            <div class="btnArea">
+                                <a href="{{ path("supprimerinteraction", { "id":objet.id })}}" class="btn btn-success">Supprimer Ma Réclamation</a>
+                            </div>
+                        </div>
                     {% endif %}
                 {% else %}
                     <div class="col-md-3">

@@ -34,8 +34,8 @@
                     <td class="center">{{ objet.Description }}</td>
                     <td>{{ objet.Lieu }}</td>
                     <td>{{ objet.Nature }}</td>
-                    <td align="center" id="supprimer"><a href="{{ path("deleteobj", { "id":objet.id }) }}" ><button class="btn btn-danger"><div class="icon" data-toggle="modal" data-target="#Supprimer"><span class="s7-trash" data-toggle="tooltip" data-placement="top" data-original-title="Supprimer"></span></div></button></a></td>
-                    <td><a href="{{ path("ApprouverObjer", { "id":objet.id }) }}" ></a></td>
+                    <td align="center" id="supprimer"><a href="{{ path("admin_objet_supprimer", { "id":objet.id }) }}" ><button class="btn btn-danger"><div class="icon" data-toggle="modal" data-target="#Supprimer"><span class="s7-scissors" data-toggle="tooltip" data-placement="top" data-original-title="Supprimer"></span></div></button></a></td>
+                    <td><a href="{{ path("admin_fct_OBJET_approuver", { "id":objet.id }) }}" ><button class="btn btn-alt1"><div class="icon" data-toggle="modal" data-target="#Approuver"><span class="s7-pin" data-toggle="tooltip" data-placement="top" data-original-title="Approuver"></span></div></button></a></td>
                 </tr>
             {% endfor %}
             </tbody>

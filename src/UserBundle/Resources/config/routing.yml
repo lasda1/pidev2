@@ -107,20 +107,33 @@ admin_index_approuve:
     defaults: { _controller: "UserBundle:Default:indexAdminApprouver" }
     methods:  GET
 
-admin_objet_non_approuve:
-    path:     /adminaffichobjnonApprouver
+admin_objet_approuve:
+    path:     /adminaffichobjApprouver
     defaults: { _controller: "UserBundle:Default:indexAdminObjet" }
     methods:  GET
 
 admin_fct_OBJET_approuver:
     path:     /{id}/adminObjetApprouver
-    defaults: { _controller: "UserBundle:Default:approuverObjetAction" }
+    defaults: { _controller: "UserBundle:Default:approuverObjet" }
     methods:  GET
 
-admin_objet_approuve:
-    path:     /adminaffichobjApprouver
+admin_objet_non_approuve:
+    path:     /adminaffichobjnonApprouver
     defaults: { _controller: "UserBundle:Default:indexAdminObjetApprouver" }
     methods:  GET
 
+admin_objet_supprimer:
+    path:     /{id}/adminsupprimerobjet
+    defaults:  { _controller: "UserBundle:Default:admindeleteobj" }
+    methods:  GET
 
+admin_objet_perdu_stat:
+      path:     /objperdstat
+      defaults:  { _controller: "UserBundle:Default:adminStatObjPerd" }
+      methods:  GET
+
+admin_objet_trouve_stat:
+      path:     /objtrouvstat
+      defaults:  { _controller: "UserBundle:Default:adminStatObjTrouv" }
+      methods:  GET
 

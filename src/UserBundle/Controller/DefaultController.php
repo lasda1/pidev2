@@ -10,12 +10,14 @@ use EspaceEtudeBundle\Entity\Section;
 use EspaceEtudeBundle\Enum\Niveau;
 use EspaceEtudeBundle\Form\MatiereType;
 use EventBundle\Entity\Event;
+use Ob\HighchartsBundle\Highcharts\Highchart;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use EspaceEtudeBundle\Form\SectionType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Zend\Json\Expr;
 
 class DefaultController extends Controller
 {
@@ -320,20 +322,20 @@ class DefaultController extends Controller
         $em->flush();
         return $this->redirectToRoute('admin_index');
     }
-
+////////////Controller Admin Objet
     public function indexAdminObjetAction(Request $request)
     {
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
             $em = $this->getDoctrine()->getManager();
-            $value=0;
+            $value=1;
             $objets = $em->getRepository('ObjetBundle:Objet')->createQueryBuilder('e')
                 ->where('e.enable LIKE :valeur')
-                ->addORderBy('e.Date', 'DESC')
+                ->addORderBy('e.date', 'DESC')
                 ->setParameter('valeur', '%'.$value.'%')
                 ->getQuery()
                 ->execute();
             return $this->render('@User/objet/objetAdmin.html.twig', array(
-                'objets' => $objets
+                'objet' => $objets
             ));
         }
 
@@ -346,16 +348,16 @@ class DefaultController extends Controller
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
 
             $em = $this->getDoctrine()->getManager();
-            $value=1;
-            $objets = $em->getRepository('EventBundle:Event')->createQueryBuilder('e')
+            $value=0;
+            $objets = $em->getRepository('ObjetBundle:Objet')->createQueryBuilder('e')
                 ->where('e.enable LIKE :valeur')
-                ->addORderBy('e.Date', 'DESC')
+                ->addORderBy('e.date', 'DESC')
                 ->setParameter('valeur', '%'.$value.'%')
                 ->getQuery()
                 ->execute();
 
             return $this->render('@User/objet/indexAdminObjetNonApprouver.html.twig', array(
-                'objets' => $objets
+                'objet' => $objets
             ));
         }
 
@@ -370,8 +372,144 @@ class DefaultController extends Controller
         $objet->setEnable(1);
         $em->persist($objet);
         $em->flush();
-        return $this->redirectToRoute('admin_index');
+        return $this->redirectToRoute('admin_objet_non_approuve');
+    }
+
+    public function admindeleteobjAction($id)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $objet = $em->getRepository('ObjetBundle:Objet')->find($id);
+        $interaction=$em->getRepository('ObjetBundle:Interaction')->findByidObjet($id);
+        if($interaction){
+            $em->remove($interaction[0]);
+        }
+        $em->remove($objet);
+        $em->flush();
+        return $this->redirectToRoute("admin_objet_non_approuve");
+
     }
 
 
+
+
+
+
+
+    public function adminStatObjPerdAction()
+    {
+        //  $objets = $em->getRepository(Objet::class)->objtrouv();
+        $objet_nature='Objet Perdu';
+        $objet_type = array('Ordinateur', 'Telephone', 'CIN', 'Chargeur', 'Autres');
+        $nbobjet = array();
+        $tyobjet = array();
+
+
+        foreach ($objet_type as $ot) {
+            $em = $this->getDoctrine()->getManager();
+            $objet = $em->getRepository('ObjetBundle:Objet')->nbpardate($objet_nature, $ot);
+            array_push($nbobjet, intval($objet));
+            array_push($tyobjet, $ot);
+        }
+        // return new Response($nbobjet);
+        $series = array(
+            array(
+                'name' => 'Objet',
+                'type' => 'column',
+                'color' => '#4572A7',
+                'yAxis' => 0,
+                'data' => $nbobjet,));
+        $yData = array(
+            array(
+                'labels' => array(
+                    'formatter' => new Expr('function () { return this.value + "" }'),
+                    'style' => array('color' => '#4572A7')),
+                'gridLineWidth' => 0,
+                'title' => array(
+                    'text' => "Nombre d'objet",
+                    'style' => array('color' => '#4572A7')),),);
+        $ob = new Highchart();
+        $ob->chart->renderTo('container');
+        $ob->chart->type('column');
+        $ob->title->text("Nombre d'Objets Perdus Désapprouvés");
+        $ob->xAxis->categories($tyobjet);
+
+        $ob->yAxis($yData);
+        $ob->legend->enabled(false);
+        $formatter = new Expr('function (){ 
+        var unit = {
+	     "Objet": "Objet(s)", }
+	 [this.series.name]; 
+	 return this.x + ": <b>" + this.y + "</b> " + unit; }');
+        $ob->tooltip->formatter($formatter);
+        $ob->series($series);
+        return $this->render('@User/objet/AdminStatObjetPerdu.html.twig', array('chart' => $ob));
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function adminStatObjTrouvAction()
+    {
+        //  $objets = $em->getRepository(Objet::class)->objtrouv();
+        $objet_nature='Objet Trouvé';
+        $objet_type = array('Ordinateur', 'Telephone', 'CIN', 'Chargeur', 'Autres');
+        $nbobjet = array();
+        $tyobjet = array();
+
+
+        foreach ($objet_type as $ot) {
+            $em = $this->getDoctrine()->getManager();
+            $objet = $em->getRepository('ObjetBundle:Objet')->nbpardate($objet_nature, $ot);
+            array_push($nbobjet, intval($objet));
+            array_push($tyobjet, $ot);
+        }
+        // return new Response($nbobjet);
+        $series = array(
+            array(
+                'name' => 'Objet',
+                'type' => 'column',
+                'color' => '#4572A7',
+                'yAxis' => 0,
+                'data' => $nbobjet,));
+        $yData = array(
+            array(
+                'labels' => array(
+                    'formatter' => new Expr('function () { return this.value + "" }'),
+                    'style' => array('color' => '#4572A7')),
+                'gridLineWidth' => 0,
+                'title' => array(
+                    'text' => "Nombre d'objet",
+                    'style' => array('color' => '#4572A7')),),);
+        $ob = new Highchart();
+        $ob->chart->renderTo('container');
+        $ob->chart->type('column');
+        $ob->title->text("Nombre d'Objets Trouvés Désapprouvés");
+        $ob->xAxis->categories($tyobjet);
+
+        $ob->yAxis($yData);
+        $ob->legend->enabled(false);
+        $formatter = new Expr('function (){ 
+        var unit = {
+	     "Objet": "Objet(s)", }
+	 [this.series.name]; 
+	 return this.x + ": <b>" + this.y + "</b> " + unit; }');
+        $ob->tooltip->formatter($formatter);
+        $ob->series($series);
+        return $this->render('@User/objet/AdminStatObjetTrouv.html.twig', array('chart' => $ob));
+    }
+
 }
+/////////// END controller ADmin Objet
+
+
