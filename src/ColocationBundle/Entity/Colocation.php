@@ -101,6 +101,14 @@ class Colocation
      */
     private $photo1;
 
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nature", type="string", length=255, nullable=false)
+     */
+    private $nature;
+
     /**
      * @var boolean
      *
@@ -528,5 +536,29 @@ class Colocation
     public function getEnable()
     {
         return $this->enable;
+    }
+
+    /**
+     * Set nature
+     *
+     * @param string $nature
+     *
+     * @return Colocation
+     */
+    public function setNature($nature)
+    {
+        $this->nature = $nature;
+
+        return $this;
+    }
+
+    /**
+     * Get nature
+     *
+     * @return string
+     */
+    public function getNature()
+    {
+        return $this->nature;
     }
 }

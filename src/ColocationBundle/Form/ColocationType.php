@@ -18,6 +18,13 @@ class ColocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+
+            ->add('nature',ChoiceType::class,array(
+                'choices'=>array(
+                    'Demande'=>'Demande',
+                    'Offre'=>'Offre'
+                )
+            ))
             ->add('loyer')
             ->add('titre')
             ->add('meuble', ChoiceType::class, array(

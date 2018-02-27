@@ -80,6 +80,9 @@ affiche:
 supprimer:
       path:     /user/colocation/supprimer/{id}
       defaults: { _controller: UserBundle:Default:supprimer }
+modifier:
+      path:   /modifier/{id}
+      defaults: { _controller: ColocationBundle:Default:modifier}
 
 
 

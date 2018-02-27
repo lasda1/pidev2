@@ -11,6 +11,7 @@ use MyAppMailBundle\Form\ReponseType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\HttpFoundation\Response;
 
 
 class DefaultController extends Controller
@@ -19,7 +20,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $colocation = $em->getRepository(Colocation::class)->findAll();
-        $ids = array_rand($colocation, 3);
+        $ids= array_rand($colocation, 3);
         $suggestions = [];
         $suggestions[0] = $colocation[$ids[0]];
         $suggestions[1] = $colocation[$ids[1]];
@@ -71,7 +72,15 @@ class DefaultController extends Controller
             // ... persist the $product variable or any other work
             $em->persist($colocation);
             $em->flush();
-            return $this->redirectToRoute('colocation_homepage');
+            if($colocation->getNature()=='Demande')
+            {
+                return $this->redirectToRoute('affichdemanderecoloc');
+            }
+            else
+            {
+                return $this->redirectToRoute('affichoffrecoloc');
+            }
+
         }
 
         return $this->render('ColocationBundle:Default:background.html.twig', array(
@@ -156,6 +165,70 @@ class DefaultController extends Controller
         ));
 
 
+    }
+
+
+    public function affichdemandecolocAction()
+    {
+        $em=$this->getDoctrine()->getManager();
+        $colocations=$em->getRepository(Colocation::class)->findAll();
+
+        $colocation=array();
+        foreach ($colocations as $coloc){
+            if($coloc->getNature()=='Demande'){
+                array_push($colocation,$coloc);
+            }
+
+        }
+        $colocationsuggest=array();
+        foreach ($colocation as $col)
+        {
+            foreach ($colocations as $coloc)
+            {
+                if($coloc->getNature()=='Offre'&&$col->getUtilisateur()->getId()!=$coloc->getUtilisateur()->getId()&&$col->getMeuble()==$coloc->getMeuble()&&$col->getType()==$coloc->getType()&&$col->getVille()==$coloc->getVille())
+                {
+                    array_push($colocationsuggest,$coloc);
+                }
+            }
+        }
+        $ids= array_rand($colocation, 3);
+        $suggestions = [];
+        $suggestions[0] = $colocation[$ids[0]];
+        $suggestions[1] = $colocation[$ids[1]];
+        $suggestions[2] = $colocation[$ids[2]];
+        return $this->render('ColocationBundle:Default:index.html.twig',array('colocations'=>$colocation,'suggestions'=>$suggestions,'colocationsuggest'=>$colocationsuggest));
+    }
+
+    public function affichoffrecolocAction()
+    {
+        $em=$this->getDoctrine()->getManager();
+        $colocations=$em->getRepository(Colocation::class)->findAll();
+
+        $colocation=array();
+        foreach ($colocations as $coloc){
+            if($coloc->getNature()=='Offre'){
+                array_push($colocation,$coloc);
+            }
+
+        }
+
+        $colocationsuggest=array();
+        foreach ($colocation as $col)
+        {
+        foreach ($colocations as $coloc)
+        {
+            if($coloc->getNature()=='Demande'&&$col->getUtilisateur()->getId()!=$coloc->getUtilisateur()->getId()&&$col->getMeuble()==$coloc->getMeuble()&&$col->getType()==$coloc->getType()&&$col->getVille()==$coloc->getVille())
+            {
+                array_push($colocationsuggest,$coloc);
+            }
+        }
+        }
+        $ids= array_rand($colocation, 3);
+        $suggestions = [];
+        $suggestions[0] = $colocation[$ids[0]];
+        $suggestions[1] = $colocation[$ids[1]];
+        $suggestions[2] = $colocation[$ids[2]];
+        return $this->render('ColocationBundle:Default:index.html.twig',array('colocations'=>$colocation,'suggestions'=>$suggestions,'colocationsuggest'=>$colocationsuggest));
     }
 
 
