@@ -45,6 +45,16 @@ class ObjetRepository extends \Doctrine\ORM\EntityRepository
 
     }
 
+    public function suggest($l,$d,$t)
+    {
+        $q=$this->getEntityManager()
+            ->createQuery("select (o) from ObjetBundle:Objet o WHERE o.nature='Objet Trouvé' AND o.type=:type AND o.date=:date AND o.lieu=:lieu")
+            ->setParameter('type',$t)
+            ->setParameter('date',$d)
+            ->setParameter('lieu',$l);
+        return $q->getResult();
+    }
+
 
 
 

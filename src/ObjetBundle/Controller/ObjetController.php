@@ -29,6 +29,7 @@ class ObjetController extends Controller
         $objet = new Objet();
         $form = $this->createForm(ObjetType::class, $objet);
         $form->handleRequest($request);
+        $msg="Ajouter Un Nouveau Objet Trouvé";
         if ($form->isValid() && $form->isSubmitted()) {
             $file = $objet->getPhoto();
 
@@ -47,13 +48,13 @@ class ObjetController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($objet);
             $em->flush();
-            return $this->redirectToRoute("affichobjtrouv");
+            return $this->redirectToRoute("affichobjtrouv",array(['success' => 1]));
         }
 
 
         return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form' => $form->createView()
             // ...
-        , ['success' => 1]));
+        ,'msg'=>$msg));
     }
 
     public function ajoutobjperdAction(Request $request, UserInterface $username)
@@ -61,6 +62,7 @@ class ObjetController extends Controller
         $objet = new Objet();
         $form = $this->createForm(ObjetType::class, $objet);
         $form->handleRequest($request);
+        $msg="Ajouter Un Nouveau Objet Perdu";
         if ($form->isValid() && $form->isSubmitted()) {
             $file = $objet->getPhoto();
             $fileName = md5(uniqid()) . '.' . $file->guessExtension();
@@ -81,7 +83,7 @@ class ObjetController extends Controller
         }
 
 
-        return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form' => $form->createView()
+        return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form' => $form->createView(),'msg'=>$msg
             // ...
         ));
     }
@@ -104,8 +106,24 @@ class ObjetController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->objperd();
-        //$interaction = $em->getRepository(Interaction::class)->findAll();
-        return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 2
+        $ob=$em->getRepository(Objet::class)->objtrouv();
+        $x=array();
+        foreach ($objet as $o)
+        {
+            foreach ($ob as $otrouv)
+            {
+                if( $o->getUser()->getId()==$otrouv->getUser()->getId()&&$o->getType()==$otrouv->getType()&&$o->getLieu()==$otrouv->getLieu())
+                {
+                array_push($x,$otrouv);
+                }
+
+            }
+
+
+        }
+
+        //$interaction = $em->getRepos1itory(Interaction::class)->findAll();
+        return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 2,'x'=>$x
             // ...
         ));
     }
@@ -134,6 +152,11 @@ class ObjetController extends Controller
         $objet = $em->getRepository(Objet::class)->find($id);
         $Form = $this->createForm(ObjetType::class, $objet);
         $Form->handleRequest($request);
+
+        if ($objet->getNature()=='Objet Perdu')
+        {$msg='Ajouter Un Nouveau Objet Perdu';}
+        else
+        {$msg='Ajouter Un Nouveau Objet Trouvé';}
         if ($Form->isValid() && $Form->isSubmitted()) {
             $file = $objet->getPhoto();
             $fileName = md5(uniqid()) . '.' . $file->guessExtension();
@@ -147,14 +170,18 @@ class ObjetController extends Controller
             $objet->setPhoto($fileName);
             $em->persist($objet);
             $em->flush();
-            if ($objet->getNature() == 'Objet Perdu') {
+            if ($objet->getNature() == 'Objet Perdu')
+            {
                 return $this->redirectToRoute("affichobjperd");
-            } else {
-                return $this->redirectToRoute("affichobjtrouv");
-            }
 
+            }
+            else
+            {
+                return $this->redirectToRoute("affichobjtrouv");
+
+            }
         }
-        return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form' => $Form->createView()            // ...
+        return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form' => $Form->createView(),'msg'=>$msg            // ...
         ));
 
     }
@@ -211,6 +238,9 @@ class ObjetController extends Controller
 
     public function coinobjperdAction()
     {
+
+        /*$em=$this->getDoctrine()->getManager();
+        $objet=$em->getRepository(Objet::class)->nbobjperd();*/
 
         return $this->render('ObjetBundle:Objet:coinobjperd.html.twig');
     }
@@ -284,5 +314,7 @@ class ObjetController extends Controller
         $mailer->send($message);
 
     }
+
+
 
 }
