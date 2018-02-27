@@ -75,6 +75,18 @@ delete_section:
     path:     /admin/section/{id}
     defaults: { _controller: UserBundle:Default:delete }
 
+
+afficher_matiere_admin:
+    path:     /admin/matiere/{id}
+    defaults: { _controller: UserBundle:Default:matiere }
+delete_matiere:
+    path:     /admin/matiere/{id}/{ids}
+    defaults: { _controller: UserBundle:Default:deleteMatiere }
+update_matiere:
+    path: /admin/update
+    defaults: {_controller: UserBundle:Default:updateMatiere}
+
+
 admin_index:
     path:     /adminIndex
     defaults: { _controller: "UserBundle:Default:indexAdmin" }
@@ -94,3 +106,21 @@ admin_index_approuve:
     path:     /adminIndexApprouver
     defaults: { _controller: "UserBundle:Default:indexAdminApprouver" }
     methods:  GET
+
+admin_objet_non_approuve:
+    path:     /adminaffichobjnonApprouver
+    defaults: { _controller: "UserBundle:Default:indexAdminObjet" }
+    methods:  GET
+
+admin_fct_OBJET_approuver:
+    path:     /{id}/adminObjetApprouver
+    defaults: { _controller: "UserBundle:Default:approuverObjetAction" }
+    methods:  GET
+
+admin_objet_approuve:
+    path:     /adminaffichobjApprouver
+    defaults: { _controller: "UserBundle:Default:indexAdminObjetApprouver" }
+    methods:  GET
+
+
+

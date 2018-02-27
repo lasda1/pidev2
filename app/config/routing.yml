@@ -2,6 +2,10 @@ forum:
     resource: "@ForumBundle/Resources/config/routing.yml"
     prefix:   /forum
 
+my_app_mail:
+    resource: "@MyAppMailBundle/Resources/config/routing.yml"
+    prefix:   /
+
 espace_etude:
     resource: "@EspaceEtudeBundle/Resources/config/routing.yml"
     prefix:   /etude

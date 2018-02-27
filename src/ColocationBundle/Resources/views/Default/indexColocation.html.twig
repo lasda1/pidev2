@@ -1,0 +1,68 @@
+{% extends "base.html.twig" %}
+{% block pageName %}
+    <h2>Colocation</h2>
+{% endblock %}
+{% block body %}
+    <div style="display: none">
+        {% block ColocationActive %}
+            active
+        {% endblock %}
+    </div>
+
+    {#<div class="tools">#}
+    {#<a href="{{ path('co_voiturage_addoffreview') }}"><span class="icon s7-upload" data-toggle="tooltip"#}
+    {#data-placement="top" title=""#}
+    {#data-original-title="Ajouter un offre"></span></a>#}
+    {#</div>#}
+
+
+
+
+
+    <div class="row">
+
+
+        <div class="col-md-offset-2 col-md-4">
+            <div class="pricing-table pricing-table-warning">
+                <div class="pricing-table-title">Colocation</div>
+                <div class="pricing-table-price"><span class="value">Offres</span></div>
+                <div class="pricing-table-description" style="font-size: 12px"><i>Trois s'aidant l'un l'autre suffisent pour porter la charge de six.</i></div>
+                <div class="panel-divider panel-divider-xl"></div>
+                <ul class="pricing-table-features">
+                    <li>Vous pouvez consulter les offres</li>
+                    <li>de Colocation ou</li>
+                    <li>en poster un</li>
+                </ul>
+                <a href="{{ path('co_voiturage_viewoffre') }}" class="btn btn-warning">Consulter les offres</a>
+                <br>
+                <a href="{{ path('co_voiturage_viewownoffre') }}" class="btn btn-danger">Vos offres</a>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="pricing-table pricing-table-success">
+                <div class="pricing-table-title">Colocation</div>
+                <div class="pricing-table-price"><span class="value">Demandes</span></div>
+                <div class="pricing-table-description"><i>La meilleure aide est celle qu'on se donne soi-même.</i></div>
+                <div class="panel-divider panel-divider-xl"></div>
+                <ul class="pricing-table-features">
+                    <li>Vous pouvez demander si</li>
+                    <li>quelqu'un pourrait vous dépanner</li>
+                    <li>en ajoutant une demande</li>
+                </ul>
+                <a href="{{ path('co_voiturage_viewdemande') }}" class="btn btn-success">Consulter les demandes</a>
+                <br>
+                <a href="{{ path('co_voiturage_viewowndemande') }}" class="btn btn-danger">Vos demandes</a>
+            </div>
+        </div>
+
+
+    </div>
+
+
+
+
+{% endblock %}
+
+
+

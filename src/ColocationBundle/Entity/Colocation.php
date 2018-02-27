@@ -101,6 +101,13 @@ class Colocation
      */
     private $photo1;
 
+
+
+    /**
+     * @ORM\OneToMany(targetEntity="MyAppMailBundle\Entity\Reponse", mappedBy="colocation")
+     */
+    private $reponses;
+
     /**
      * @var string
      *
@@ -448,5 +455,46 @@ class Colocation
     public function getY()
     {
         return $this->y;
+    }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->reponses = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add reponse
+     *
+     * @param \MyAppMailBundle\Entity\Reponse $reponse
+     *
+     * @return Colocation
+     */
+    public function addReponse(\MyAppMailBundle\Entity\Reponse $reponse)
+    {
+        $this->reponses[] = $reponse;
+
+        return $this;
+    }
+
+    /**
+     * Remove reponse
+     *
+     * @param \MyAppMailBundle\Entity\Reponse $reponse
+     */
+    public function removeReponse(\MyAppMailBundle\Entity\Reponse $reponse)
+    {
+        $this->reponses->removeElement($reponse);
+    }
+
+    /**
+     * Get reponses
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReponses()
+    {
+        return $this->reponses;
     }
 }
