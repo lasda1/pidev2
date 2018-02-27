@@ -1,5 +1,34 @@
 {% extends 'base.html.twig' %}
+{% block notif  %}
+    <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false"
+                            class="dropdown-toggle"><span class="icon s7-bell"></span><span
+                    class="indicator"></span></a>
+        {% for noti in notification %}
+            <ul class="dropdown-menu am-notifications">
+                <li>
+                    <div class="title">Notifications<span class="badge"></span></div>
+                    <div class="list">
+                        <div class="am-scroller nano">
+                            <div class="content nano-content">
+                                <ul>
+                                    <li><a href="#">
+                                            <div class="user-avatar"><img src="{{ asset(noti.idEvent.photo) }}" height="20%" width="20%"/>
+                                                <div class="user-content"><span class="name">{{ noti.idEvent.titre }}</span><span
+                                                            class="text-content"> {{ noti.message }}</span><span
+                                                            class="date"></span></div>
+                                            </div>
 
+                                        </a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer"><a href="#">View all notifications</a></div>
+                </li>
+            </ul>
+        {% endfor %}
+    </li>
+{% endblock  %}
 {% block body %}
     <center>
         <form action="{{ path('e_recherche') }}?chose=" class="form-horizontal group-border-dashed" novalidate="">

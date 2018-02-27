@@ -29,6 +29,13 @@ class Objet
     private $type;
 
     /**
+     * @var boolean
+     *
+     * @ORM\Column(name="enable", type="boolean", nullable=false)
+     */
+    private $enable=0;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="Description", type="string", length=255)
@@ -247,5 +254,29 @@ class Objet
     public function getUser()
     {
         return $this->user;
+    }
+
+    /**
+     * Set enable
+     *
+     * @param boolean $enable
+     *
+     * @return Objet
+     */
+    public function setEnable($enable)
+    {
+        $this->enable = $enable;
+
+        return $this;
+    }
+
+    /**
+     * Get enable
+     *
+     * @return boolean
+     */
+    public function getEnable()
+    {
+        return $this->enable;
     }
 }

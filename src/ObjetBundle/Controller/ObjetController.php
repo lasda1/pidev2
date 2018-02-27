@@ -20,6 +20,7 @@ use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 use Symfony\Component\Validator\Constraints\Date;
 use Zend\Json\Expr;
+use Swift_Message;
 
 class ObjetController extends Controller
 {
@@ -89,7 +90,12 @@ class ObjetController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->objtrouv();
-
+        $message = \Swift_Message::newInstance()
+            ->setSubject('kadha')
+            ->setFrom('espritentraide@gmail.com')
+            ->setTo('bader.chtara@gmail.com')
+            ->setBody('Bonjour');
+        $this->get('mailer')->send($message);
         return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 1
         ));
     }
@@ -219,69 +225,62 @@ class ObjetController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->find($id);
-        if ($objet->getNature() == "Objet Perdu") {
+        $inter = $this->getDoctrine()->getRepository(Interaction::class)->findtrouver($id);
+        if($inter == null)
+        {
+                    if ($objet->getNature() == "Objet Perdu") {
 
-            $inter = new Interaction();
-            $inter->setIdUser($this->getUser());
-            $inter->setIdObjet($objet);
-            $inter->setStatut("Perdu-->Trouvé par");
-            $em->persist($inter);
-            $em->flush();
-            return $this->redirectToRoute('affichobjperd', array('inter' => $inter));
-        } else {
-            $inter = new Interaction();
-            $inter->setIdUser($this->getUser());
-            $inter->setIdObjet($objet);
-            $inter->setStatut("Trouvé-->propriétaire de");
-            $em->persist($inter);
-            $em->flush();
-            return $this->redirectToRoute('affichobjtrouv', array('inter' => $inter));
+                        $inter = new Interaction();
+                        $inter->setIdUser($this->getUser());
+                        $inter->setIdObjet($objet);
+                        $inter->setStatut('Cet objet perdu a été réclamé comme trouvé par ' . $this->getUser()->getNom());
+                        $em->persist($inter);
+                        $em->flush();
+                        return $this->redirectToRoute('affichobjperd', array('inter' => $inter));
+                    }
+                    else
+                    {
+                        $inter = new Interaction();
+                        $inter->setIdUser($this->getUser());
+                        $inter->setIdObjet($objet);
+                        $inter->setStatut($this->getUser()->getNom().' a trouvé Cet Objet');
+                        $em->persist($inter);
+                        $em->flush();
+                        return $this->redirectToRoute('affichobjtrouv', array('inter' => $inter));
+                    }
+        }
+        else
+        {
+            $msg='Déja Réclamé';
+            return $this->redirectToRoute('affichobjtrouv',array('msg'=>$msg));
 
         }
-    }
-
-    public function viewetatAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $inter = $em->getRepository(Interaction::class)->findByidObjet($request->get("id"));
-        if ($inter) {
-            $msg = 'Votre objet perdu a été réclamé comme trouvé par ' . $inter[0]->getIdUser()->getNom();
-        }
-        elseif ($inter && $inter->getIdObjet()->getNature() == 'Objet Trouvé') {
-            $msg = $inter[0]->getIdUser()->getNom() . 'a trouvé ton Objet';
-        }
-        elseif ($inter && $inter->getIdObjet()->getNature() == 'Objet Perdu') {
-            $msg = $inter[0]->getIdUser()->getNom() . 'est le propriétaire de l\'objet';
-        }
-        else {
-            $msg = 'Aucune Réclamation';
-        }
-        return $this->render('ObjetBundle:Objet:updateobj.html.twig', array('msg' => $msg));
-
     }
 
     public function showsingleAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->find($id);
+        $inter=$em->getRepository(Interaction::class)->findOneBy(array('idObjet'=>$objet));
         $interaction = $em->getRepository(Interaction::class)->findOneBy(
-            array('idUser'=>$this->getUser(),'idObjet'=>$objet)
-
-        );
+            array('idUser'=>$this->getUser(),'idObjet'=>$objet));
+       // $msg=$interaction->getStatut();
         if($interaction) {
-            return $this->render('ObjetBundle:Objet:showsingle.html.twig', array('objet' => $objet, 'interaction' => $interaction));
+
+            return $this->render('ObjetBundle:Objet:showsingle.html.twig', array('objet' => $objet, 'interaction' => $interaction,'inter'=>$inter));
         }
         else{
-            return $this->render('ObjetBundle:Objet:showsingle.html.twig', array('objet' => $objet, 'interaction' => null));
+
+            return $this->render('ObjetBundle:Objet:showsingle.html.twig', array('objet' => $objet, 'interaction' => null,'inter'=>$inter ));
 
         }
     }
 
-    public function indexAction($name, \Swift_Mailer $mailer){
+    public function mailAction( \Swift_Mailer $mailer){
         $message = (new \Swift_Message('Hello Email'))
-            ->setFrom('send@example.com')
-            ->setTo('recipient@example.com')
-            ->setBody();
+            ->setFrom('espritentraide@gmail.com')
+            ->setTo('bader.chtara@gmail.com')
+            ->setBody('salut');
         $mailer->send($message);
 
     }
