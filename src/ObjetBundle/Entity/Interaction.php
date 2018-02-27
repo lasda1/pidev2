@@ -36,9 +36,9 @@ class Interaction
     /**
      * @var string
      *
-     * @ORM\Column(name="Statut", type="string", length=255)
+     * @ORM\Column(name="Statut", type="string", length=255,nullable=true)
      */
-    private $statut;
+    private $statut="Pas de Réclamation Pour Le Moment";
 
 
     /**
@@ -124,4 +124,6 @@ class Interaction
     {
         return $this->idObjet;
     }
+
+
 }

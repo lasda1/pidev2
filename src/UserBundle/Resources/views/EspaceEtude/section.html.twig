@@ -21,15 +21,20 @@
                                                     <th width="25%">libelle</th>
                                                     <th width="10%">niveau</th>
                                                     <th width="10%">supprimer</th>
+                                                    <th width="10%">afficher matiere</th>
                                                 </tr>
                                                 </thead>
                                                 <tbody class="no-border-x">
+                                                {% set i=0 %}
                                                 {% for section in sections %}
                                                     {% if section.niveau== n %}
+                                                        {% set i=i+1 %}
                                                 <tr>
-                                                    <td>{{ section.libelle }}</td>
-                                                    <td>{{ section.niveau }}</td>
+                                                    <td id="{{ i }}" onclick="updateSection({{ section.id}},'libelle',{{ i }});">{{ section.libelle }}</td>
+                                                    <td >{{ section.niveau }}</td>
                                                     <td><a href="{{ path('delete_section',{'id': section.id}) }}"> supprimer</a></td>
+                                                    <td><a href="{{ path('afficher_matiere_admin',{'id': section.id}) }}">voir matieres</a></td>
+                                                    {% set i=i+1 %}
                                                 </tr>
                                                     {% endif %}
                                                 {% endfor %}
@@ -46,8 +51,7 @@
 
     </div>
     <div id="myModal" onclick="modal1();" class="modal">
-
-        <!-- Modal content -->
+       <!-- Modal content -->
         <div class="modal-content">
             <span id="out" class="close">&times;</span>
             <h3 id="title">Ajouter un document</h3>
@@ -77,4 +81,32 @@
     </div>
 
 
+{% endblock %}
+{% block customScript %}
+    <script>
+        function updateSection(id,champs,i) {
+
+            var $this = $("#"+i);
+            $valeur=this.value;
+            var $input = $('<input>', {
+                value: $this.text(),
+                type: 'text',
+                blur: function() {
+
+                    $.ajax({
+                        url:"{{ path('update_section') }}",
+                        type: "POST",
+                        data:{'val':this.value,'id':id,'champs':champs},
+                        success : function (data){
+
+
+                        }
+                    });
+                    $this.text(this.value);
+                }
+
+            }).appendTo( $this.empty() ).focus();
+        }
+
+    </script>
 {% endblock %}
