@@ -101,6 +101,12 @@ class Colocation
      */
     private $photo1;
 
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="enable", type="boolean", nullable=false)
+     */
+    private $enable=0;
 
 
     /**
@@ -496,5 +502,31 @@ class Colocation
     public function getReponses()
     {
         return $this->reponses;
+    }
+
+
+
+    /**
+     * Set enable
+     *
+     * @param boolean $enable
+     *
+     * @return Colocation
+     */
+    public function setEnable($enable)
+    {
+        $this->enable = $enable;
+
+        return $this;
+    }
+
+    /**
+     * Get enable
+     *
+     * @return boolean
+     */
+    public function getEnable()
+    {
+        return $this->enable;
     }
 }

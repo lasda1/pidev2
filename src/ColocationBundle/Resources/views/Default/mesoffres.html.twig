@@ -145,9 +145,9 @@
                 </div>
                 <div class="slide-footer">
                 <span class="pull-right buttons">
-                    <a href="{{ path('reponse_offre', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Modifier</button></a>
-                    <a href="{{ path('supprimer',{'id':colocation.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Supprimer</button></a>
-                    <a href="{{ path('show_specific_colocation', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Show</button></a>
+                    <a href="{{ path('modifier', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Modifier</button></a>
+                    <a href="{{ path('supprimer',{'id':colocation.id}) }}" ><button class="btn btn-sm btn-primary"><i class="fa fa-fw fa-eye"></i> Supprimer</button></a href="{{ path('supprimer',{'id':colocation.id}) }}" >
+                    <a href="{{ path('show_specific_colocation', {'id' : colocation.id}) }}" ><button class="btn btn-sm btn-default"><i class="fa fa-fw fa-eye"></i> Afficher</button></a>
                 </span>
 
                 </div>
