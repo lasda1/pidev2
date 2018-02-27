@@ -38,11 +38,11 @@
                             class="icon-bar"><span></span><span></span><span></span></span></a><a href="{{ path('user_news') }}"
                                                                                                   class="navbar-brand"></a>
             </div>
-            <a href="#" class="am-toggle-right-sidebar"><span class="icon s7-menu2"></span></a><a href="#"
-                                                                                                  data-toggle="collapse"
-                                                                                                  data-target="#am-navbar-collapse"
-                                                                                                  class="am-toggle-top-header-menu collapsed"><span
-                        class="icon s7-angle-down"></span></a>
+            {#<a href="#" class="am-toggle-right-sidebar"><span class="icon s7-menu2"></span></a><a href="#"#}
+                                                                                                  {#data-toggle="collapse"#}
+                                                                                                  {#data-target="#am-navbar-collapse"#}
+                                                                                                  {#class="am-toggle-top-header-menu collapsed"><span#}
+                        {#class="icon s7-angle-down"></span></a>#}
             <div id="am-navbar-collapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right am-user-nav">
                     <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false"
@@ -51,79 +51,17 @@
                                     class="angle-down s7-angle-down"></span></a>
                         {% block menuUser %}
                         <ul role="menu" class="dropdown-menu">
-                            <li><a href="#"> <span class="icon s7-user"></span>My profile</a></li>
+                            <li><a href="{{ path('fos_user_profile_show') }}"> <span class="icon s7-user"></span>My profile</a></li>
                             <li><a href="#"> <span class="icon s7-config"></span>Settings</a></li>
-                            <li><a href="#"> <span class="icon s7-help1"></span>Help</a></li>
                             <li><a href="{{ path('fos_user_security_logout') }}"> <span class="icon s7-power"></span>Sign Out</a></li>
                         </ul>
                         {% endblock %}
                     </li>
                 </ul>
                 <ul class="nav navbar-nav am-nav-right">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false"
-                                            class="dropdown-toggle">Services <span
-                                    class="angle-down s7-angle-down"></span></a>
-                        <ul role="menu" class="dropdown-menu">
-                            <li><a href="{{ path('objet_homepage') }}">Objets perdus</a></li>
-                            <li><a href="#">Colocation</a></li>
-                            <li><a href="#">Co-voiturage</a></li>
-                            <li><a href="{{ path('espace_etude_homepage') }}">Espace educatif</a></li>
-                            <li><a href="{{ path('e_index') }}">Evennements</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Contact us</a></li>
+                    <li><a href="{{ path('fos_user_profile_show') }}">{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.nom | upper }} {{ app.user.prenom | upper }} {% endif %}</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right am-icons-nav">
-                    {% block messageBlock  %}
-                    <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false"
-                                            class="dropdown-toggle"><span class="icon s7-comment"></span></a>
-                        <ul class="dropdown-menu am-messages">
-                            <li>
-                                <div class="title">Messages<span class="badge">3</span></div>
-                                <div class="list">
-                                    <div class="am-scroller nano">
-                                        <div class="content nano-content">
-                                            <ul>
-                                                <li class="active"><a href="#">
-                                                        <div class="logo"><img src="assets/img/avatar2.jpg"></div>
-                                                        <div class="user-content"><span
-                                                                    class="date">April 25</span><span class="name">Jessica Caruso</span><span
-                                                                    class="text-content">Request you to be a part of the same so that we can work...</span>
-                                                        </div>
-                                                    </a></li>
-                                                <li><a href="#">
-                                                        <div class="logo"><img src="assets/img/avatar3.jpg"></div>
-                                                        <div class="user-content"><span
-                                                                    class="date">March 18</span><span class="name">Joel King</span><span
-                                                                    class="text-content"> We wish to extend the building.</span>
-                                                        </div>
-                                                    </a></li>
-                                                <li><a href="#">
-                                                        <div class="logo"><img src="assets/img/avatar4.jpg"></div>
-                                                        <div class="user-content"><span
-                                                                    class="date">January 3</span><span class="name">Claire Sassu</span><span
-                                                                    class="text-content"> We the ladies of a block are wiling to join together to set up a catering...</span>
-                                                        </div>
-                                                    </a></li>
-                                                <li><a href="#">
-                                                        <div class="logo"><img src="assets/img/avatar5.jpg"></div>
-                                                        <div class="user-content"><span
-                                                                    class="date">January 2</span><span class="name">Emily Carter</span><span
-                                                                    class="text-content"> Request you to be a part of the same so that we can work...</span>
-                                                        </div>
-                                                    </a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="footer"><a href="#">View all messages</a></div>
-                            </li>
-
-                        </ul>
-                    </li>
-                    {% endblock  %}
                     {% block notif  %}
                     <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false"
                                             class="dropdown-toggle"><span class="icon s7-bell"></span><span
