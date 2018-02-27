@@ -24,7 +24,10 @@ class DefaultController extends Controller
         
         $user = $this->getUser();
         if ($user) {
-            return $this->render('@User/layout.html.twig', ['user' => $user]);
+            $em = $this->getDoctrine()->getManager();
+            $co = $em->getRepository(CoVoiturage::class)->getLastThree();
+            return $this->render('UserBundle::news.html.twig', ['cov' => $co , 'user' => $user]);
+            //return $this->render('@User/layout.html.twig', ['user' => $user]);
         }
         return $this->redirectToRoute('fos_user_security_login');
     }
