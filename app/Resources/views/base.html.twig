@@ -35,7 +35,7 @@
             <div class="navbar-header">
                 <div class="page-title"><span>Blank Page</span></div>
                 <a href="#" class="am-toggle-left-sidebar navbar-toggle collapsed"><span
-                            class="icon-bar"><span></span><span></span><span></span></span></a><a href="index-2.html"
+                            class="icon-bar"><span></span><span></span><span></span></span></a><a href="{{ path('user_news') }}"
                                                                                                   class="navbar-brand"></a>
             </div>
             <a href="#" class="am-toggle-right-sidebar"><span class="icon s7-menu2"></span></a><a href="#"
@@ -179,8 +179,6 @@
         <div class="content">
             <div class="am-logo"></div>
             <ul class="sidebar-elements">
-                <li class="parent"><a href="{{ path('user_homepage') }}"><i class="icon s7-monitor"></i><span>News</span></a>
-                  </li>
                 <li class="parent"><a href="{{ path('objet_homepage') }}"><i class="icon s7-diamond"></i><span>Objets perdus</span></a>
                     <ul class="sub-menu">
                         <li><a href="{{ path('objperd_homepage') }}">Les Objets perdus</a>
@@ -192,15 +190,15 @@
                 <li class="parent {% block CoVoiturageActive %} {% endblock %}"><a href="{{ path('co_voiturage_homepage') }}"><i class="icon s7-car"></i><span>Co-voiturage</span></a>
                     <ul class="sub-menu">
                         <li class="{% block CoVoiturageViewOffreActive %} {% endblock %}" >
-                            <a href="{{ path('co_voiturage_viewoffre') }}">Offre</a>
+                            <a href="{{ path('co_voiturage_viewoffre') }}">Offres</a>
 
                         </li>
                         <li class="{% block CoVoiturageViewOwnOffreActive %} {% endblock %}">
-                            <a href="{{ path('co_voiturage_viewownoffre') }}">Mes offre</a>
+                            <a href="{{ path('co_voiturage_viewownoffre') }}">Mes offres</a>
 
                         </li>
                         <li class="{% block CoVoiturageViewDemandeActive %} {% endblock %}">
-                            <a href="{{ path('co_voiturage_viewdemande') }}">Demande</a>
+                            <a href="{{ path('co_voiturage_viewdemande') }}">Demandes</a>
                         </li>
                         <li class="{% block CoVoiturageViewOwnDemandeActive %} {% endblock %}">
                             <a href="{{ path('co_voiturage_viewowndemande') }}">Mes demandes</a>
