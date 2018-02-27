@@ -1,0 +1,115 @@
+{% extends 'baseBack.html.twig' %}
+
+{% block body %}
+    <div class="panel panel-alt2">
+        <div class="panel-heading">
+            <span class="title">Matiere</span>
+            <button id="myBtn" style="float: right;margin-top: -31px;" class="btn btn-warning">nouvelle matiere</button>
+        </div>
+        <div class="panel-body">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="widget widget-fullwidth widget-small">
+                            <div class="widget-head">
+                                <div class="title">{{ section.libelle }}</div>
+                            </div>
+                            <div class="table-responsive noSwipe">
+                                <table class="table table-striped table-fw-widget table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th width="25%">libelle</th>
+                                        <th width="10%">coefficient</th>
+                                        <th width="10%">type</th>
+                                        <th width="10%">supprimer</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody class="no-border-x">
+                                    {% set i=0 %}
+                                    {% for matiere in matiere %}
+                                        {% set i=i+1 %}
+                                            <tr>
+                                                <td id="{{ i }}" onclick="updatelibelle({{ matiere.id}},'libelle',{{ i }});">{{ matiere.libelle }}</td>
+                                                <td id="{{ i+1 }}"  onclick="updatelibelle({{ matiere.id}},'coefficient',{{ i+1 }});">{{ matiere.coefficient }}</td>
+                                                <td id="{{ i+2 }}"  onclick="updatelibelle({{ matiere.id}},'type',{{ i+2 }});">{{ matiere.type }}</td>
+                                                {% set i=i+2 %}
+                                                <td><a href="{{ path('delete_matiere',{'id': matiere.id,'ids': section.id}) }}"> supprimer</a></td>
+                                              </tr>
+
+                                    {% endfor %}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+        </div>
+
+
+    </div>
+    <div id="myModal" onclick="modal1();" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span id="out" class="close">&times;</span>
+            <h3 id="title">Ajouter une matiere</h3>
+            <div class="wrap">
+                {{ form_start(form, {'method': 'post', 'action': path('afficher_matiere_admin',{'id':section.id}), 'attr': {'class': 'form-horizontal group-border-dashed','style':'border-radius: 0px;' }}) }}
+
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">libelle du matiere :</label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.libelle,{'attr':{'class':'form-control','placeholder':'Saisir le nom du nouvelle section'}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">coefficient :</label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.coefficient,{'attr':{'class':'form-control',}}) }}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">type :</label>
+                    <div class="col-sm-6">
+                        {{ form_widget(form.type,{'attr':{'class':'form-control',}}) }}
+                    </div>
+                </div>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-space btn-primary">Ajouter</button>
+
+                </div>
+                {{ form_end(form) }}
+
+            </div>
+        </div>
+    </div>
+
+
+{% endblock %}
+{% block customScript %}
+    <script>
+        function updatelibelle(id,champs,i) {
+
+            var $this = $("#"+i);
+            $valeur=this.value;
+            var $input = $('<input>', {
+                value: $this.text(),
+                type: 'text',
+                blur: function() {
+
+                   $.ajax({
+                        url:"{{ path('update_matiere') }}",
+                        type: "POST",
+                        data:{'val':this.value,'id':id,'champs':champs},
+                        success : function (data){
+
+
+                        }
+                    });
+                   $this.text(this.value);
+                }
+
+            }).appendTo( $this.empty() ).focus();
+        }
+
+    </script>
+{% endblock %}

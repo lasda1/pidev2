@@ -460,7 +460,7 @@
                             <li><a href="#"> <span class="icon s7-user"></span>My profile</a></li>
                             <li><a href="#"> <span class="icon s7-config"></span>Settings</a></li>
                             <li><a href="#"> <span class="icon s7-help1"></span>Help</a></li>
-                            <li><a href="#"> <span class="icon s7-power"></span>Sign Out</a></li>
+                            <li><a href="{{ path('fos_user_security_logout') }}"> <span class="icon s7-power"></span>Sign Out</a></li>
                         </ul>
                     </li>
                 </ul>
@@ -827,7 +827,6 @@
                                         <div class="panel-body">
                                             <ul class="nav navbar-nav">
                                                 <li class=""><a href="{{ path('afficher_section_admin') }}">Section</a></li>
-                                                <li class=""><a href="{{ path('admincovdemande') }}">Matiere</a></li>
                                             </ul>
                                         </div>
                                     </div>
@@ -845,6 +844,23 @@
                                         </div>
                                     </div>
                                 </li>
+
+
+                                <li class="panel panel-default " id="dropdown2">
+                                    <a data-toggle="collapse" href="#dropdown2-lv1">
+                                        <span class=" glyphicon glyphicon-road"></span> Evennements <span class="caret"></span>
+                                    </a>
+                                    <div id="dropdown2-lv1" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <ul class="nav navbar-nav">
+                                                <li class=""><a href="{{ path('admin_index') }}">Evennements non Approuvés</a></li>
+                                                <li class=""><a href="{{ path('admin_index_approuve') }}">Evennements Approuvés</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
+
+
 
                                 <li class="panel panel-default" id="dropdown">
                                     <a data-toggle="collapse" href="#dropdown-lvl1">

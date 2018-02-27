@@ -1,4 +1,36 @@
 {% extends 'base.html.twig' %}
+{% block notif  %}
+    {% if is_granted('ROLE_ENSEIGNANT') %}
+        <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false"
+                                class="dropdown-toggle"><span class="icon s7-bell"></span><span
+                        {% if notifAll==1 %} class="indicator"{% endif %}></span></a>
+            <ul class="dropdown-menu am-notifications">
+                <li>
+                    <div class="title">Notifications<span class="badge">{{ notifAll }}</span></div>
+                    <div class="list">
+                        <div class="am-scroller nano">
+                            <div class="content nano-content">
+                                <ul>
+                                    {% for notif in notifs %}
+                                        <li {% if notif.vu=="0" %}class="active" {% endif %}><a onclick="updateNotif({{ notif.id}});" href="{{ path('afficher_documents',{'id':notif.matiere.id}) }}">
+                                                <div class="logo"><span class="icon s7-notebook"></span></div>
+                                                <div class="user-content"><span {% if notif.vu=="0" %}class="circle" {% endif %}></span><span
+                                                            class="name">{{ notif.document.libelle }} </span><span
+                                                            class="text-content">Veuillez confirmer ou non le document du matiere {{ notif.matiere.libelle }}</span><span
+                                                            class="date"></span></div>
+                                            </a>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer"><a href="#">View all notifications</a></div>
+                </li>
+            </ul>
+        </li>
+    {% endif %}
+{% endblock  %}
 
 {% block body %}
 
@@ -8,4 +40,19 @@
         </div>
         &nbsp;&nbsp;
     {% endfor %}
+{% endblock %}
+{% block customScript %}
+    <script>
+        function updateNotif(id) {
+            $.ajax({
+                url:"{{ path('update_notif') }}",
+                type: "POST",
+                data:{'id':id},
+                success : function (data){
+
+                }
+            })
+        }
+
+    </script>
 {% endblock %}

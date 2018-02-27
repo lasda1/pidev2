@@ -25,22 +25,24 @@ class ObjetRepository extends \Doctrine\ORM\EntityRepository
     public function nbobjperd($date){
         $q = $this->getEntityManager()
             ->createQuery("select COUNT (o) from ObjetBundle:Objet o WHERE o.date =:date AND o.nature='Objet Perdu'")->setParameter('date',$date);
-        return $q->getSingleScalarResult();;
+        return $q->getSingleScalarResult();
 
     }
 
     public function nbobjtrouv($date){
         $q = $this->getEntityManager()
             ->createQuery("select COUNT (o) from ObjetBundle:Objet o WHERE o.date =:date AND o.nature='Objet Trouvé'")->setParameter('date',$date);
-        return $q->getSingleScalarResult();;
+        return $q->getSingleScalarResult();
     }
 
-    function recherche($search){
-        $query = ObjetRepository::createQueryBuilder('e')
-            ->where('UPPER(e.type) LIKE UPPER(:search)')
-            ->setParameter('valeur', '%'.$search.'%')
-            ->getQuery();
-        return $query->getResult();
+    public function nbpardate($nature,$type)
+    {
+        $q=$this->getEntityManager()
+            ->createQuery("select COUNT (o) from ObjetBundle:Objet o WHERE o.nature=:nature AND o.type=:type")
+            ->setParameter('nature',$nature)
+            ->setParameter('type',$type);
+        return $q->getSingleScalarResult();
+
     }
 
 

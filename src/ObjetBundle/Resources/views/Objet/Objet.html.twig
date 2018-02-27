@@ -5,6 +5,9 @@
 {% endblock %}
 
 {% block body %}
+   {# {% for objets in objets %}
+    {{ objets }}
+{% endfor %}#}
 
     <script src="{{ asset('js/ja.min.js') }}"></script>
     <script src="{{asset('js/highcharts.js')}}"></script>
@@ -12,6 +15,7 @@
     <script type="text/javascript">
         {{ chart(chart) }}
     </script>
-    <div id="linechart" style="min-width: 400px; height: 400px; margin: 0 auto">{{ chart(chart) }}</div>
+    <div id="container" style="min-width: 400px; height: 400px; margin: 0 auto"></div>
+
 
 {% endblock %}
