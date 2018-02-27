@@ -35,7 +35,7 @@
             <div class="navbar-header">
                 <div class="page-title"><span>Blank Page</span></div>
                 <a href="#" class="am-toggle-left-sidebar navbar-toggle collapsed"><span
-                            class="icon-bar"><span></span><span></span><span></span></span></a><a href="index-2.html"
+                            class="icon-bar"><span></span><span></span><span></span></span></a><a href="{{ path('user_news') }}"
                                                                                                   class="navbar-brand"></a>
             </div>
             <a href="#" class="am-toggle-right-sidebar"><span class="icon s7-menu2"></span></a><a href="#"
@@ -128,6 +128,7 @@
                     <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false"
                                             class="dropdown-toggle"><span class="icon s7-bell"></span><span
                                     class="indicator"></span></a>
+
                         <ul class="dropdown-menu am-notifications">
                             <li>
                                 <div class="title">Notifications<span class="badge">3</span></div>
@@ -135,31 +136,11 @@
                                     <div class="am-scroller nano">
                                         <div class="content nano-content">
                                             <ul>
-                                                <li class="active"><a href="#">
-                                                        <div class="logo"><span class="icon s7-pin"></span></div>
-                                                        <div class="user-content"><span class="circle"></span><span
-                                                                    class="name">Jessica Caruso</span><span
-                                                                    class="text-content"> accepted your invitation to join the team.</span><span
-                                                                    class="date">2 min ago</span></div>
-                                                    </a></li>
                                                 <li><a href="#">
                                                         <div class="logo"><span class="icon s7-add-user"></span></div>
-                                                        <div class="user-content"><span
-                                                                    class="name">Joel King</span><span
-                                                                    class="text-content"> is now following you</span><span
-                                                                    class="date">2 days ago</span></div>
-                                                    </a></li>
-                                                <li><a href="#">
-                                                        <div class="logo"><span class="icon s7-gleam"></span></div>
-                                                        <div class="user-content"><span class="name">Claire Sassu</span><span
-                                                                    class="text-content"> is watching your main repository</span><span
-                                                                    class="date">2 days ago</span></div>
-                                                    </a></li>
-                                                <li><a href="#">
-                                                        <div class="logo"><span class="icon s7-add-user"></span></div>
-                                                        <div class="user-content"><span class="name">Emily Carter</span><span
-                                                                    class="text-content"> is now following you</span><span
-                                                                    class="date">5 days ago</span></div>
+                                                        <div class="user-content"><span class="name"></span><span
+                                                                    class="text-content"> </span><span
+                                                                    class="date"></span></div>
                                                     </a></li>
                                             </ul>
                                         </div>
@@ -168,6 +149,7 @@
                                 <div class="footer"><a href="#">View all notifications</a></div>
                             </li>
                         </ul>
+
                     </li>
                     {% endblock  %}
                 </ul>
@@ -179,8 +161,6 @@
         <div class="content">
             <div class="am-logo"></div>
             <ul class="sidebar-elements">
-                <li class="parent"><a href="{{ path('user_homepage') }}"><i class="icon s7-monitor"></i><span>News</span></a>
-                  </li>
                 <li class="parent"><a href="{{ path('objet_homepage') }}"><i class="icon s7-diamond"></i><span>Objets perdus</span></a>
                     <ul class="sub-menu">
                         <li><a href="{{ path('objperd_homepage') }}">Les Objets perdus</a>
@@ -192,15 +172,15 @@
                 <li class="parent {% block CoVoiturageActive %} {% endblock %}"><a href="{{ path('co_voiturage_homepage') }}"><i class="icon s7-car"></i><span>Co-voiturage</span></a>
                     <ul class="sub-menu">
                         <li class="{% block CoVoiturageViewOffreActive %} {% endblock %}" >
-                            <a href="{{ path('co_voiturage_viewoffre') }}">Offre</a>
+                            <a href="{{ path('co_voiturage_viewoffre') }}">Offres</a>
 
                         </li>
                         <li class="{% block CoVoiturageViewOwnOffreActive %} {% endblock %}">
-                            <a href="{{ path('co_voiturage_viewownoffre') }}">Mes offre</a>
+                            <a href="{{ path('co_voiturage_viewownoffre') }}">Mes offres</a>
 
                         </li>
                         <li class="{% block CoVoiturageViewDemandeActive %} {% endblock %}">
-                            <a href="{{ path('co_voiturage_viewdemande') }}">Demande</a>
+                            <a href="{{ path('co_voiturage_viewdemande') }}">Demandes</a>
                         </li>
                         <li class="{% block CoVoiturageViewOwnDemandeActive %} {% endblock %}">
                             <a href="{{ path('co_voiturage_viewowndemande') }}">Mes demandes</a>
@@ -445,6 +425,28 @@
 </script>
 
 {% block customScript %}
+{% endblock %}
+
+{% block js %}
+    <script>
+        $("#button").click(function () {
+            $.get('{{ path('notification_list',{"notifiable":1}) }}',
+                function(data) {
+                    console.log((data));
+                    $.each(data,function (index,element) {
+                        $("#notif").append(
+                            '<table>'+
+                            '<tr><td>'+
+                            '<td>'+'</td>'
+
+
+                        )
+                    })
+                }
+            )
+        })
+
+    </script>
 {% endblock %}
 
 

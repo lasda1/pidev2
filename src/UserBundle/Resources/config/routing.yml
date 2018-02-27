@@ -107,3 +107,21 @@ admin_index_approuve:
     path:     /adminIndexApprouver
     defaults: { _controller: "UserBundle:Default:indexAdminApprouver" }
     methods:  GET
+
+admin_objet_non_approuve:
+    path:     /adminaffichobjnonApprouver
+    defaults: { _controller: "UserBundle:Default:indexAdminObjet" }
+    methods:  GET
+
+admin_fct_OBJET_approuver:
+    path:     /{id}/adminObjetApprouver
+    defaults: { _controller: "UserBundle:Default:approuverObjetAction" }
+    methods:  GET
+
+admin_objet_approuve:
+    path:     /adminaffichobjApprouver
+    defaults: { _controller: "UserBundle:Default:indexAdminObjetApprouver" }
+    methods:  GET
+
+
+

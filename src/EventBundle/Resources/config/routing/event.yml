@@ -43,5 +43,9 @@ e_recherche:
     defaults: { _controller: "EventBundle:Event:recherche" }
     methods:  GET
 
+e_notif:
+    path:     /notif
+    defaults: { _controller: "EventBundle:Event:listNotification" }
+    methods:  GET
 
 
