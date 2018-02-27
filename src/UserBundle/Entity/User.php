@@ -77,6 +77,12 @@ class User extends BaseUser implements NotifiableInterface
      * @ORM\Column(name="telephone", type="string", length=255)
      */
     private $telephone;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="path_image", type="string", length=255)
+     */
+    private $path_image="images.png";
 
 
     /**
@@ -271,4 +277,28 @@ class User extends BaseUser implements NotifiableInterface
     }
 
 
+
+    /**
+     * Set pathImage.
+     *
+     * @param string $pathImage
+     *
+     * @return User
+     */
+    public function setPathImage($pathImage)
+    {
+        $this->path_image = $pathImage;
+
+        return $this;
+    }
+
+    /**
+     * Get pathImage.
+     *
+     * @return string
+     */
+    public function getPathImage()
+    {
+        return $this->path_image;
+    }
 }

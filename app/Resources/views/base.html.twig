@@ -46,14 +46,13 @@
             <div id="am-navbar-collapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right am-user-nav">
                     <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false"
-                                            class="dropdown-toggle"><img src="{{ asset('assets/img/avatar.jpg') }}"><span
+                                            class="dropdown-toggle"><img src="{{ asset('profileImg/'~app.user.pathImage) }}"><span
                                     class="user-name">Samantha Amaretti </span><span
                                     class="angle-down s7-angle-down"></span></a>
                         {% block menuUser %}
                         <ul role="menu" class="dropdown-menu">
-                            <li><a href="#"> <span class="icon s7-user"></span>My profile</a></li>
+                            <li><a href="{{ path('fos_user_profile_show') }}"> <span class="icon s7-user"></span>My profile</a></li>
                             <li><a href="#"> <span class="icon s7-config"></span>Settings</a></li>
-                            <li><a href="#"> <span class="icon s7-help1"></span>Help</a></li>
                             <li><a href="{{ path('fos_user_security_logout') }}"> <span class="icon s7-power"></span>Sign Out</a></li>
                         </ul>
                         {% endblock %}
@@ -242,7 +241,7 @@
     <nav class="am-right-sidebar">
         <div class="sb-content">
 
-            <div class="user-info"><img src="assets/img/avatar.jpg"><span class="name">{% block userName %}{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.username | upper }}{% endif %}
+            <div class="user-info"><img src='{{ asset('profileImg/'~app.user.pathImage) }}'><span class="name">{% block userName %}{% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.username | upper }}{% endif %}
                     {% endblock %}<span
                             class="status"></span></span><span class="position">{% block classe %}classe : {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}{{ app.user.classe }} {% endif %} {% endblock %}</span></div>
             <div class="tab-navigation">
