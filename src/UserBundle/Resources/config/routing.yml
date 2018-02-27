@@ -74,8 +74,6 @@ afficher_section_admin:
 delete_section:
     path:     /admin/section/{id}
     defaults: { _controller: UserBundle:Default:delete }
-
-
 afficher_matiere_admin:
     path:     /admin/matiere/{id}
     defaults: { _controller: UserBundle:Default:matiere }
@@ -85,6 +83,9 @@ delete_matiere:
 update_matiere:
     path: /admin/update
     defaults: {_controller: UserBundle:Default:updateMatiere}
+update_section:
+    path: /admin/sectionupdate
+    defaults: {_controller: UserBundle:Default:updateSection}
 
 
 admin_index:

@@ -324,6 +324,28 @@ class DefaultController extends Controller
         return $this->redirectToRoute('admin_index');
     }
 
+    public function updateSectionAction(Request $request){
+        if($request->isXmlHttpRequest()){
+            $id=$request->get("id");
+            $champ=$request->get("champs");
+            $val=$request->get("val");
+            $em=$this->getDoctrine()->getManager();
+            if($champ=="libelle"){
+                $section=$em->getRepository(Section::class)->find($id);
+                $section=$section->setLibelle($val);
+                $em->persist($section);
+                $em->flush();
+            }elseif ($champ=="niveau"){
+                $section=$em->getRepository(Matiere::class)->find($id);
+                $section=$section->setNiveau($val);
+                $em->persist($section);
+                $em->flush();
+            }
+            return new JsonResponse("success");
+        }
+    }
+
+
     public function indexAdminObjetAction(Request $request)
     {
         if ($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
@@ -375,6 +397,7 @@ class DefaultController extends Controller
         $em->flush();
         return $this->redirectToRoute('admin_index');
     }
+
 
 
 }
