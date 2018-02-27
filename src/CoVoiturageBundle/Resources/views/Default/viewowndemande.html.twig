@@ -45,7 +45,7 @@
                             </td>
                             <td style="width: 100px;">{{ c.user.username | upper }}</td>
                             <td style="width: 320px;"><span class="labels">Depart : </span> {{ c.depart }}</td>
-                            <td><span class="labels">Destination : </span> {{ c.destination }}</td>
+                            <td style="width: 400px;"><span class="labels">Destination : </span> {{ c.destination }}</td>
                             {% if c.updated == null %}
                                 <td>{{ c.created |ago }}</td>
                             {% else %}
@@ -113,6 +113,15 @@
                                         {% endif %}
                                     </td>
 
+                                    <td>
+                                        {% if r.etat != "a" and r.etat != "r" %}
+                                            <a class="labels"
+                                               href="{{ path('co_voiturage_deletedemanderequest', { 'id':r.id }) }}"><span>Annuler</span></a>
+                                        {% endif %}
+                                    </td>
+
+
+
 
                                 </tr>
                                 </tbody>
@@ -162,11 +171,11 @@
                                     </td>
                                     <td style="width: 100px;">{{ c.user.username | upper }}</td>
                                     <td style="width: 320px;"><span class="labels">Depart : </span> {{ c.depart }}</td>
-                                    <td><span class="labels">Destination : </span> {{ c.destination }}</td>
+                                    <td style="width: 400px;"><span class="labels">Destination : </span> {{ c.destination }}</td>
                                     {% if c.updated == null %}
-                                        <td>{{ c.created |ago }}</td>
+                                        <td style="width: 175px;">{{ c.created |ago }}</td>
                                     {% else %}
-                                        <td>{{ c.updated |ago }}</td>
+                                        <td style="width: 175px;">{{ c.updated |ago }}</td>
                                     {% endif %}
 
                                     <td style="width: 190px;">

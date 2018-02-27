@@ -175,8 +175,10 @@ class CoVoiturageController extends Controller
         if ($cod) {
             $em->remove($cod[0]);
         }
-        if ($cor){
-            $em->remove($cor);
+        if ($cor) {
+            foreach ($cor as $cc){
+                $em->remove($cc);
+            }
         }
 
         $em->remove($co);
@@ -195,8 +197,10 @@ class CoVoiturageController extends Controller
         if ($cod) {
             $em->remove($cod[0]);
         }
-        if ($cor){
-            $em->remove($cor);
+        if ($cor) {
+            foreach ($cor as $cc){
+                $em->remove($cc);
+            }
         }
 
         $em->remove($co);

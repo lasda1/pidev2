@@ -132,11 +132,14 @@ class DefaultController extends Controller
 
         $cod = $em->getRepository(CoVoiturageDays::class)->findByidc($request->get("id"));
         $cor = $em->getRepository(CoVoiturageRequests::class)->findByidc($request->get("id"));
+
         if ($cod) {
             $em->remove($cod[0]);
         }
         if ($cor) {
-            $em->remove($cor);
+            foreach ($cor as $cc){
+                $em->remove($cc);
+            }
         }
 
         $em->remove($co);
@@ -155,7 +158,9 @@ class DefaultController extends Controller
             $em->remove($cod[0]);
         }
         if ($cor) {
-            $em->remove($cor);
+            foreach ($cor as $cc){
+                $em->remove($cc);
+            }
         }
 
         $em->remove($co);
