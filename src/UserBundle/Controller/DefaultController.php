@@ -9,6 +9,7 @@ use EspaceEtudeBundle\Entity\Matiere;
 use EspaceEtudeBundle\Entity\Section;
 use EspaceEtudeBundle\Enum\Niveau;
 use EspaceEtudeBundle\Form\MatiereType;
+use EventBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -256,6 +257,67 @@ class DefaultController extends Controller
         }
             return new JsonResponse("success");
         }
+
+
+
+    public function showAdminAction(Event $event){
+
+        $em = $this->getDoctrine()->getManager();
+        $event = $em->getRepository('EventBundle:Event')->find($event);
+        return $this->render('@User/event/showAdmin.html.twig', array(
+            'event' => $event
+        ));
+    }
+
+    public function indexAdminAction(Request $request)
+    {
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+            $em = $this->getDoctrine()->getManager();
+            $value=0;
+            $events = $em->getRepository('EventBundle:Event')->createQueryBuilder('e')
+                ->where('e.enable LIKE :valeur')
+                ->addORderBy('e.datedebut', 'DESC')
+                ->setParameter('valeur', '%'.$value.'%')
+                ->getQuery()
+                ->execute();
+            return $this->render('@User/event/indexAdmin.html.twig', array(
+                'events' => $events
+            ));
+        }
+
+        return $this->redirectToRoute('admin_index');
+
+    }
+
+    public function indexAdminApprouverAction(Request $request)
+    {
+        if ($this->container->get('security.authorization_checker')->isGranted('ROLE_ADMIN')) {
+
+            $em = $this->getDoctrine()->getManager();
+            $value=1;
+            $events = $em->getRepository('EventBundle:Event')->createQueryBuilder('e')
+                ->where('e.enable LIKE :valeur')
+                ->addORderBy('e.datedebut', 'DESC')
+                ->setParameter('valeur', '%'.$value.'%')
+                ->getQuery()
+                ->execute();
+
+            return $this->render('@User/event/indexAdminNonApprouver.html.twig', array(
+                'events' => $events
+            ));
+        }
+
+        return $this->redirectToRoute('admin_index');
+
+    }
+
+    public function approuverAction($id){
+        $em = $this->getDoctrine()->getManager();
+        $event = $em->getRepository('EventBundle:Event')->find($id);
+        $event->setEnable(1);
+        $em->persist($event);
+        $em->flush();
+        return $this->redirectToRoute('admin_index');
     }
     public function updateSectionAction(Request $request){
         if($request->isXmlHttpRequest()){

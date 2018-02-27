@@ -43,7 +43,5 @@ e_recherche:
     defaults: { _controller: "EventBundle:Event:recherche" }
     methods:  GET
 
-avis:
-    path:     /avis
-    defaults: { _controller: "EventBundle:Event:participants" }
-    methods:  GET
+
+
