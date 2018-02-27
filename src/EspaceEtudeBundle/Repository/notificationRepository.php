@@ -17,5 +17,12 @@ class notificationRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('a.vu=0')
             ->getQuery()
             ->getSingleScalarResult();
+    }public function findAllCroi()
+    {
+        $qb = $this->createQueryBuilder('t')
+            ->orderBy('t.id', 'DESC');
+
+        return $qb->getQuery()->getResult();
+
     }
 }

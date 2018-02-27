@@ -20,7 +20,7 @@ class DefaultController extends Controller
         if ($user) {
 
         $em=$this->getDoctrine()->getManager();
-        $notif=$em->getRepository(notification::class)->findAll();
+        $notif=$em->getRepository(notification::class)->findAllCroi();
         $notifAll=$em->getRepository(notification::class)->countAll();
         $niveau=new Niveau();
         $niveau=$niveau->getAvailableTypes();
