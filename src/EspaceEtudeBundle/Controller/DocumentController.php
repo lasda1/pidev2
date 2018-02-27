@@ -70,9 +70,21 @@ class DocumentController extends Controller
                 $documents->setImg($test);
             }
             elseif($file->getClientOriginalExtension ()=="docx"){
-                $test="documents/telechargement.jpeg";
+                $test="documents/Office03.png";
                 $documents->setImg($test);
-            }else
+
+            }elseif($file->getClientOriginalExtension ()=="pptx") {
+                $test = "documents/Office03.png";
+                $documents->setImg($test);
+            }elseif($file->getClientOriginalExtension ()=="jpeg") {
+
+                $documents->setImg("/documents/".$fileName);
+            }
+            elseif($file->getClientOriginalExtension ()=="jpg") {
+
+                $documents->setImg("/documents/".$fileName);
+            }
+            else
                 $documents->setImg(" ");
             $user = $this->getUser();
             $documents->setUser($user);
@@ -104,11 +116,12 @@ class DocumentController extends Controller
         $niveau=new Niveau();
         $documents=$em->getRepository(Documents::class)->findBy( ['matiere' => $id,'flag' => 1]);
         $documentEns=$em->getRepository(Documents::class)->findBy( ['matiere' => $id,'flag' => 0]);
-         $niveau=$niveau->getAvailableTypes();
+        $matiere=$em->getRepository(Matiere::class)->findOneBy(array('id'=>$id));
+        $niveau=$niveau->getAvailableTypes();
         $section=$em->getRepository(Section::class)->findAll();
         $countAll=$em->getRepository(Documents::class)->countAll();
         return $this->render('EspaceEtudeBundle:Document:afficher_documents.html.twig', array(
-            'niveaux'=>$niveau,'sections'=>$section,'form' => $form->createView(),'id'=>$id,'docs'=>$documents,'docprofs'=>$documentEns,'all'=>$countAll,'notifs'=>$notif,'notifAll'=>$notifAll
+            'niveaux'=>$niveau,'sections'=>$section,'form' => $form->createView(),'id'=>$id,'docs'=>$documents,'docprofs'=>$documentEns,'all'=>$countAll,'notifs'=>$notif,'notifAll'=>$notifAll,'matiere'=>$matiere
         ));
         }
         return $this->redirectToRoute('fos_user_security_login');

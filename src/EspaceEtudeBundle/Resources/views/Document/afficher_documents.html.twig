@@ -41,7 +41,7 @@
         </div>
     </div>
     <input id="all" type="text" value="{{ all }}" hidden >
-
+   <h3>Matiere :  {{ matiere.libelle }}</h3>
     {% if is_granted('ROLE_ENSEIGNANT') %}
         <div class="row">
         <h3>Documents Non validé</h3>
@@ -54,13 +54,14 @@
                 <div class="col-sm-2" id="{{ i }}">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            {% if doc.typeDocument=="docx" %}
-                                <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
-                                                                     src="{{ asset(doc.img) }}"/></a>
-                            {% endif %}
+
                             {% if doc.typeDocument=="pdf" %}
                                 <a onclick="modal3({{ i }});"><img style="width: 125px;height: 80px;"
-                                                                   src="{{ asset(doc.img) }}"/></a>
+                                                                src="{{ asset(doc.img) }}"/></a>
+                            {% else %}
+                                <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
+                                                                     src="{{ asset(doc.img) }}"/></a>
+
                             {% endif %}
                         </div>
 
@@ -97,13 +98,13 @@
                 <div class="col-sm-2" id="{{ i }}">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            {% if doc.typeDocument=="docx" %}
-                                <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
-                                                                     src="{{ asset(doc.img) }}"/></a>
-                            {% endif %}
                             {% if doc.typeDocument=="pdf" %}
                                 <a onclick="modal3({{ i }});"><img style="width: 125px;height: 80px;"
                                                                    src="{{ asset(doc.img) }}"/></a>
+                            {% else %}
+                                <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
+                                                                     src="{{ asset(doc.img) }}"/></a>
+
                             {% endif %}
                         </div>
 
@@ -149,13 +150,13 @@
                 <div class="col-sm-2" id="{{ i }}">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            {% if doc.typeDocument=="docx" %}
-                                <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
-                                                                     src="{{ asset(doc.img) }}"/></a>
-                            {% endif %}
                             {% if doc.typeDocument=="pdf" %}
                                 <a onclick="modal3({{ i }});"><img style="width: 125px;height: 80px;"
                                                                    src="{{ asset(doc.img) }}"/></a>
+                            {% else %}
+                                <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
+                                                                     src="{{ asset(doc.img) }}"/></a>
+
                             {% endif %}
                         </div>
                             <div class="panel-footer" id="test{{ i }}" onmouseover="test({{ i }});" onmouseleave="test2({{ i }});"
@@ -188,13 +189,13 @@
                 <div class="col-sm-2" id="{{ i }}">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            {% if doc.typeDocument=="docx" %}
-                                <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
-                                                                     src="{{ asset(doc.img) }}"/></a>
-                            {% endif %}
                             {% if doc.typeDocument=="pdf" %}
                                 <a onclick="modal3({{ i }});"><img style="width: 125px;height: 80px;"
                                                                    src="{{ asset(doc.img) }}"/></a>
+                            {% else %}
+                                <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
+                                                                     src="{{ asset(doc.img) }}"/></a>
+
                             {% endif %}
                         </div>
 
@@ -281,13 +282,14 @@
         <div class="col-sm-2" id="{{ i }}">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    {% if doc.typeDocument=="docx" %}
-                        <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
-                                                             src="{{ asset(doc.img) }}"/></a>
-                    {% endif %}
+
                     {% if doc.typeDocument=="pdf" %}
                         <a onclick="modal3({{ i }});"><img style="width: 125px;height: 80px;"
                                                            src="{{ asset(doc.img) }}"/></a>
+                    {% else %}
+                        <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
+                                                             src="{{ asset(doc.img) }}"/></a>
+
                     {% endif %}
                 </div>
 
@@ -361,13 +363,13 @@
                 <div class="col-sm-2" id="{{ i }}">
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            {% if doc.typeDocument=="docx" %}
-                                <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
-                                                                     src="{{ asset(doc.img) }}"/></a>
-                            {% endif %}
                             {% if doc.typeDocument=="pdf" %}
                                 <a onclick="modal3({{ i }});"><img style="width: 125px;height: 80px;"
                                                                    src="{{ asset(doc.img) }}"/></a>
+                            {% else %}
+                                <a href="{{ asset(doc.path) }}"><img style="width: 125px;height: 80px;"
+                                                                     src="{{ asset(doc.img) }}"/></a>
+
                             {% endif %}
                         </div>
 

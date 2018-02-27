@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * notification
  *
- * @ORM\Table(name="notification")
+ * @ORM\Table(name="notification_documents")
  * @ORM\Entity(repositoryClass="EspaceEtudeBundle\Repository\notificationRepository")
  */
 class notification
@@ -42,7 +42,7 @@ class notification
     /**
      *
      * @ORM\ManyToOne(targetEntity="EspaceEtudeBundle\Entity\Documents")
-     * @ORM\JoinColumn(name="id_doc", referencedColumnName="id")
+     * @ORM\JoinColumn(name="id_doc", referencedColumnName="id", onDelete="CASCADE")
      */
     private $document;
 

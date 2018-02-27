@@ -131,6 +131,11 @@ admin_objet_approuve:
     path:     /adminaffichobjApprouver
     defaults: { _controller: "UserBundle:Default:indexAdminObjetApprouver" }
     methods:  GET
-
+upload_photo:
+    path:     /uploadphoto
+    defaults: { _controller: "UserBundle:Default:uploadPhoto" }
+remove_photo:
+    path:     /removephoto
+    defaults: { _controller: "UserBundle:Default:removePhoto" }
 
 

@@ -440,6 +440,33 @@ class DefaultController extends Controller
         $em->flush();
         return $this->redirectToRoute('admin_index');
     }
+    public function uploadPhotoAction(Request $request){
+        $user=$this->getUser();
+        //$file = $user->getPathImage();
+        $file=$request->files->get('upload');
+        $fileName = md5(uniqid()) . '.' . $file->guessExtension();
+        $path = "C:/xampp/htdocs/EspritEntreAide/web/profileImg";
+
+
+        $file->move(
+            $path,
+            $fileName
+        );
+
+        $user=$user->setPathImage($fileName);
+        $em=$this->getDoctrine()->getManager();
+        $em->persist($user);
+        $em->flush();
+        return $this->redirectToRoute('fos_user_profile_show');
+
+    }
+public function removePhotoAction(){
+        $user=$this->getUser()->setPathImage("images.png");
+    $em=$this->getDoctrine()->getManager();
+    $em->persist($user);
+    $em->flush();
+    return $this->redirectToRoute('fos_user_profile_show');
+}
 
 
 
