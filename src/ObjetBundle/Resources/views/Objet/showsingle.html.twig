@@ -28,7 +28,7 @@
             {% set i=0 %}
             {% for interaction in interaction %}
                 {% if interaction.idobjet.id==objet.id %}
-                    {% set i=1 %}
+                    {{ interaction.Statut }}
                 {% endif %}
             {% endfor %}
 
@@ -59,11 +59,6 @@
                 </div>
                 <div class="col-md-3">
                     <div class="btnArea">
-                        <a href="{{ path("etat_obj",{"id":objet.id})}}" class="btn btn-success">Etat de l'Objet</a>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="btnArea">
                         <a href="{{ path("objet_homepage")}}" class="btn btn-success">Voir La liste des Objets</a>
                     </div>
                 </div>
@@ -76,23 +71,17 @@
                     </div>
                 </div>
 
-                {% if interaction is defined and interaction is not null%}
-
-                    {% if objet.id==interaction.idobjet.id %}
-                        <span style="font-size: 10px">Vous avez fait déjà une réclamation</span>
+                {% if inter is defined and inter is not null%}
+                    {% if app.user.id!=inter.iduser.id %}
+                    <span style="font-size: 10px">{{ inter.Statut|upper }}</span>
                     {% else %}
+                    <span style="font-size: 10px">Vous avez Déja Fait Une Réclamation</span>
+                    {% endif %}
+                {% else %}
                     <div class="col-md-3">
                     <div class="btnArea">
                         <a href="{{ path("reclamer_obj", { "id":objet.id })}}" class="btn btn-success">{% if objet.nature=='Objet Trouvé' %}C'est Ton Objet?{% else %}Tu as trouvé l'objet?{% endif %}</a>
                     </div>
-                    </div>
-                    {% endif %}
-
-                {% else %}
-                    <div class="col-md-3">
-                        <div class="btnArea">
-                            <a href="{{ path("reclamer_obj", { "id":objet.id })}}" class="btn btn-success">{% if objet.nature=='Objet Trouvé' %}C'est Ton Objet?{% else %}Tu as trouvé l'objet?{% endif %}</a>
-                        </div>
                     </div>
                 {% endif %}
                 </div>
@@ -112,7 +101,7 @@
                     <div class="panel panel-default">
 
                         <div class="panel-heading bg-color-1 border-color-1">
-                            <h3 class="panel-title">Informations de l'Objet</h3>
+                            <h3 class="panel-title">Fiche de l'Objet</h3>
                         </div>
                         <div class="panel-body">
                                 <ul class="media-list">
@@ -153,13 +142,27 @@
                                             <p>{{ objet.Date |date ('Y-m-d H:i:s') }}</p>
                                         </div>
                                     </li>
+                                    <li class="media">
+                                        <div class="media-left iconContent bg-color-2">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body iconContent">
+                                            <h4 class="media-heading color-2">Statut</h4>
+                                            <p> {% if inter is defined and inter is not null %}
+                                                {{ inter.Statut|upper }}
+                                                {% else %}
+                                                PAS DE RECLAMATION POUR LE MOMENT
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </li>
                                     <li class="media iconContet">
                                             <div class="media-left iconContent bg-color-4">
                                                 <i class="fa fa-anchor" aria-hidden="true"></i>
                                             </div>
                                             <div class="media-body iconContent">
                                                 <h4 class="media-heading color-4">Partager Sur</h4>
-                                                <p>{{ facebookButton() }}</p>
+                                                <p>{{ linkedinButton() }} {{ twitterButton() }}</p>
                                             </div>
                                     </li>
                                 </ul>
