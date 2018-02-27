@@ -128,6 +128,7 @@
                     <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false"
                                             class="dropdown-toggle"><span class="icon s7-bell"></span><span
                                     class="indicator"></span></a>
+
                         <ul class="dropdown-menu am-notifications">
                             <li>
                                 <div class="title">Notifications<span class="badge">3</span></div>
@@ -135,31 +136,11 @@
                                     <div class="am-scroller nano">
                                         <div class="content nano-content">
                                             <ul>
-                                                <li class="active"><a href="#">
-                                                        <div class="logo"><span class="icon s7-pin"></span></div>
-                                                        <div class="user-content"><span class="circle"></span><span
-                                                                    class="name">Jessica Caruso</span><span
-                                                                    class="text-content"> accepted your invitation to join the team.</span><span
-                                                                    class="date">2 min ago</span></div>
-                                                    </a></li>
                                                 <li><a href="#">
                                                         <div class="logo"><span class="icon s7-add-user"></span></div>
-                                                        <div class="user-content"><span
-                                                                    class="name">Joel King</span><span
-                                                                    class="text-content"> is now following you</span><span
-                                                                    class="date">2 days ago</span></div>
-                                                    </a></li>
-                                                <li><a href="#">
-                                                        <div class="logo"><span class="icon s7-gleam"></span></div>
-                                                        <div class="user-content"><span class="name">Claire Sassu</span><span
-                                                                    class="text-content"> is watching your main repository</span><span
-                                                                    class="date">2 days ago</span></div>
-                                                    </a></li>
-                                                <li><a href="#">
-                                                        <div class="logo"><span class="icon s7-add-user"></span></div>
-                                                        <div class="user-content"><span class="name">Emily Carter</span><span
-                                                                    class="text-content"> is now following you</span><span
-                                                                    class="date">5 days ago</span></div>
+                                                        <div class="user-content"><span class="name"></span><span
+                                                                    class="text-content"> </span><span
+                                                                    class="date"></span></div>
                                                     </a></li>
                                             </ul>
                                         </div>
@@ -168,6 +149,7 @@
                                 <div class="footer"><a href="#">View all notifications</a></div>
                             </li>
                         </ul>
+
                     </li>
                     {% endblock  %}
                 </ul>
@@ -443,6 +425,28 @@
 </script>
 
 {% block customScript %}
+{% endblock %}
+
+{% block js %}
+    <script>
+        $("#button").click(function () {
+            $.get('{{ path('notification_list',{"notifiable":1}) }}',
+                function(data) {
+                    console.log((data));
+                    $.each(data,function (index,element) {
+                        $("#notif").append(
+                            '<table>'+
+                            '<tr><td>'+
+                            '<td>'+'</td>'
+
+
+                        )
+                    })
+                }
+            )
+        })
+
+    </script>
 {% endblock %}
 
 

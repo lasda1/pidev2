@@ -234,8 +234,8 @@ class DefaultController extends Controller
         $em->remove($mat);
         $em->flush();
         return $this->redirectToRoute("afficher_matiere_admin",array('id'=>$request->attributes->get('ids')));
-
     }
+
     public function updateMatiereAction(Request $request)
     {
         if ($request->isXmlHttpRequest()) {

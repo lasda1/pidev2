@@ -2,10 +2,12 @@
 
 namespace EventBundle\Controller;
 
+use Doctrine\ORM\OptimisticLockException;
 use EventBundle\Entity\Avis;
 use EventBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Mgilet\NotificationBundle\MgiletNotificationBundle;
 
 /**
  * Event controller.
@@ -25,6 +27,7 @@ class EventController extends Controller
             ->addORderBy('e.datedebut', 'DESC')
             ->getQuery()
             ->execute();
+        $notifiableRepo = $em->getRepository('MgiletNotificationBundle:Notification')->findAll();
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
             $events, /* query NOT result */
@@ -33,7 +36,8 @@ class EventController extends Controller
 
         return $this->render('@Event/event/index.html.twig', array(
             'events' => $events,
-            'pagination' => $pagination
+            'pagination' => $pagination,
+            'notification'=>$notifiableRepo
         ));
     }
 
@@ -129,7 +133,7 @@ class EventController extends Controller
             $date=new \DateTime("now + 3 day");
 
             if ($event->getDatedebut()<=$date){
-                $this->addFlash('danger','Vous ne pouvez pas modifier cet evennement');
+                $this->addFlash('danger','Vous ne pouvez pas modifier cet evennement ');
                 return $this->redirectToRoute('e_show', array('id' => $event->getId()));
             }else{
             $deleteForm = $this->createDeleteForm($event);
@@ -146,7 +150,7 @@ class EventController extends Controller
                     $fileName
                 );
                 $event->setPhoto($fileName);
-                $event->setEnable(1);
+                //$event->setEnable(1);
                 $this->getDoctrine()->getManager()->flush();
 
                 return $this->redirectToRoute('e_show', array('id' => $event->getId()));
@@ -166,17 +170,32 @@ class EventController extends Controller
      */
     public function deleteAction(Request $request, Event $event)
     {
+        global $kernel;
         $form = $this->createDeleteForm($event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            if ($event->isEnable() == 1)
-                $event->setEnable(0);
-            else
-                $event->setEnable(1);
-            $em->persist($event);
-            $em->flush();
+
+                $em->remove($event);
+
+
+
+                    $manager = $this->get('mgilet.notification');
+                    $notif = $manager->createNotification('Event Notification !');
+                    $notif->setMessage("L'évennement a été annulé.");
+                    $notif->setLink('http://symfony.com/');
+                    $notif->setIdEvent($event);
+
+                        try {
+                            $manager->addNotification(array($event), $notif, true);
+                            $em->flush();
+                        } catch (OptimisticLockException $exception) {
+
+
+                    }
+
+
         }
 
         return $this->redirectToRoute('e_index');
@@ -207,7 +226,7 @@ class EventController extends Controller
 
             $event = $em->getRepository('EventBundle:Event')->find($id);
             if ($event->getNbMax()==0 or $user===$event->getUser()){
-                $this->addFlash('success','Vous ne pouvez pas participer');
+                $this->addFlash('success','Vous ne pouvez pas participer à votre évennement !!');
                 return $this->redirectToRoute('e_show', array('id' => $id));
 
             }else{
@@ -288,6 +307,15 @@ class EventController extends Controller
             'events' => $events,
             'pagination' => $pagination
         ));
+    }
+
+    public function listNotificationAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $notifiableRepo = $em->getRepository('MgiletNotificationBundle:Notification')->findAllForNotifiableId($this->getUser());
+
+        return $this->render('@Event/event/index.html.twig',array('notification'=>$notifiableRepo));
     }
 
 
