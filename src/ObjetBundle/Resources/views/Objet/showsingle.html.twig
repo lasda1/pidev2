@@ -105,12 +105,14 @@
                         </div>
                         {% endif %}
                     {% else %}
-                    <span style="font-size: 10px">Vous avez Déja Fait Une Réclamation</span>
+
                         {#supprimer interaction#}
                         <div class="col-md-3">
                             <div class="btnArea">
                                 <a href="{{ path("supprimerinteraction", { "id":objet.id })}}" class="btn btn-success">Supprimer Ma Réclamation</a>
                             </div>
+
+                        <span style="font-size: 10px">Vous avez Déja Fait Une Réclamation</span>
                         </div>
                     {% endif %}
                 {% else %}
