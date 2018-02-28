@@ -20,10 +20,12 @@ class MatieresController extends Controller
         $em=$this->getDoctrine()->getManager();
             $notif=$em->getRepository(notification::class)->findAll();
             $notifAll=$em->getRepository(notification::class)->countAll();
-        $section=$em->getRepository(Section::class)->findOneBy(array('id' =>$request->attributes->get('section')));
+
+            $notifAllCroi=$em->getRepository(notification::class)->findAllCroi();
+            $section=$em->getRepository(Section::class)->findOneBy(array('id' =>$request->attributes->get('section')));
         $matiere=$section->getMatiere();
         return $this->render('EspaceEtudeBundle:Matieres:afficher_matiere.html.twig', array(
-            'matieres'=>$matiere,'notifs'=>$notif,'notifAll'=>$notifAll
+            'matieres'=>$matiere,'notifs'=>$notif,'notifAll'=>$notifAll,'notifcroi'=>$notifAllCroi
         ));
         }
         return $this->redirectToRoute('fos_user_security_login');
@@ -34,12 +36,12 @@ class MatieresController extends Controller
         if ($user) {
 
             $em=$this->getDoctrine()->getManager();
-
+            $notifAllCroi=$em->getRepository(notification::class)->findAllCroi();
             $notif=$em->getRepository(notification::class)->findAll();
             $notifAll=$em->getRepository(notification::class)->countAll();
             $section=$em->getRepository(Section::class)->findAll();
             return $this->render('EspaceEtudeBundle:Matieres:afficher_section.html.twig', array(
-                'sections'=>$section,'niveau'=>$request->attributes->get('niveau'),'notifs'=>$notif,'notifAll'=>$notifAll
+                'sections'=>$section,'niveau'=>$request->attributes->get('niveau'),'notifs'=>$notif,'notifAll'=>$notifAll,'notifcroi'=>$notifAllCroi
             ));
         }
         return $this->redirectToRoute('fos_user_security_login');

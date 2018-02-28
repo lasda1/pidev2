@@ -11,7 +11,7 @@
                     <div class="am-scroller nano">
                         <div class="content nano-content">
                             <ul>
-                                {% for notif in notifs %}
+                                {% for notif in notifcroi %}
                                 <li {% if notif.vu=="0" %}class="active" {% endif %}><a onclick="updateNotif({{ notif.id}});" href="{{ path('afficher_documents',{'id':notif.matiere.id}) }}">
                                         <div class="logo"><span class="icon s7-notebook"></span></div>
                                         <div class="user-content"><span {% if notif.vu=="0" %}class="circle" {% endif %}></span><span

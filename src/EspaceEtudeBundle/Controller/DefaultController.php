@@ -20,13 +20,13 @@ class DefaultController extends Controller
         if ($user) {
 
         $em=$this->getDoctrine()->getManager();
-        $notif=$em->getRepository(notification::class)->findAllCroi();
+        $notifCoi=$em->getRepository(notification::class)->findAllCroi();
         $notifAll=$em->getRepository(notification::class)->countAll();
         $niveau=new Niveau();
         $niveau=$niveau->getAvailableTypes();
         $section=$em->getRepository(Section::class)->findAll();
 
-        return $this->render('@EspaceEtude/layout.html.twig',array('niveaux'=>$niveau,'sections'=>$section,'notifs'=>$notif,'notifAll'=>$notifAll
+        return $this->render('@EspaceEtude/layout.html.twig',array('niveaux'=>$niveau,'sections'=>$section,'notifAll'=>$notifAll,'notifcroi'=>$notifCoi
         ));
         }
         return $this->redirectToRoute('fos_user_security_login');

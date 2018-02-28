@@ -7,6 +7,7 @@
             <button id="myBtn" style="float: right;margin-top: -31px;" class="btn btn-warning">nouvelle section</button>
         </div>
             <div class="panel-body">
+                {% set i=0 %}
                 {% for n in niveaux %}
                 <div class="row">
                                 <div class="col-sm-12">
@@ -25,7 +26,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody class="no-border-x">
-                                                {% set i=0 %}
+
                                                 {% for section in sections %}
                                                     {% if section.niveau== n %}
                                                         {% set i=i+1 %}
