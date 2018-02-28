@@ -789,22 +789,8 @@
                         <div class="side-menu-container">
                             <ul class="nav navbar-nav">
 
-                                <li><a href="#"><span class="glyphicon glyphicon-send"></span> Link</a></li>
-                                <li><a href="#"><span class="glyphicon glyphicon-plane"></span> Active Link</a></li>
                                 <li><a href="{{ path('discutea_forum_admin_dashboard') }}"><span class="glyphicon glyphicon-cloud"></span> Forum</a></li>
-                                <li class="panel panel-default" id="dropdown1">
-                                    <a data-toggle="collapse" href="#dropdown1-lv1">
-                                        <span class=" glyphicon glyphicon-road"></span>Colocation <span class="caret"></span>
-                                    </a>
-                                    <div id="dropdown1-lv1" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ul class="nav navbar-nav">
-                                                <li class=""><a href="{{ path('affiche') }}">Demande</a></li>
-                                                <li class=""><a href="{{ path('admincovdemande') }}">Matiere</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
+
 
                                 <li class="panel panel-default {% block ActiveCov %} {% endblock %}" id="dropdown">
                                     <a data-toggle="collapse" href="#dropdown-lv1">
@@ -820,6 +806,19 @@
                                     </div>
                                 </li>
 
+                                <li class="panel panel-default" id="dropdown1">
+                                    <a data-toggle="collapse" href="#dropdown1-lv1">
+                                        <span class=" glyphicon glyphicon-road"></span>Colocation <span class="caret"></span>
+                                    </a>
+                                    <div id="dropdown1-lv1" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <ul class="nav navbar-nav">
+                                                <li class=""><a href="{{ path('affiche') }}">Demande</a></li>
+                                                <li class=""><a href="{{ path('admincovdemande') }}">Matiere</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
                                 <li class="panel panel-default" id="dropdown1">
                                     <a data-toggle="collapse" href="#dropdown1-lv1">
                                         <span class=" glyphicon glyphicon-road"></span> Espace Educatif <span class="caret"></span>
@@ -851,41 +850,7 @@
                                     </div>
                                 </li>
 
-
-
-                                <li class="panel panel-default" id="dropdown">
-                                    <a data-toggle="collapse" href="#dropdown-lvl1">
-                                        <span class="glyphicon glyphicon-user"></span> Sub Level <span class="caret"></span>
-                                    </a>
-
-                                    <div id="dropdown-lvl1" class="panel-collapse collapse">
-                                        <div class="panel-body">
-                                            <ul class="nav navbar-nav">
-                                                <li><a href="#">Link</a></li>
-                                                <li><a href="#">Link</a></li>
-                                                <li><a href="#">Link</a></li>
-
-                                                <!-- Dropdown level 2 -->
-                                                <li class="panel panel-default" id="dropdown">
-                                                    <a data-toggle="collapse" href="#dropdown-lvl2">
-                                                        <span class="glyphicon glyphicon-off"></span> Sub Level <span class="caret"></span>
-                                                    </a>
-                                                    <div id="dropdown-lvl2" class="panel-collapse collapse">
-                                                        <div class="panel-body">
-                                                            <ul class="nav navbar-nav">
-                                                                <li><a href="#">Link</a></li>
-                                                                <li><a href="#">Link</a></li>
-                                                                <li><a href="#">Link</a></li>
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </li>
-
-                                <li><a href="#"><span class="glyphicon glyphicon-signal"></span> Link</a></li>
+                                
 
                             </ul>
                         </div>
