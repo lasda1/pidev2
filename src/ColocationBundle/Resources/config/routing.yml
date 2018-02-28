@@ -37,6 +37,19 @@ indexColocation:
 mail:
       path:     /mail
       defaults: { _controller: ColocationBundle:Default:mail}
+modifier:
+      path:   /modifier/{id}
+      defaults: { _controller: ColocationBundle:Default:modifier}
+
+affichoffrecoloc:
+      path:   /affichoffrecoloc
+      defaults: { _controller: ColocationBundle:Default:affichoffrecoloc}
+
+affichdemanderecoloc:
+      path:   /affichdemandecoloc
+      defaults: { _controller: ColocationBundle:Default:affichdemandecoloc}
+
+
 
 
 

@@ -102,6 +102,20 @@ class Colocation
     private $photo1;
 
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nature", type="string", length=255, nullable=false)
+     */
+    private $nature;
+
+    /**
+     * @var boolean
+     *
+     * @ORM\Column(name="enable", type="boolean", nullable=false)
+     */
+    private $enable=0;
+
 
     /**
      * @ORM\OneToMany(targetEntity="MyAppMailBundle\Entity\Reponse", mappedBy="colocation")
@@ -496,5 +510,55 @@ class Colocation
     public function getReponses()
     {
         return $this->reponses;
+    }
+
+
+
+    /**
+     * Set enable
+     *
+     * @param boolean $enable
+     *
+     * @return Colocation
+     */
+    public function setEnable($enable)
+    {
+        $this->enable = $enable;
+
+        return $this;
+    }
+
+    /**
+     * Get enable
+     *
+     * @return boolean
+     */
+    public function getEnable()
+    {
+        return $this->enable;
+    }
+
+    /**
+     * Set nature
+     *
+     * @param string $nature
+     *
+     * @return Colocation
+     */
+    public function setNature($nature)
+    {
+        $this->nature = $nature;
+
+        return $this;
+    }
+
+    /**
+     * Get nature
+     *
+     * @return string
+     */
+    public function getNature()
+    {
+        return $this->nature;
     }
 }

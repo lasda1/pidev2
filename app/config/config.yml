@@ -74,11 +74,15 @@ doctrine:
         resolve_target_entities:
                     Symfony\Component\Security\Core\User\UserInterface: UserBundle\Entity\User
 
+
+
 swiftmailer:
-    transport: gmail
-    username: sendersender2018@gmail.com
-    password: sendersender2018
-    spool:     { type: memory }
+   transport: "%mailer_transport%"
+   host     : "%%mailer_host%"
+   username: "%mailer_user%"
+   password: "%mailer_password%"
+   spool:     { type: memory }
+
 
 fos_user:
     db_driver: orm # other valid values are 'mongodb' and 'couchdb'

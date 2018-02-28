@@ -25,7 +25,9 @@ valider_documents:
 afficher_section:
     path:     /sections/{niveau}
     defaults: { _controller: EspaceEtudeBundle:Matieres:afficherSection }
-
+update_notif:
+    path:     /update
+    defaults: { _controller: EspaceEtudeBundle:Default:updateNotif }
 
 
 

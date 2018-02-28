@@ -455,57 +455,44 @@
             {#</div><a href="#" class="am-toggle-right-sidebar"><span class="icon s7-menu2"></span></a><a href="#" data-toggle="collapse" data-target="#am-navbar-collapse" class="am-toggle-top-header-menu collapsed"><span class="icon s7-angle-down"></span></a>#}
             <div id="am-navbar-collapse" class="collapse navbar-collapse">
                 <ul class="nav navbar-nav navbar-right am-user-nav">
-                    <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><img src="assets/img/avatar.jpg"><span class="user-name">Samantha Amaretti</span><span class="angle-down s7-angle-down"></span></a>
+                    <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><span class="angle-down s7-angle-down"></span></a>
                         <ul role="menu" class="dropdown-menu">
-                            <li><a href="#"> <span class="icon s7-user"></span>My profile</a></li>
-                            <li><a href="#"> <span class="icon s7-config"></span>Settings</a></li>
-                            <li><a href="#"> <span class="icon s7-help1"></span>Help</a></li>
-                            <li><a href="#"> <span class="icon s7-power"></span>Sign Out</a></li>
+                            <li><a href="{{ path('fos_user_security_logout') }}"> <span class="icon s7-power"></span>Sign Out</a></li>
                         </ul>
                     </li>
                 </ul>
                 <ul class="nav navbar-nav am-nav-right">
-                    <li><a href="#">Home</a></li>
-                    <li><a href="#">About</a></li>
-                    <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle">Services <span class="angle-down s7-angle-down"></span></a>
-                        <ul role="menu" class="dropdown-menu">
-                            <li><a href="#">UI Consulting</a></li>
-                            <li><a href="#">Web Development</a></li>
-                            <li><a href="#">Database Management</a></li>
-                            <li><a href="#">Seo Improvement</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#">Support</a></li>
+                    <li><a href="#">Administrator</a></li>
                 </ul>
                 <ul class="nav navbar-nav navbar-right am-icons-nav">
-                    <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><span class="icon s7-comment"></span></a>
-                        <ul class="dropdown-menu am-messages">
-                            <li>
-                                <div class="title">Messages<span class="badge">3</span></div>
-                                <div class="list">
-                                    <div class="am-scroller nano">
-                                        <div class="content nano-content">
-                                            <ul>
-                                                <li class="active"><a href="#">
-                                                        <div class="logo"><img src="assets/img/avatar2.jpg"></div>
-                                                        <div class="user-content"><span class="date">April 25</span><span class="name">Jessica Caruso</span><span class="text-content">Request you to be a part of the same so that we can work...</span></div></a></li>
-                                                <li><a href="#">
-                                                        <div class="logo"><img src="assets/img/avatar3.jpg"></div>
-                                                        <div class="user-content"><span class="date">March 18</span><span class="name">Joel King</span><span class="text-content"> We wish to extend the building.</span></div></a></li>
-                                                <li><a href="#">
-                                                        <div class="logo"><img src="assets/img/avatar4.jpg"></div>
-                                                        <div class="user-content"><span class="date">January 3</span><span class="name">Claire Sassu</span><span class="text-content"> We the ladies of a block are wiling to join together to set up a catering...</span></div></a></li>
-                                                <li><a href="#">
-                                                        <div class="logo"><img src="assets/img/avatar5.jpg"></div>
-                                                        <div class="user-content"><span class="date">January 2</span><span class="name">Emily Carter</span><span class="text-content"> Request you to be a part of the same so that we can work...</span></div></a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="footer"> <a href="#">View all messages</a></div>
-                            </li>
-                        </ul>
-                    </li>
+                    {#<li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><span class="icon s7-comment"></span></a>#}
+                        {#<ul class="dropdown-menu am-messages">#}
+                            {#<li>#}
+                                {#<div class="title">Messages<span class="badge">3</span></div>#}
+                                {#<div class="list">#}
+                                    {#<div class="am-scroller nano">#}
+                                        {#<div class="content nano-content">#}
+                                            {#<ul>#}
+                                                {#<li class="active"><a href="#">#}
+                                                        {#<div class="logo"><img src="assets/img/avatar2.jpg"></div>#}
+                                                        {#<div class="user-content"><span class="date">April 25</span><span class="name">Jessica Caruso</span><span class="text-content">Request you to be a part of the same so that we can work...</span></div></a></li>#}
+                                                {#<li><a href="#">#}
+                                                        {#<div class="logo"><img src="assets/img/avatar3.jpg"></div>#}
+                                                        {#<div class="user-content"><span class="date">March 18</span><span class="name">Joel King</span><span class="text-content"> We wish to extend the building.</span></div></a></li>#}
+                                                {#<li><a href="#">#}
+                                                        {#<div class="logo"><img src="assets/img/avatar4.jpg"></div>#}
+                                                        {#<div class="user-content"><span class="date">January 3</span><span class="name">Claire Sassu</span><span class="text-content"> We the ladies of a block are wiling to join together to set up a catering...</span></div></a></li>#}
+                                                {#<li><a href="#">#}
+                                                        {#<div class="logo"><img src="assets/img/avatar5.jpg"></div>#}
+                                                        {#<div class="user-content"><span class="date">January 2</span><span class="name">Emily Carter</span><span class="text-content"> Request you to be a part of the same so that we can work...</span></div></a></li>#}
+                                            {#</ul>#}
+                                        {#</div>#}
+                                    {#</div>#}
+                                {#</div>#}
+                                {#<div class="footer"> <a href="#">View all messages</a></div>#}
+                            {#</li>#}
+                        {#</ul>#}
+                    {#</li>#}
                     <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><span class="icon s7-bell"></span><span class="indicator"></span></a>
                         <ul class="dropdown-menu am-notifications">
                             <li>
@@ -534,64 +521,64 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><span class="icon s7-share"></span></a>
-                        <ul class="dropdown-menu am-connections">
-                            <li>
-                                <div class="title">Connections</div>
-                                <div class="list">
-                                    <div class="content">
-                                        <ul>
-                                            <li>
-                                                <div class="logo"><img src="assets/img/github.png"></div>
-                                                <div class="field"><span>GitHub</span>
-                                                    <div class="pull-right">
-                                                        <div class="switch-button switch-button-sm">
-                                                            <input type="checkbox" checked="" name="check1" id="switch1"><span>
-                                    <label for="switch1"></label></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="logo"><img src="assets/img/bitbucket.png"></div>
-                                                <div class="field"><span>Bitbucket</span>
-                                                    <div class="pull-right">
-                                                        <div class="switch-button switch-button-sm">
-                                                            <input type="checkbox" name="check2" id="switch2"><span>
-                                    <label for="switch2"></label></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="logo"><img src="assets/img/slack.png"></div>
-                                                <div class="field"><span>Slack</span>
-                                                    <div class="pull-right">
-                                                        <div class="switch-button switch-button-sm">
-                                                            <input type="checkbox" checked="" name="check3" id="switch3"><span>
-                                    <label for="switch3"></label></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                            <li>
-                                                <div class="logo"><img src="assets/img/dribbble.png"></div>
-                                                <div class="field"><span>Dribbble</span>
-                                                    <div class="pull-right">
-                                                        <div class="switch-button switch-button-sm">
-                                                            <input type="checkbox" name="check4" id="switch4"><span>
-                                    <label for="switch4"> </label></span>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="footer"> <a href="#">View all connections</a></div>
-                            </li>
-                        </ul>
-                    </li>
+                    {#<li class="dropdown"><a href="#" data-toggle="dropdown" role="button" aria-expanded="false" class="dropdown-toggle"><span class="icon s7-share"></span></a>#}
+                        {#<ul class="dropdown-menu am-connections">#}
+                            {#<li>#}
+                                {#<div class="title">Connections</div>#}
+                                {#<div class="list">#}
+                                    {#<div class="content">#}
+                                        {#<ul>#}
+                                            {#<li>#}
+                                                {#<div class="logo"><img src="assets/img/github.png"></div>#}
+                                                {#<div class="field"><span>GitHub</span>#}
+                                                    {#<div class="pull-right">#}
+                                                        {#<div class="switch-button switch-button-sm">#}
+                                                            {#<input type="checkbox" checked="" name="check1" id="switch1"><span>#}
+                                    {#<label for="switch1"></label></span>#}
+                                                        {#</div>#}
+                                                    {#</div>#}
+                                                {#</div>#}
+                                            {#</li>#}
+                                            {#<li>#}
+                                                {#<div class="logo"><img src="assets/img/bitbucket.png"></div>#}
+                                                {#<div class="field"><span>Bitbucket</span>#}
+                                                    {#<div class="pull-right">#}
+                                                        {#<div class="switch-button switch-button-sm">#}
+                                                            {#<input type="checkbox" name="check2" id="switch2"><span>#}
+                                    {#<label for="switch2"></label></span>#}
+                                                        {#</div>#}
+                                                    {#</div>#}
+                                                {#</div>#}
+                                            {#</li>#}
+                                            {#<li>#}
+                                                {#<div class="logo"><img src="assets/img/slack.png"></div>#}
+                                                {#<div class="field"><span>Slack</span>#}
+                                                    {#<div class="pull-right">#}
+                                                        {#<div class="switch-button switch-button-sm">#}
+                                                            {#<input type="checkbox" checked="" name="check3" id="switch3"><span>#}
+                                    {#<label for="switch3"></label></span>#}
+                                                        {#</div>#}
+                                                    {#</div>#}
+                                                {#</div>#}
+                                            {#</li>#}
+                                            {#<li>#}
+                                                {#<div class="logo"><img src="assets/img/dribbble.png"></div>#}
+                                                {#<div class="field"><span>Dribbble</span>#}
+                                                    {#<div class="pull-right">#}
+                                                        {#<div class="switch-button switch-button-sm">#}
+                                                            {#<input type="checkbox" name="check4" id="switch4"><span>#}
+                                    {#<label for="switch4"> </label></span>#}
+                                                        {#</div>#}
+                                                    {#</div>#}
+                                                {#</div>#}
+                                            {#</li>#}
+                                        {#</ul>#}
+                                    {#</div>#}
+                                {#</div>#}
+                                {#<div class="footer"> <a href="#">View all connections</a></div>#}
+                            {#</li>#}
+                        {#</ul>#}
+                    {#</li>#}
                 </ul>
             </div>
     </nav>
@@ -805,6 +792,19 @@
                                 <li><a href="#"><span class="glyphicon glyphicon-send"></span> Link</a></li>
                                 <li><a href="#"><span class="glyphicon glyphicon-plane"></span> Active Link</a></li>
                                 <li><a href="{{ path('discutea_forum_admin_dashboard') }}"><span class="glyphicon glyphicon-cloud"></span> Forum</a></li>
+                                <li class="panel panel-default" id="dropdown1">
+                                    <a data-toggle="collapse" href="#dropdown1-lv1">
+                                        <span class=" glyphicon glyphicon-road"></span>Colocation <span class="caret"></span>
+                                    </a>
+                                    <div id="dropdown1-lv1" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <ul class="nav navbar-nav">
+                                                <li class=""><a href="{{ path('affiche') }}">Demande</a></li>
+                                                <li class=""><a href="{{ path('admincovdemande') }}">Matiere</a></li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </li>
 
                                 <li class="panel panel-default {% block ActiveCov %} {% endblock %}" id="dropdown">
                                     <a data-toggle="collapse" href="#dropdown-lv1">
@@ -847,6 +847,9 @@
                                         </div>
                                     </div>
                                 </li>
+
+
+
 
 
                                 <li class="panel panel-default " id="dropdown2">

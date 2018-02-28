@@ -19,6 +19,10 @@ class CoVoiturageController extends Controller
             return $this->render('CoVoiturageBundle:Default:addoffre.html.twig' ,['success' => 2]);
         } else if ($request->get("onetime") != "on" && ! $request->get("date")){
             return $this->render('CoVoiturageBundle:Default:addoffre.html.twig' ,['success' => 3]);
+        } else if ($request->get("onetime") != "on" &&  $request->get("date")) {
+            if (new \DateTime($request->get("date")) < new \DateTime("now") ) {
+                return $this->render('CoVoiturageBundle:Default:addoffre.html.twig' ,['success' => 3]);
+            }
         }
 
 
@@ -77,7 +81,6 @@ class CoVoiturageController extends Controller
         //return $this->render('CoVoiturageBundle:Default:index.html.twig',['addsuccess' => 1]);
     }
 
-
     public function addDemandeAction(Request $request)
     {
 
@@ -87,6 +90,10 @@ class CoVoiturageController extends Controller
             return $this->render('CoVoiturageBundle:Default:adddemande.html.twig' ,['success' => 2]);
         } else if ($request->get("onetime") != "on" && ! $request->get("date")){
             return $this->render('CoVoiturageBundle:Default:adddemande.html.twig' ,['success' => 3]);
+        } else if ($request->get("onetime") != "on" &&  $request->get("date")) {
+            if (new \DateTime($request->get("date")) < new \DateTime("now") ) {
+                return $this->render('CoVoiturageBundle:Default:adddemande.html.twig' ,['success' => 3]);
+            }
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -168,8 +175,10 @@ class CoVoiturageController extends Controller
         if ($cod) {
             $em->remove($cod[0]);
         }
-        if ($cor){
-            $em->remove($cor);
+        if ($cor) {
+            foreach ($cor as $cc){
+                $em->remove($cc);
+            }
         }
 
         $em->remove($co);
@@ -188,8 +197,10 @@ class CoVoiturageController extends Controller
         if ($cod) {
             $em->remove($cod[0]);
         }
-        if ($cor){
-            $em->remove($cor);
+        if ($cor) {
+            foreach ($cor as $cc){
+                $em->remove($cc);
+            }
         }
 
         $em->remove($co);

@@ -8,14 +8,17 @@ use FOS\UserBundle\Model\User as BaseUser;
 use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\UserInterface;
 use UserBundle\UserBundle;
+use Mgilet\NotificationBundle\Annotation\Notifiable;
+use Mgilet\NotificationBundle\NotifiableInterface;
 
 /**
  * User
  *
  * @ORM\Table(name="user")
  * @ORM\Entity(repositoryClass="UserBundle\Repository\UserRepository")
+ * @Notifiable(name="user")
  */
-class User extends BaseUser
+class User extends BaseUser implements NotifiableInterface
 {
     /**
      * @var int
@@ -74,6 +77,12 @@ class User extends BaseUser
      * @ORM\Column(name="telephone", type="string", length=255)
      */
     private $telephone;
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="path_image", type="string", length=255)
+     */
+    private $path_image="images.png";
 
 
     /**
@@ -268,4 +277,28 @@ class User extends BaseUser
     }
 
 
+
+    /**
+     * Set pathImage.
+     *
+     * @param string $pathImage
+     *
+     * @return User
+     */
+    public function setPathImage($pathImage)
+    {
+        $this->path_image = $pathImage;
+
+        return $this;
+    }
+
+    /**
+     * Get pathImage.
+     *
+     * @return string
+     */
+    public function getPathImage()
+    {
+        return $this->path_image;
+    }
 }

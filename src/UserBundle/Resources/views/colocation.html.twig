@@ -1,0 +1,150 @@
+{% extends 'baseBack.html.twig' %}
+
+
+{% block body %}
+    <style>
+
+
+
+
+        /* Table css Start */
+        a.del
+        {
+            background:#d9534f;
+            border-radius: 2px;
+            width: 35px;
+            height:28px;
+            padding-left:12px;
+            line-height:10px;
+        }
+
+        a.edit
+        {
+            padding-left:10px;
+            background:#337ab7;
+            color:#fff;
+            border-radius:2px;
+            border:none;
+        }
+
+        tr.row-name
+        {
+            font-size: 18px;
+            color:#448aff;
+        }
+
+        tr.row-content
+        {
+            color:#6c7173;
+        }
+
+        table
+        {
+            border-bottom: 8px solid #448aff;
+        }
+
+        td.check
+        {
+            text-align: center;
+        }
+
+        .table-striped>tbody>tr:nth-of-type(odd)
+        {
+            background:#F0F2F2 !important;
+        }
+
+        a.btn-danger:hover
+        {
+            background: #de6c69;
+        }
+
+        a.btn-danger
+        {
+            background:#d9534f;
+        }
+
+        a.btn-top
+        {
+            background:#448aff;
+            color:#fff;
+            border:1px solid #448aff;
+            padding: 7px 10px;
+            border-radius:4px;
+        }
+
+        a.btn-top:hover
+        {
+            text-decoration: none;
+            box-shadow:3px 3px 5px #222;
+            transition:box-shadow 0.5s;
+        }
+
+        /* Table css End */
+
+    </style>
+
+
+
+        <!------ Include the above in your HEAD tag ---------->
+
+        <html>
+        <head>
+            <title> Table </title>
+            <link href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet">
+        </head>
+        <body>
+        <h2 style="color: #448aff;text-align: center;"> Colocation </h2>
+        <hr>
+        <table class="table table-striped">
+            <div class="dropdown">
+
+                <ul class="dropdown-menu dropdown-menu-right" style="margin-top: 17px">
+                    <li><a href="#">Mark All</a></li>
+                    <li><a href="#">Unmark All</a></li>
+                </ul>
+                <a class="btn-top" style="margin-right: 15px;" href="#" class="btn btn-primary btn-success pull-right"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit All</a>
+            </div>
+            </div>
+            <thead>
+            <tr class="row-name">
+                <th>ID</th>
+                <th>Photo</th>
+                <th style="width:10%">Titre</th>
+                <th>Description</th>
+                <th>Type</th>
+                <th>Prix(DT)</th>
+                <th>Etat</th>
+                <th>Ville</th>
+                <th>Parametre</th>
+            </tr>
+            </thead>
+    {% for colocation  in colocations %}
+
+        <tbody>
+            <tr class="row-content">
+                <td>{{ colocation.id }}</td>
+                <td><img src="{{ asset('uploads/photos/'~colocation.photo) }}" alt="image" class="img-responsive"></td>
+                <td> <span class="label label-default"> {{ colocation.titre }} </span></td>
+                <td>{{ colocation.description }}</td>
+                <td>{{ colocation.type }}</td>
+                <td>{{ colocation.loyer }}DT</td>
+                <td>{{ colocation.meuble}}</td>
+                <td>{{ colocation.ville}}</td>
+                <td>
+                    <a class="btn btn-danger edit"  href="{{ path('supprimer',{'id':colocation.id}) }}"  aria-label="Settings">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                    </a>
+                    &nbsp
+                    <a class="btn btn-info edit" href="{{ path('modifier', {'id' : colocation.id}) }}"  aria-label="Settings">
+                        <i class="fa fa-pencil-square-o" aria-hidden="true"></i>
+                    </a>
+                </td>
+            </tr>
+
+
+            {% endfor %}
+
+            </tbody>
+        </table>
+
+{% endblock %}
