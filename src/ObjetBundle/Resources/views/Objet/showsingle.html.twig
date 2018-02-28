@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block pageName %}
+    <h2>Show Single Objet</h2>
+
+{% endblock %}
+
 {% block body %}
 <style>
     #map {
@@ -57,25 +62,58 @@
                         <a href="{{ path("updateobj", { "id":objet.id }) }}" class="btn btn-success">Modifier l'Objet</a>
                     </div>
                 </div>
+
+
                 <div class="col-md-3">
+                    {% if objet.nature=='Objet Trouvé' %}
                     <div class="btnArea">
-                        <a href="{{ path("objet_homepage")}}" class="btn btn-success">Voir La liste des Objets</a>
+                        <a href="{{ path("affichobjtrouv")}}" class="btn btn-success">Voir La liste des Objets</a>
                     </div>
+                    {% else %}
+                    <div class="col-md-3">
+                        <div class="btnArea">
+                            <a href="{{ path("affichobjperd")}}" class="btn btn-success">Voir La liste des Objets</a>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
+
             {% else  %}
-                <div class="row">
+            <div class="row">
                 <div class="col-md-3">
+                    {% if objet.nature=='Objet Trouvé' %}
                     <div class="btnArea">
-                        <a href="{{ path("objet_homepage")}}" class="btn btn-success">Voir La liste des Objets</a>
+                        <a href="{{ path("affichobjtrouv")}}" class="btn btn-success">Voir La liste des Objets</a>
                     </div>
+                    {% else %}
+                    <div class="btnArea">
+                        <a href="{{ path("affichobjperd")}}" class="btn btn-success">Voir La liste des Objets</a>
+                    </div>
+                    {% endif %}
                 </div>
 
                 {% if inter is defined and inter is not null%}
                     {% if app.user.id!=inter.iduser.id %}
                     <span style="font-size: 10px">{{ inter.Statut|upper }}</span>
+                        {#signaler interaction#}
+                        {% if objet.nature=='Objet Trouvé' %}
+                        <div class="col-md-3">
+                            <div class="btnArea">
+                                <a href="{{ path("signalerinteraction", { "id":objet.id })}}" class="btn btn-success">S'agit-il de votre Objet ?</a>
+                            </div>
+                        </div>
+                        {% endif %}
                     {% else %}
-                    <span style="font-size: 10px">Vous avez Déja Fait Une Réclamation</span>
+
+                        {#supprimer interaction#}
+                        <div class="col-md-3">
+                            <div class="btnArea">
+                                <a href="{{ path("supprimerinteraction", { "id":objet.id })}}" class="btn btn-success">Supprimer Ma Réclamation</a>
+                            </div>
+
+                        <span style="font-size: 10px">Vous avez Déja Fait Une Réclamation</span>
+                        </div>
                     {% endif %}
                 {% else %}
                     <div class="col-md-3">
@@ -84,14 +122,10 @@
                     </div>
                     </div>
                 {% endif %}
-                </div>
+            </div>
             {% endif %}
 
-
-
-
-        </div>
-
+       </div>
 
         <div class="col-md-4 col-sm-4 col-xs-12">
 
@@ -163,6 +197,7 @@
                                             <div class="media-body iconContent">
                                                 <h4 class="media-heading color-4">Partager Sur</h4>
                                                 <p>{{ linkedinButton() }} {{ twitterButton() }}</p>
+                                                {##}
                                             </div>
                                     </li>
                                 </ul>
@@ -172,8 +207,6 @@
             </aside>
         </div>
     </div>
-
-
 </div>
 {% endblock %}
 
