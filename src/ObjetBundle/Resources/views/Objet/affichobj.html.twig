@@ -3,7 +3,7 @@
 {% block pageName %}
     <h2>Les Objets {% if nature==1  %} Trouvés{% elseif nature==2  %} Perdus{% endif %}</h2>
     <ol class="breadcrumb">
-        <li><a href="{{ path('objet_homepage') }}">Les Objets</a></li>
+        <li>Les Objets</li>
         <li class="active">Les Objets {% if nature==1  %} Trouvés{% elseif nature==2  %} Perdus{% endif %}</li>
     </ol>
 {% endblock %}
@@ -112,6 +112,7 @@
         </table>
     </div>
 
+
 {% endblock %}
 
 {% block customScript %}
@@ -144,5 +145,6 @@
         $(this).addClass('bg-info').siblings().removeClass('bg-info');
     });
 </script>
+
 {% endblock %}
 

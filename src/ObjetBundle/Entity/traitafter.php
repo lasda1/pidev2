@@ -5,12 +5,12 @@ namespace ObjetBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Signal
+ * traitafter
  *
- * @ORM\Table(name="signal")
- * @ORM\Entity(repositoryClass="ObjetBundle\Repository\SignalRepository")
+ * @ORM\Table(name="traitafter")
+ * @ORM\Entity(repositoryClass="ObjetBundle\Repository\traitafterRepository")
  */
-class Signal
+class traitafter
 {
     /**
      * @var int
@@ -23,22 +23,24 @@ class Signal
 
     /**
      * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user",referencedColumnName="id",nullable=false)
+     * @ORM\JoinColumn(name="user",referencedColumnName="id")
      */
     private $user;
 
     /**
      * @ORM\ManyToOne(targetEntity="ObjetBundle\Entity\Interaction")
-     * @ORM\JoinColumn(name="id",referencedColumnName="id",nullable=false)
+     * @ORM\JoinColumn(name="interaction",referencedColumnName="id")
      */
     private $interaction;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Statut", type="string", length=255,nullable=false)
+     * @ORM\Column(name="statut", type="string", length=255)
      */
-    private $statut="Pas de Signal";
+    private $statut;
+
+
     /**
      * Get id
      *
@@ -50,36 +52,11 @@ class Signal
     }
 
     /**
-     * Set user
-     *
-     * @param \UserBundle\Entity\User $user
-     *
-     * @return Signal
-     */
-    public function setUser(\UserBundle\Entity\User $user = null)
-    {
-        $this->user = $user;
-
-        return $this;
-    }
-
-    /**
-     * Get user
-     *
-     * @return \UserBundle\Entity\User
-     */
-    public function getUser()
-    {
-        return $this->user;
-    }
-
-
-    /**
      * Set statut
      *
      * @param string $statut
      *
-     * @return Signal
+     * @return traitafter
      */
     public function setStatut($statut)
     {
@@ -99,13 +76,37 @@ class Signal
     }
 
     /**
+     * Set user
+     *
+     * @param \UserBundle\Entity\User $user
+     *
+     * @return traitafter
+     */
+    public function setUser(\UserBundle\Entity\User $user = null)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return \UserBundle\Entity\User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
      * Set interaction
      *
      * @param \ObjetBundle\Entity\Interaction $interaction
      *
-     * @return Signal
+     * @return traitafter
      */
-    public function setInteraction(\ObjetBundle\Entity\Interaction $interaction)
+    public function setInteraction(\ObjetBundle\Entity\Interaction $interaction = null)
     {
         $this->interaction = $interaction;
 

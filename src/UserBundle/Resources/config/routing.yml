@@ -137,3 +137,13 @@ admin_objet_trouve_stat:
       defaults:  { _controller: "UserBundle:Default:adminStatObjTrouv" }
       methods:  GET
 
+admin_affich_signal:
+      path:     /adminAfficherSignalobjet
+      defaults:  { _controller: "UserBundle:Default:adminAfficherSignal" }
+      methods:  GET
+
+admin_supprimer_reclamation:
+      path:     /adminsupprimerreclamation{id}
+      defaults:  { _controller: "UserBundle:Default:adminSupprimerInteraction" }
+      methods:  GET
+

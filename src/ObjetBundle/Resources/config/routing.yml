@@ -55,11 +55,11 @@ showsingle:
 
 supprimerinteraction:
     path:     /objets/showsingle/supprimerinteraction/{id}
-    defaults: { _controller: ObjetBundle:Objet:showsingle }
+    defaults: { _controller: ObjetBundle:Objet:supprimerInteraction }
 
 signalerinteraction:
     path:     /objets/showsingle/signalerinteraction/{id}
-    defaults: { _controller: ObjetBundle:Objet:showsingle }
+    defaults: { _controller: ObjetBundle:Objet:signalerReclamation }
 
 
 

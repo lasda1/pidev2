@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block pageName %}
+    <h2>Show Single Objet</h2>
+
+{% endblock %}
+
 {% block body %}
 <style>
     #map {
@@ -57,18 +62,35 @@
                         <a href="{{ path("updateobj", { "id":objet.id }) }}" class="btn btn-success">Modifier l'Objet</a>
                     </div>
                 </div>
+
+
                 <div class="col-md-3">
+                    {% if objet.nature=='Objet Trouvé' %}
                     <div class="btnArea">
-                        <a href="{{ path("objet_homepage")}}" class="btn btn-success">Voir La liste des Objets</a>
+                        <a href="{{ path("affichobjtrouv")}}" class="btn btn-success">Voir La liste des Objets</a>
                     </div>
+                    {% else %}
+                    <div class="col-md-3">
+                        <div class="btnArea">
+                            <a href="{{ path("affichobjperd")}}" class="btn btn-success">Voir La liste des Objets</a>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
             </div>
+
             {% else  %}
-                <div class="row">
+            <div class="row">
                 <div class="col-md-3">
+                    {% if objet.nature=='Objet Trouvé' %}
                     <div class="btnArea">
-                        <a href="{{ path("objet_homepage")}}" class="btn btn-success">Voir La liste des Objets</a>
+                        <a href="{{ path("affichobjtrouv")}}" class="btn btn-success">Voir La liste des Objets</a>
                     </div>
+                    {% else %}
+                    <div class="btnArea">
+                        <a href="{{ path("affichobjperd")}}" class="btn btn-success">Voir La liste des Objets</a>
+                    </div>
+                    {% endif %}
                 </div>
 
                 {% if inter is defined and inter is not null%}
@@ -98,14 +120,10 @@
                     </div>
                     </div>
                 {% endif %}
-                </div>
+            </div>
             {% endif %}
 
-
-
-
-        </div>
-
+       </div>
 
         <div class="col-md-4 col-sm-4 col-xs-12">
 
@@ -187,8 +205,6 @@
             </aside>
         </div>
     </div>
-
-
 </div>
 {% endblock %}
 

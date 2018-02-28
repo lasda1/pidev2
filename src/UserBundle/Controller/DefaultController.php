@@ -11,6 +11,7 @@ use EspaceEtudeBundle\Enum\Niveau;
 use EspaceEtudeBundle\Form\MatiereType;
 use EventBundle\Entity\Event;
 use Ob\HighchartsBundle\Highcharts\Highchart;
+use ObjetBundle\Entity\Interaction;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -386,6 +387,27 @@ class DefaultController extends Controller
         $em->remove($objet);
         $em->flush();
         return $this->redirectToRoute("admin_objet_non_approuve");
+
+    }
+
+    public function adminAfficherSignalAction()
+
+    {
+        $em=$this->getDoctrine()->getManager();
+        $signal=$em->getRepository('ObjetBundle:traitafter')->findAll();
+        return $this->render('@User/objet/adminAfficherSignal.html.twig', array('signal' => $signal));
+
+    }
+
+    public function adminSupprimerInteractionAction($id)
+
+    {
+
+        $em=$this->getDoctrine()->getManager();
+        $interaction = $em->getRepository('ObjetBundle:Interaction')->findByidObjet($id);
+        $em->remove($interaction[0]);
+        $em->flush();
+        return $this->redirectToRoute('admin_affich_signal');
 
     }
 

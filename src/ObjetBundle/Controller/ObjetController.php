@@ -8,7 +8,7 @@ use DateTime;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 use ObjetBundle\Entity\Interaction;
 use ObjetBundle\Entity\Objet;
-use ObjetBundle\Entity\Signal;
+use ObjetBundle\Entity\traitafter;
 use ObjetBundle\Form\ObjetType;
 use ObjetBundle\Repository\ObjetRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -89,7 +89,7 @@ class ObjetController extends Controller
         ));
     }
 
-    public function affichobjtrouvAction()
+    public function affichobjtrouvAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->objtrouv();
@@ -103,11 +103,11 @@ class ObjetController extends Controller
                 {
                     array_push($x,$operd);
                 }
-
             }
 
         }
-        return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 1,'x'=>$x
+
+        return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 1,'x'=>$x,
         ));
     }
 
@@ -142,10 +142,8 @@ class ObjetController extends Controller
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->find($id);
         $interaction=$em->getRepository(Interaction::class)->findByidObjet($id);
-        $signal=$em->getRepository(Signal::class)->findByinteraction($id);
         if($interaction)
         {
-            if($signal){$em->remove($signal[0]);}
             $em->remove($interaction[0]);
         }
         $em->remove($objet);
@@ -178,6 +176,7 @@ class ObjetController extends Controller
             );
             $username = $this->container->get('security.token_storage')->getToken()->getUser();
             $objet->setUser($username);
+            $objet->setEnable(0);
             $objet->setPhoto($fileName);
             $em->persist($objet);
             $em->flush();
@@ -227,7 +226,7 @@ class ObjetController extends Controller
                         $inter->setStatut('Cet objet perdu a été réclamé comme trouvé par ' . $this->getUser()->getNom());
                         $em->persist($inter);
                         $em->flush();
-                        return $this->redirectToRoute('affichobjperd', array('inter' => $inter));
+                        return $this->redirectToRoute('showsingle',array('id'=>$id));
                     }
                     else
                     {
@@ -237,7 +236,7 @@ class ObjetController extends Controller
                         $inter->setStatut($this->getUser()->getNom().' a trouvé Cet Objet');
                         $em->persist($inter);
                         $em->flush();
-                        return $this->redirectToRoute('affichobjtrouv', array('inter' => $inter));
+                        return $this->redirectToRoute('showsingle',array('id'=>$id));
                     }
         }
         else
@@ -279,13 +278,10 @@ class ObjetController extends Controller
     public function supprimerInteractionAction($id)
     {
         $em=$this->getDoctrine()->getManager();
-        $interaction = $em->getRepository(Interaction::class)->find($id);
-        $signal=$em->getRepository(Signal::class)->findByinteraction($id);
-        if($signal){
-            $em->remove($signal[0]);
-                    }
-        $em->remove($interaction);
+        $interaction = $em->getRepository(Interaction::class)->findByidObjet($id);
+        $em->remove($interaction[0]);
         $em->flush();
+        return $this->redirectToRoute('showsingle',array('id'=>$id));
 
     }
 
@@ -293,20 +289,28 @@ class ObjetController extends Controller
 
     {
         $em = $this->getDoctrine()->getManager();
-        $interaction = $em->getRepository(Interaction::class)->find($id);
-        $sig = $this->getDoctrine()->getRepository(Signal::class)->findtrouver($id);
-            if($sig==null)
-            {
-         $signal=new Signal();
+        $interaction = $em->getRepository(Interaction::class)->findByidObjet($id);
+        $sig = $this->getDoctrine()->getRepository(traitafter::class)->findtrouver($id);
+        if($sig==null)
+        {
+            foreach ($interaction as $i){
+
+
+            $signal=new traitafter();
             $signal->setUser($this->getUser());
-            $signal->setInteraction($interaction);
+            if($interaction!=null ){
+            $signal->setInteraction($i);}
+            else{
+                return new Response("Pas dobjet");
+            }
             $signal->setStatut('Cet Signal a été réclamé par ' . $this->getUser()->getNom());
             $em->persist($signal);
             $em->flush();
-            }
-
-
         }
+        }
+        return $this->redirectToRoute('showsingle',array('id'=>$id));
+    }
+
 
 
 

@@ -3,7 +3,7 @@
 {% block pageName %}
     <h2>{{ msg }}</h2>
     <ol class="breadcrumb">
-        <li><a href="{{ path('objet_homepage') }}">Les Objets</a></li>
+        <li>Les Objets</li>
         <li class="active">{{ msg }}</li>
     </ol>
 {% endblock %}
@@ -11,7 +11,7 @@
 {% block body %}
     {{ form_start(form) }}
 <div class="row">
-    <div class="col-sm-6">
+    <div class="col-sm-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <h3><b>{{ msg }}</b></h3>
@@ -20,19 +20,19 @@
                 <form role="form">
                     <div class="form-group">
                         <label>Description</label>
-                        {{ form_widget(form.description) }}
+                        {{ form_widget(form.description,{'attr':{'class':'form-control','placeholder':"Description"}}) }}
                     </div>
                     <div class="form-group">
                         <label>Date</label>
-                        {{ form_widget(form.date) }}
+                        {{ form_widget(form.date,{'attr':{'class':'form-control','placeholder':"Date"}}) }}
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" >
                         <label>Type</label>
-                        {{ form_widget(form.type) }}
+                        {{ form_widget(form.type,{'attr':{'class':'form-control','placeholder':"Type"}}) }}
                     </div>
                     <div class="form-group">
                         <label>Lieu</label>
-                        {{ form_widget(form.lieu) }}
+                        {{ form_widget(form.lieu,{'attr':{'class':'form-control','placeholder':"Bloc et n°Salle Comme : B26"}}) }}
                     </div>
                     <div class="form-group">
                         <label>Photo</label>
