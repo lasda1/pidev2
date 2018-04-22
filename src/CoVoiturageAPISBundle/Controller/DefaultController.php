@@ -3,6 +3,7 @@
 namespace CoVoiturageAPISBundle\Controller;
 
 use CoVoiturageBundle\Entity\CoVoiturage;
+use CoVoiturageBundle\Entity\CoVoiturageDays;
 use CoVoiturageBundle\Entity\CoVoiturageRequests;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -42,7 +43,7 @@ class DefaultController extends Controller
     public function getCoVoiturageDaysAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $cod = $em->getRepository(CoVoiturageDays::class)->findByidc($request->get("idcovoiturage"));
+        $cod = $em->getRepository(CoVoiturageDays::class)->findByidc($request->get("idc"));
         if ($cod)
             $cod = $cod[0];
         $serializer = new Serializer([new ObjectNormalizer()]);
