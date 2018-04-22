@@ -33,6 +33,7 @@ class AppKernel extends Kernel
             new Discutea\DForumBundle\DForumBundle(),
             new ForumBundle\ForumBundle(),
             new Mgilet\NotificationBundle\MgiletNotificationBundle(),
+            new CoVoiturageAPISBundle\CoVoiturageAPISBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -1,0 +1,12 @@
+co_voiturage_api_all:
+    path:     /offres
+    defaults: { _controller: CoVoiturageAPISBundle:Default:getCoVoiturage }
+
+co_voiturage_requests_api_all:
+    path:     /requests
+    defaults: { _controller: CoVoiturageAPISBundle:Default:getCoVoiturageRequests }
+
+co_voiturage_days_api_all:
+    path:     /days
+    defaults: { _controller: CoVoiturageAPISBundle:Default:getCoVoiturageDays }
+

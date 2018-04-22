@@ -242,7 +242,7 @@ class CoVoiturageController extends Controller
         $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
         $paginator = $this->get('knp_paginator');
         $pagination = $paginator->paginate(
-            $co, /* query NOT result */
+            $co,
             $request->query->getInt('page', 1),
             $request->query->getInt('limit', 4));
         if ($cor) {
@@ -365,8 +365,6 @@ class CoVoiturageController extends Controller
         }
         return $this->render('CoVoiturageBundle:Default:viewdemande.html.twig', ['cov' => $co, 'cor' => $cor,'pagination' => $pagination, 'success' => $request->get('success')]);
     }
-
-
 
 
     public function modifyOffreAction(Request $request)

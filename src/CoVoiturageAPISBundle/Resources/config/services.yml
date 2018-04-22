@@ -1,0 +1,4 @@
+services:
+#    co_voiturage_apis.example:
+#        class: CoVoiturageAPISBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]
