@@ -2,18 +2,19 @@
 
 namespace EventBundle\Controller;
 
-use Doctrine\ORM\OptimisticLockException;
 use EventBundle\Entity\Avis;
 use EventBundle\Entity\Event;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Mgilet\NotificationBundle\MgiletNotificationBundle;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 /**
  * Event controller.
  *
  */
-class EventController extends Controller
+class EventJsonController extends Controller
 {
     /**
      * Lists all event entities.
@@ -27,18 +28,11 @@ class EventController extends Controller
             ->addORderBy('e.datedebut', 'DESC')
             ->getQuery()
             ->execute();
-        $notifiableRepo = $em->getRepository('MgiletNotificationBundle:Notification')->findAll();
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $events, /* query NOT result */
-            $request->query->getInt('page', 1),
-            $request->query->getInt('limit', 6));
 
-        return $this->render('@Event/event/index.html.twig', array(
-            'events' => $events,
-            'pagination' => $pagination,
-            'notification'=>$notifiableRepo
-        ));
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($events);
+        return new JsonResponse($formatted);
+
     }
 
 
@@ -82,6 +76,7 @@ class EventController extends Controller
                 return $this->redirectToRoute('e_show', array('id' => $event->getId()));
             }
 
+
             return $this->render('@Event/event/new.html.twig', array(
                 'event' => $event,
                 'form' => $form->createView(),
@@ -103,12 +98,17 @@ class EventController extends Controller
         $em = $this->getDoctrine()->getManager();
         $avis = $em->getRepository('EventBundle:Avis')->findOneBy(array('idevent' => $event->getId(),'iduser'=>$user));
 
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted1 = $serializer->normalize($event);
 
-        return $this->render('@Event/event/show.html.twig', array(
-            'event' => $event,
-            'avis'=>$avis,
-            'delete_form' => $deleteForm->createView(),
-        ));
+        if ($avis==null){
+            return new JsonResponse($formatted1);
+        }else{
+            $formatted = $serializer->normalize($avis);
+            return new JsonResponse($formatted1+$formatted);
+        }
+
+
     }
 
 
@@ -234,10 +234,13 @@ class EventController extends Controller
 
                 $em->persist($avis);
                 $em->flush();
-                return $this->redirectToRoute('e_show', array('id' => $id));
+                $serializer = new Serializer([new ObjectNormalizer()]);
+                $formatted = $serializer->normalize($avis);
+                return new JsonResponse($formatted);
+                // return $this->redirectToRoute('ej_show', array('id' => $id));
             }}
         else
-            return $this->redirectToRoute('e_index');
+            return $this->redirectToRoute('ej_index');
 
     }
 
@@ -251,14 +254,19 @@ class EventController extends Controller
 
             $event = $em->getRepository('EventBundle:Event')->find($id);
             $avis = $em->getRepository('EventBundle:Avis')->findOneBy(array('idevent'=>$id,'iduser'=>$user));
+            if ($avis!=null){
             $em->remove($avis);
+            }
             $event->setNbMax($event->getNbMax()+1);
             $em->persist($event);
             $em->flush();
-            return $this->redirectToRoute('e_show', array('id' => $id));
+            $serializer = new Serializer([new ObjectNormalizer()]);
+            $formatted = $serializer->normalize($avis);
+            return new JsonResponse($formatted);
+            //  return $this->redirectToRoute('ej_show', array('id' => $id));
         }
         else
-            return $this->redirectToRoute('e_index');
+            return $this->redirectToRoute('ej_index');
     }
 
 
@@ -268,22 +276,25 @@ class EventController extends Controller
         $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
         if ($user !== 'anon.') {
             $em = $this->getDoctrine()->getManager();
-            $avis = $em->getRepository('EventBundle:Avis')->findOneBy(array('idevent' => $id,'iduser'=>$user));
+            $avis = $em->getRepository('EventBundle:Avis')->findOneBy(array('idevent' => $id, 'iduser' => $user));
 
-            $u=$avis->getIduser();
-            $em->remove($avis);
-            $em->flush();
-
-            $avis=new Avis();
-            $avis->setIduser($u);
-            $avis->setIdevent($id);
-            $avis->setAvis($val);
-            $em->persist($avis);
-            $em->flush();
-            return $this->redirectToRoute('e_show', array('id' => $avis->getIdevent()));
+            if ($avis!=null){
+                $em->remove($avis);
+                $em->flush();
+            } else if ($avis==null){
+                $avis=new Avis();
+                $avis->setIduser($user->getId());
+                $avis->setIdevent($id);
+                $avis->setAvis($val);
+                $em->persist($avis);
+                $em->flush();}
+            $serializer = new Serializer([new ObjectNormalizer()]);
+            $formatted = $serializer->normalize($avis);
+            return new JsonResponse($formatted);
+            //return $this->redirectToRoute('ej_show', array('id' => $avis->getIdevent()));
         }
         else
-            return $this->redirectToRoute('e_index');
+            return $this->redirectToRoute('ej_index');
 
     }
 
@@ -307,5 +318,3 @@ class EventController extends Controller
 
 
 }
-
-

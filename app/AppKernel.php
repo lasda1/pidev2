@@ -29,7 +29,9 @@ class AppKernel extends Kernel
             new EspaceEtudeBundle\EspaceEtudeBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Discutea\DForumBundle\DForumBundle(),
-            new ForumBundle\ForumBundle(),       
+            new ForumBundle\ForumBundle(),
+            new \Mgilet\NotificationBundle\MgiletNotificationBundle(),
+
             
         ];
 

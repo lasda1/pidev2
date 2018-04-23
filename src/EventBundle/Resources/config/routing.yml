@@ -1,6 +1,9 @@
 event_e:
     resource: "@EventBundle/Resources/config/routing/event.yml"
     prefix:   /e
+event_ej:
+    resource: "@EventBundle/Resources/config/routing/eventJson.yml"
+    prefix:   /ej
 
 event_homepage:
     path:     /event

@@ -51,7 +51,7 @@
                                     class="angle-down s7-angle-down"></span></a>
                         {% block menuUser %}
                         <ul role="menu" class="dropdown-menu">
-                            <li><a href="#"> <span class="icon s7-user"></span>My profile</a></li>
+                            <li><a href="{{ path('fos_user_profile_show') }}"> <span class="icon s7-user"></span>My profile</a></li>
                             <li><a href="#"> <span class="icon s7-config"></span>Settings</a></li>
                             <li><a href="#"> <span class="icon s7-help1"></span>Help</a></li>
                             <li><a href="{{ path('fos_user_security_logout') }}"> <span class="icon s7-power"></span>Sign Out</a></li>
