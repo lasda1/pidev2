@@ -51,4 +51,62 @@ class DefaultController extends Controller
         return new JsonResponse($formatted);
     }
 
+    public function getCoVoiturageMapsAction(Request $request)
+    {
+        return $this->render("CoVoiturageAPISBundle:Default:MapsView.html.twig",['departid'=>$request->get("departid") , 'destinationid' => $request->get("destinationid")]);
+    }
+
+    public function getCoVoiturageAgoAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->find($request->get('id'));
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        //$date =new \DateTime("now");
+        //$date->diff($co->getUpdated())->format('%m mois, %d jour')
+        $formatted = $serializer->normalize(['covoiturageago' => $this->calculate_time_span($co->getUpdated())]);
+        return new JsonResponse($formatted);
+    }
+
+    public function getCoVoiturageDateStringAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->find($request->get('id'));
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize(['covoituragedate' => $co->getDate()->format('Y-m-d H:i:s')]);
+        return new JsonResponse($formatted);
+    }
+
+    public function getCoVoiturageRequestsAgoAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturageRequests::class)->find($request->get('id'));
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        //$date =new \DateTime("now");
+        //$date->diff($co->getUpdated())->format('%m mois, %d jour')
+        $formatted = $serializer->normalize(['requestago' => $this->calculate_time_span($co->getCreated())]);
+        return new JsonResponse($formatted);
+    }
+
+    public function calculate_time_span($date){
+        $seconds  = strtotime(date('Y-m-d H:i:s')) - $date->getTimestamp();
+
+
+        $months = floor($seconds / (3600*24*30));
+        $day = floor($seconds / (3600*24));
+        $hours = floor($seconds / 3600);
+        $mins = floor(($seconds - ($hours*3600)) / 60);
+        $secs = floor($seconds % 60);
+
+        if($seconds < 60)
+            $time = $secs." seconds ago";
+        else if($seconds < 60*60 )
+            $time = $mins." min ago";
+        else if($seconds < 24*60*60)
+            $time = $hours." hours ago";
+        else if($seconds < 24*60*60*30)
+            $time = $day." day ago";
+        else
+            $time = $months." month ago";
+
+        return $time;
+    }
+
+
 }
