@@ -25,6 +25,9 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $co = $em->getRepository(CoVoiturage::class)->getAllDesc($request->get('type'));
         //$cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
+        foreach ($co as $value) {
+            $value->setCreated($this->calculate_time_span($value->getUpdated()));
+        }
         $serializer = new Serializer([new ObjectNormalizer()]);
         $formatted = $serializer->normalize(['covoiturage' => $co]);
         return new JsonResponse($formatted);
@@ -58,6 +61,9 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->find($request->get('iduser'));
         $cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($user);
+        foreach ($cor as $value) {
+            $value->setCreated($this->calculate_time_span($value->getCreated()));
+        }
         $serializer = new Serializer([new ObjectNormalizer()]);
         $formatted = $serializer->normalize(['covoituragerequests' => $cor]);
         return new JsonResponse($formatted);
