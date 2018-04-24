@@ -84,6 +84,20 @@ class DefaultController extends Controller
         return new JsonResponse($formatted);
     }
 
+    public function getCoVoiturageOwnRequestsAction(Request $request){
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($request->get('id'));
+        $co = $em->getRepository(CoVoiturageRequests::class)->getOwn($user);
+        if ($co){
+            $co = "yes";
+        } else {
+            $co = "no";
+        }
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize(['ownrequests' => $co ]);
+        return new JsonResponse($formatted);
+    }
+
     public function calculate_time_span($date){
         $seconds  = strtotime(date('Y-m-d H:i:s')) - $date->getTimestamp();
 

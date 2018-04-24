@@ -14,6 +14,10 @@ co_voiturage_requests_api_all:
     path:     /requests
     defaults: { _controller: CoVoiturageAPISBundle:Default:getCoVoiturageRequests }
 
+co_voiturage_own_requests_api_all:
+    path:     /requests/own
+    defaults: { _controller: CoVoiturageAPISBundle:Default:getCoVoiturageOwnRequests }
+
 co_voiturage_requests_api_ago:
     path:     /requests/ago
     defaults: { _controller: CoVoiturageAPISBundle:Default:getCoVoiturageRequestsAgo }
