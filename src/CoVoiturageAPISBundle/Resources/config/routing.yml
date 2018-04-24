@@ -2,6 +2,10 @@ co_voiturage_api_all:
     path:     /offres
     defaults: { _controller: CoVoiturageAPISBundle:Default:getCoVoiturage }
 
+co_voiturage_api_delete:
+    path:     /offres/delete
+    defaults: { _controller: CoVoiturageAPISBundle:Default:deleteCoVoiturage }
+
 co_voiturage_api_ago:
     path:     /offres/ago
     defaults: { _controller: CoVoiturageAPISBundle:Default:getCoVoiturageAgo }
@@ -13,6 +17,14 @@ co_voiturage_api_date:
 co_voiturage_requests_api_all:
     path:     /requests
     defaults: { _controller: CoVoiturageAPISBundle:Default:getCoVoiturageRequests }
+
+co_voiturage_requests_api_add:
+    path:     /requests/add
+    defaults: { _controller: CoVoiturageAPISBundle:Default:addRequest }
+
+co_voiturage_own_requests_api_all:
+    path:     /requests/own
+    defaults: { _controller: CoVoiturageAPISBundle:Default:getCoVoiturageOwnRequests }
 
 co_voiturage_requests_api_ago:
     path:     /requests/ago
