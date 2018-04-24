@@ -138,13 +138,15 @@ class DefaultController extends Controller
         $em = $this->getDoctrine()->getManager();
         $user = $em->getRepository(User::class)->find($request->get('id'));
         $co = $em->getRepository(CoVoiturageRequests::class)->getOwn($user);
-        if ($co){
-            $co = "yes";
-        } else {
+        if (! $co){
             $co = "no";
+        } else {
+            foreach ($co as $value) {
+                $value->setCreated($this->calculate_time_span($value->getCreated()));
+            }
         }
         $serializer = new Serializer([new ObjectNormalizer()]);
-        $formatted = $serializer->normalize(['ownrequests' => $co ]);
+        $formatted = $serializer->normalize(['covoituragerequests' => $co ]);
         return new JsonResponse($formatted);
     }
 
