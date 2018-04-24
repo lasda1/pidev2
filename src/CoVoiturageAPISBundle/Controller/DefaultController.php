@@ -30,6 +30,29 @@ class DefaultController extends Controller
         return new JsonResponse($formatted);
     }
 
+    public function deleteCoVoiturageAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->find($request->get("id"));
+
+        $cod = $em->getRepository(CoVoiturageDays::class)->findByidc($request->get("id"));
+        $cor = $em->getRepository(CoVoiturageRequests::class)->findByidc($request->get("id"));
+        if ($cod) {
+            $em->remove($cod[0]);
+        }
+        if ($cor) {
+            foreach ($cor as $cc){
+                $em->remove($cc);
+            }
+        }
+
+        $em->remove($co);
+        $em->flush();
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize(['done' => "done"]);
+        return new JsonResponse($formatted);
+    }
+
     public function getCoVoiturageRequestsAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
@@ -96,6 +119,23 @@ class DefaultController extends Controller
         $serializer = new Serializer([new ObjectNormalizer()]);
         $formatted = $serializer->normalize(['ownrequests' => $co ]);
         return new JsonResponse($formatted);
+    }
+
+    public function addRequestAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $co = $em->getRepository(CoVoiturage::class)->find($request->get("id"));
+        $cor = new CoVoiturageRequests();
+        $user = $em->getRepository(User::class)->find($request->get("iduser"));
+        $cor->setUser($user);
+        $cor->setIdc($co);
+        $cor->setEtat("a");
+        $em->persist($cor);
+        $em->flush();
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize(['done' => "done"]);
+        return new JsonResponse($formatted);
+
     }
 
     public function calculate_time_span($date){
