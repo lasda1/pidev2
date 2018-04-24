@@ -23,13 +23,34 @@ class DefaultController extends Controller
     public function getCoVoiturageAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $co = $em->getRepository(CoVoiturage::class)->getAllDesc($request->get('type'));
+        if ($request->get("type") == "o") {
+            $co = $em->getRepository(CoVoiturage::class)->getAllDesc($request->get('type'));
+        } else {
+            $co = $em->getRepository(CoVoiturage::class)->getAllDescD($request->get('type'));
+        }
         //$cor = $em->getRepository(CoVoiturageRequests::class)->findByuser($this->getUser());
         foreach ($co as $value) {
             $value->setCreated($this->calculate_time_span($value->getUpdated()));
         }
         $serializer = new Serializer([new ObjectNormalizer()]);
         $formatted = $serializer->normalize(['covoiturage' => $co]);
+        return new JsonResponse($formatted);
+    }
+
+    public function getOwnCoVoiturageAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $user = $em->getRepository(User::class)->find($request->get('iduser'));
+        $co = $em->getRepository(CoVoiturage::class)->getOwn($request->get('type'),$user);
+        foreach ($co as $value) {
+            $value->setCreated($this->calculate_time_span($value->getUpdated()));
+        }
+        $cor = $em->getRepository(CoVoiturageRequests::class)->findAll();
+        foreach ($cor as $value) {
+            $value->setCreated($this->calculate_time_span($value->getCreated()));
+        }
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize(['covoiturage' => $co,'covoituragerequests'=>$cor]);
         return new JsonResponse($formatted);
     }
 
@@ -166,6 +187,50 @@ class DefaultController extends Controller
             $time = $months." month ago";
 
         return $time;
+    }
+
+    public function acceptRequestAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
+        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
+        if ($co->getType() == "o") {
+            if ($co->getPlacedisponibles() > 0) {
+                $co->setPlacedisponibles($co->getPlacedisponibles() - 1);
+                $cor->setEtat("c");
+                $em->flush();
+            }
+        } else {
+            $cor->setEtat("c");
+            $em->flush();
+        }
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize(['done' => "done"]);
+        return new JsonResponse($formatted);
+    }
+
+    public function declineRequestAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
+        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
+        $cor->setEtat("r");
+        $em->flush();
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize(['done' => "done"]);
+        return new JsonResponse($formatted);
+
+    }
+
+    public function deleteRequestAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get('id'));
+        $em->remove($cor);
+        $em->flush();
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize(['done' => "done"]);
+        return new JsonResponse($formatted);
     }
 
 

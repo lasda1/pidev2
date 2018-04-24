@@ -26,6 +26,22 @@ co_voiturage_own_requests_api_all:
     path:     /requests/own
     defaults: { _controller: CoVoiturageAPISBundle:Default:getCoVoiturageOwnRequests }
 
+co_voiturage_own2_requests_api_all:
+    path:     /requests/own2
+    defaults: { _controller: CoVoiturageAPISBundle:Default:getOwnCoVoiturage }
+
+co_voiturage_accept_requests_api_all:
+    path:     /requests/accept
+    defaults: { _controller: CoVoiturageAPISBundle:Default:acceptRequest }
+
+co_voiturage_decline_requests_api_all:
+    path:     /requests/decline
+    defaults: { _controller: CoVoiturageAPISBundle:Default:declineRequest }
+
+co_voiturage_delete_requests_api_all:
+    path:     /requests/delete
+    defaults: { _controller: CoVoiturageAPISBundle:Default:deleteRequest }
+
 co_voiturage_requests_api_ago:
     path:     /requests/ago
     defaults: { _controller: CoVoiturageAPISBundle:Default:getCoVoiturageRequestsAgo }
