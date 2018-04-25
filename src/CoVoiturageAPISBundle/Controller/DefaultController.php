@@ -228,6 +228,11 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get('id'));
+        if ($cor->getEtat() == "c"){
+            $idc = $cor->getIdc();
+            $idc->setPlacedisponibles($idc->getPlacedisponibles() + 1);
+            $em->flush();
+        }
         $em->remove($cor);
         $em->flush();
         $serializer = new Serializer([new ObjectNormalizer()]);
