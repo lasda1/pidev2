@@ -17,4 +17,11 @@ class CoVoiturageRequestsRepository extends \Doctrine\ORM\EntityRepository
               ORDER BY p.etat DESC , p.created DESC");
         return $q->getResult();
     }
+
+    public function getOwn($user){
+        $q = $this->getEntityManager()->createQuery("SELECT p
+              FROM CoVoiturageBundle:CoVoiturageRequests p
+              WHERE p.user = :user")->setParameter('user',$user);
+        return $q->getResult();
+    }
 }
