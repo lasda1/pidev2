@@ -37,6 +37,7 @@ class DocumentController extends Controller
         $em=$this->getDoctrine()->getManager();
             $notif=$em->getRepository(notification::class)->findAll();
             $notifAll=$em->getRepository(notification::class)->countAll();
+            $notifAllCroi=$em->getRepository(notification::class)->findAllCroi();
         $form = $this->createForm(DocumentsType::class, $documents);
         $form->handleRequest($request);
 
@@ -121,7 +122,7 @@ class DocumentController extends Controller
         $section=$em->getRepository(Section::class)->findAll();
         $countAll=$em->getRepository(Documents::class)->countAll();
         return $this->render('EspaceEtudeBundle:Document:afficher_documents.html.twig', array(
-            'niveaux'=>$niveau,'sections'=>$section,'form' => $form->createView(),'id'=>$id,'docs'=>$documents,'docprofs'=>$documentEns,'all'=>$countAll,'notifs'=>$notif,'notifAll'=>$notifAll,'matiere'=>$matiere
+            'niveaux'=>$niveau,'sections'=>$section,'form' => $form->createView(),'id'=>$id,'docs'=>$documents,'docprofs'=>$documentEns,'all'=>$countAll,'notifs'=>$notif,'notifAll'=>$notifAll,'matiere'=>$matiere,'notifcroi'=>$notifAllCroi
         ));
         }
         return $this->redirectToRoute('fos_user_security_login');
