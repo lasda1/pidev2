@@ -34,6 +34,7 @@ class AppKernel extends Kernel
             new ForumBundle\ForumBundle(),
             new Mgilet\NotificationBundle\MgiletNotificationBundle(),
             new CoVoiturageAPISBundle\CoVoiturageAPISBundle(),
+            new ObjetAPIBundle\ObjetAPIBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -233,7 +233,7 @@ class ObjetController extends Controller
                         $inter = new Interaction();
                         $inter->setIdUser($this->getUser());
                         $inter->setIdObjet($objet);
-                        $inter->setStatut($this->getUser()->getNom().' a trouvé Cet Objet');
+                        $inter->setStatut($this->getUser()->getNom().' est le propriétaire de Cet Objet');
                         $em->persist($inter);
                         $em->flush();
                         return $this->redirectToRoute('showsingle',array('id'=>$id));

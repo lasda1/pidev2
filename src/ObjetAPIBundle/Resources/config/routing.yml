@@ -1,0 +1,11 @@
+objet_api_homepage:
+    path:     /
+    defaults: { _controller: ObjetAPIBundle:Default:index }
+
+objtrouv:
+    path:     /objtrouv
+    defaults: { _controller: ObjetAPIBundle:Default:getObjTrouv }
+
+objperd:
+    path:     /objperd
+    defaults: { _controller: ObjetAPIBundle:Default:getObjPerd }
