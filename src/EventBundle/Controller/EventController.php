@@ -66,7 +66,7 @@ class EventController extends Controller
                 $file = $event->getPhoto();
 
                 $fileName = md5(uniqid('', true)).'.'.$file->guessExtension();
-                $path = "C:/wamp64/www/pidev2/web" ;
+                $path = "C:/xampp/htdocs/pidev2/web" ;
                 $file->move(
                     $path,
                     $fileName
