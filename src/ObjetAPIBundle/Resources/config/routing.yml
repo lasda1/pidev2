@@ -9,3 +9,13 @@ objtrouv:
 objperd:
     path:     /objperd
     defaults: { _controller: ObjetAPIBundle:Default:getObjPerd }
+
+reclamer:
+    path:     /reclamer/{id}/{iduser}
+    defaults: { _controller: ObjetAPIBundle:Default:reclamerObj }
+
+supprimer_reclamation:
+    path:     /suppprec/{id}
+    defaults: { _controller: ObjetAPIBundle:Default:supprimerInteraction }
+
+
