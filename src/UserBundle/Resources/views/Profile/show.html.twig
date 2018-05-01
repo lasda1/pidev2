@@ -11,9 +11,19 @@
     <div class="main-content">
         <div class="user-profile">
             <div class="user-display">
-                <div class="photo"></div>
+                <br>
                 <div class="bottom">
-                    <div  class="user-avatar"><span class="status"></span><img  src="assets/img/avatar.jpg"></div>
+                    <div class="user-avatar">
+                        <span class="status"></span>
+                        <a onclick="profileImage();" href="#" class="profile-pic">
+                            <div class="profile-pic" style="background-image: url('{{ asset('profileImg/'~app.user.pathImage) }}')">
+
+                                <span class="glyphicon glyphicon-camera"></span>
+                                <span>Change Image</span>
+
+                            </div>
+                        </a>
+                    </div>
                     <div class="user-info">
                         <h4> {% if user is defined %}{{ user.prenom | upper }} {{ user.nom | upper }} {% endif %}</h4>
                     </div>
@@ -21,14 +31,7 @@
             </div>
             <div class="row">
                 <div class="col-md-4 col-sm-12">
-                    <div class="main-content">
-                        <form id="my-awesome-dropzone" action="{{ path('user_homepage') }}" method="get" class="dropzone">
-                            <div class="dz-message">
-                                <div class="icon"><span class="s7-cloud-upload"></span></div>
-                                <h2>Drag and Drop files here</h2><span class="note">(This is just a demo dropzone. Selected files are <strong>not</strong> actually uploaded.)</span>
-                            </div>
-                        </form>
-                    </div>
+
                     <div class="info-block panel panel-default">
                         <div class="panel-heading">
                             <h4>About me</h4>
@@ -62,167 +65,24 @@
                     </div>
                 </div>
 
-                <div class="col-md-4 col-sm-6">
-                    <div class="widget widget-fullwidth widget-small">
-                        <div class="widget-head">
-                            <div class="tools"><span class="value">124</span></div>
-                            <span class="title">Project Issues</span>
-                        </div>
-                      </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="widget widget-calendar">
-                        <div class="cal-container">
-                            <div class="cal-notes"><span class="day">Friday</span><span
-                                        class="date">February 9</span><span class="title">Notes<span
-                                            class="icon s7-plus"></span></span>
-                                <ul>
-                                    <li><span class="hour">14h</span><span
-                                                class="event-name">Meeting with investors</span></li>
-                                    <li><span class="hour">8h</span><span class="event-name">Dentist date</span></li>
-                                </ul>
-                            </div>
-                            <div class="cal-calendar">
-                                <div class="ui-datepicker hasDatepicker" id="dp1518181758600">
-                                    <div class="ui-datepicker-inline ui-datepicker ui-widget ui-widget-content ui-helper-clearfix ui-corner-all"
-                                         style="display: block;">
-                                        <div class="ui-datepicker-header ui-widget-header ui-helper-clearfix ui-corner-all">
-                                            <a class="ui-datepicker-prev ui-corner-all" data-handler="prev"
-                                               data-event="click" title="Prev"><span
-                                                        class="ui-icon ui-icon-circle-triangle-w">Prev</span></a><a
-                                                    class="ui-datepicker-next ui-corner-all" data-handler="next"
-                                                    data-event="click" title="Next"><span
-                                                        class="ui-icon ui-icon-circle-triangle-e">Next</span></a>
-                                            <div class="ui-datepicker-title"><span
-                                                        class="ui-datepicker-month">February</span>&nbsp;<span
-                                                        class="ui-datepicker-year">2018</span></div>
-                                        </div>
-                                        <table class="ui-datepicker-calendar">
-                                            <thead>
-                                            <tr>
-                                                <th scope="col" class="ui-datepicker-week-end"><span
-                                                            title="Sunday">Su</span></th>
-                                                <th scope="col"><span title="Monday">Mo</span></th>
-                                                <th scope="col"><span title="Tuesday">Tu</span></th>
-                                                <th scope="col"><span title="Wednesday">We</span></th>
-                                                <th scope="col"><span title="Thursday">Th</span></th>
-                                                <th scope="col"><span title="Friday">Fr</span></th>
-                                                <th scope="col" class="ui-datepicker-week-end"><span
-                                                            title="Saturday">Sa</span></th>
-                                            </tr>
-                                            </thead>
-                                            <tbody>
-                                            <tr>
-                                                <td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">
-                                                    &nbsp;
-                                                </td>
-                                                <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">
-                                                    &nbsp;
-                                                </td>
-                                                <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">
-                                                    &nbsp;
-                                                </td>
-                                                <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">
-                                                    &nbsp;
-                                                </td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">1</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">2</a></td>
-                                                <td class=" ui-datepicker-week-end " data-handler="selectDay"
-                                                    data-event="click" data-month="1" data-year="2018"><a
-                                                            class="ui-state-default" href="#">3</a></td>
-                                            </tr>
-                                            <tr>
-                                                <td class=" ui-datepicker-week-end " data-handler="selectDay"
-                                                    data-event="click" data-month="1" data-year="2018"><a
-                                                            class="ui-state-default" href="#">4</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">5</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">6</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">7</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">8</a></td>
-                                                <td class=" ui-datepicker-days-cell-over  ui-datepicker-current-day ui-datepicker-today"
-                                                    data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a
-                                                            class="ui-state-default ui-state-highlight ui-state-active ui-state-hover"
-                                                            href="#">9</a></td>
-                                                <td class=" ui-datepicker-week-end " data-handler="selectDay"
-                                                    data-event="click" data-month="1" data-year="2018"><a
-                                                            class="ui-state-default" href="#">10</a></td>
-                                            </tr>
-                                            <tr>
-                                                <td class=" ui-datepicker-week-end " data-handler="selectDay"
-                                                    data-event="click" data-month="1" data-year="2018"><a
-                                                            class="ui-state-default" href="#">11</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">12</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">13</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">14</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">15</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">16</a></td>
-                                                <td class=" ui-datepicker-week-end " data-handler="selectDay"
-                                                    data-event="click" data-month="1" data-year="2018"><a
-                                                            class="ui-state-default" href="#">17</a></td>
-                                            </tr>
-                                            <tr>
-                                                <td class=" ui-datepicker-week-end " data-handler="selectDay"
-                                                    data-event="click" data-month="1" data-year="2018"><a
-                                                            class="ui-state-default" href="#">18</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">19</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">20</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">21</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">22</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">23</a></td>
-                                                <td class=" ui-datepicker-week-end " data-handler="selectDay"
-                                                    data-event="click" data-month="1" data-year="2018"><a
-                                                            class="ui-state-default" href="#">24</a></td>
-                                            </tr>
-                                            <tr>
-                                                <td class=" ui-datepicker-week-end " data-handler="selectDay"
-                                                    data-event="click" data-month="1" data-year="2018"><a
-                                                            class="ui-state-default" href="#">25</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">26</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">27</a></td>
-                                                <td class=" " data-handler="selectDay" data-event="click" data-month="1"
-                                                    data-year="2018"><a class="ui-state-default" href="#">28</a></td>
-                                                <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">
-                                                    &nbsp;
-                                                </td>
-                                                <td class=" ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">
-                                                    &nbsp;
-                                                </td>
-                                                <td class=" ui-datepicker-week-end ui-datepicker-other-month ui-datepicker-unselectable ui-state-disabled">
-                                                    &nbsp;
-                                                </td>
-                                            </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
             </div>
         </div>
     </div>
+    <div id="myModal100" class="modal">
 
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span onclick="out4();" class="close">&times;</span>
+            <h3 id="title">Modifier La photo de profile</h3>
+            <div class="wrap">
+                <div class="element">
+                    <form id="myform" method="post" action="{{ path('upload_photo') }}" enctype="multipart/form-data" novalidate> <input id="upload" name="upload" type="file"onchange="formSubmit();" data-parsley-id="100" />
+                        <a class="btn btn-default" style="padding:20px;" href="#" id="upload_link">Upload your photo</a>
+                    </form>​</div>
+                <div class="elements"><a class="btn btn-default" style="padding:20px;" href="{{ path('remove_photo') }}"><span></span> mettre la photo par default</a></div>
+            </div>
+        </div>
+
+    </div>
 {% endblock body %}

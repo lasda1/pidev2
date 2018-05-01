@@ -8,15 +8,20 @@ use DateTime;
 use Ob\HighchartsBundle\Highcharts\Highchart;
 use ObjetBundle\Entity\Interaction;
 use ObjetBundle\Entity\Objet;
+use ObjetBundle\Entity\traitafter;
 use ObjetBundle\Form\ObjetType;
 use ObjetBundle\Repository\ObjetRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\ExpressionLanguage\Tests\Node\Obj;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
+use Symfony\Component\Validator\Constraints\Date;
+use Zend\Json\Expr;
+use Swift_Message;
 
 class ObjetController extends Controller
 {
@@ -25,6 +30,7 @@ class ObjetController extends Controller
         $objet = new Objet();
         $form = $this->createForm(ObjetType::class, $objet);
         $form->handleRequest($request);
+        $msg="Ajouter Un Nouveau Objet Trouvé";
         if ($form->isValid() && $form->isSubmitted()) {
             $file = $objet->getPhoto();
 
@@ -43,13 +49,13 @@ class ObjetController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($objet);
             $em->flush();
-            return $this->redirectToRoute("affichobjtrouv");
+            return $this->redirectToRoute("affichobjtrouv",array(['success' => 1]));
         }
 
 
         return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form' => $form->createView()
             // ...
-       ,['success' => 1] ));
+        ,'msg'=>$msg));
     }
 
     public function ajoutobjperdAction(Request $request, UserInterface $username)
@@ -57,6 +63,7 @@ class ObjetController extends Controller
         $objet = new Objet();
         $form = $this->createForm(ObjetType::class, $objet);
         $form->handleRequest($request);
+        $msg="Ajouter Un Nouveau Objet Perdu";
         if ($form->isValid() && $form->isSubmitted()) {
             $file = $objet->getPhoto();
             $fileName = md5(uniqid()) . '.' . $file->guessExtension();
@@ -77,19 +84,30 @@ class ObjetController extends Controller
         }
 
 
-        return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form' => $form->createView()
+        return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form' => $form->createView(),'msg'=>$msg
             // ...
         ));
     }
 
-    public function affichobjtrouvAction()
+    public function affichobjtrouvAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->objtrouv();
-        $interaction=$em->getRepository(Interaction::class)->findAll();
+        $ob=$em->getRepository(Objet::class)->objperd();
+        $x=array();
+        foreach ($objet as $o)
+        {
+            foreach ($ob as $operd)
+            {
+                if( $o->getUser()->getId()!=$operd->getUser()->getId()&&$o->getType()==$operd->getType()&&$o->getLieu()==$operd->getLieu())
+                {
+                    array_push($x,$operd);
+                }
+            }
 
-        return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 1,'interaction'=>$interaction
-            // ...
+        }
+
+        return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 1,'x'=>$x,
         ));
     }
 
@@ -97,8 +115,23 @@ class ObjetController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->objperd();
-        $interaction=$em->getRepository(Interaction::class)->findAll();
-        return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 2,'interaction'=>$interaction
+        $ob=$em->getRepository(Objet::class)->objtrouv();
+        $x=array();
+        foreach ($objet as $o)
+        {
+            foreach ($ob as $otrouv)
+            {
+                if( $o->getUser()->getId()!=$otrouv->getUser()->getId()&&$o->getType()==$otrouv->getType()&&$o->getLieu()==$otrouv->getLieu())
+                {
+                array_push($x,$otrouv);
+                }
+
+            }
+
+        }
+
+        //$interaction = $em->getRepos1itory(Interaction::class)->findAll();
+        return $this->render('ObjetBundle:Objet:affichobj.html.twig', array('objet' => $objet, 'nature' => 2,'x'=>$x
             // ...
         ));
     }
@@ -108,6 +141,11 @@ class ObjetController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->find($id);
+        $interaction=$em->getRepository(Interaction::class)->findByidObjet($id);
+        if($interaction)
+        {
+            $em->remove($interaction[0]);
+        }
         $em->remove($objet);
         $em->flush();
         if ($objet->getNature() == 'Objet Perdu') {
@@ -123,6 +161,11 @@ class ObjetController extends Controller
         $objet = $em->getRepository(Objet::class)->find($id);
         $Form = $this->createForm(ObjetType::class, $objet);
         $Form->handleRequest($request);
+
+        if ($objet->getNature()=='Objet Perdu')
+        {$msg='Ajouter Un Nouveau Objet Perdu';}
+        else
+        {$msg='Ajouter Un Nouveau Objet Trouvé';}
         if ($Form->isValid() && $Form->isSubmitted()) {
             $file = $objet->getPhoto();
             $fileName = md5(uniqid()) . '.' . $file->guessExtension();
@@ -133,77 +176,31 @@ class ObjetController extends Controller
             );
             $username = $this->container->get('security.token_storage')->getToken()->getUser();
             $objet->setUser($username);
+            $objet->setEnable(0);
             $objet->setPhoto($fileName);
             $em->persist($objet);
             $em->flush();
-            if ($objet->getNature() == 'Objet Perdu') {
-                return $this->redirectToRoute("affichobjperd");
-            } else {
-                return $this->redirectToRoute("affichobjtrouv");
-            }
-
-        }
-        return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form' => $Form->createView()            // ...
-        ));
-
-    }
-
-    public function objetAction()
-    {
-        $em = $this->getDoctrine()->getManager();
-        $objets = $em->getRepository(Objet::class)->objtrouv();
-
-
-        usort($objets, function ($a, $b)
-        {
-            return ($a->getDate() > $b->getDate());
-        });
-        $period = new DatePeriod(
-            (new DateTime($objets[0]->getDate()->format('Y-m-d')))->modify('-1 day'),
-            new DateInterval('P1D'),
-            (new DateTime($objets[count($objets)-1]->getDate()->format('Y-m-d')))->modify('+1 day')
-);
-        $dates = array();
-        foreach ($period as $key => $value) {
-            $date = $value->format('Y-m-d')  ;
-            array_push($dates,$date);
-        }
-        //return new Response($date);
-        $categories = array();
-        $tab = array() ;
-        foreach ($objets as $object)
-        {
-            $date = $object->getDate()->format('Y-m-d');
-            if (array_key_exists($date, $tab))
+            if ($objet->getNature() == 'Objet Perdu')
             {
-                $tab[$date]++;
+                return $this->redirectToRoute("affichobjperd");
+
             }
             else
             {
-                $tab[$date] = 1;
+                return $this->redirectToRoute("affichobjtrouv");
+
             }
-
-            /*
-            $nbr = count(array_keys($objets,$objets[0]->getDate()));
-            array_push($tab,$nbr+1);
-            array_push($categories, $objet->getDate()->format('Y-m-d'));*/
         }
-
-        $series = array( array("name" => "Nombre d'objets", "data" => array_values($tab)) );
-        $ob = new Highchart();
-        $ob->chart->renderTo('linechart');
-        // #id du div où afficher le graphe
-        $ob->title->text('Nombre D\'objet Trouvés par Date');
-        $ob->xAxis->title(array('text' => "Date"));
-        $ob->yAxis->title(array('text' => "Nombre D'objet Trouvés"));
-        $ob->xAxis->categories($dates);
-        $ob->series($series);
-        return $this->render('ObjetBundle:Objet:Objet.html.twig', array('chart' => $ob));
+        return $this->render('ObjetBundle:Objet:ajoutobj.html.twig', array('form' => $Form->createView(),'msg'=>$msg            // ...
+        ));
 
     }
 
     public function coinobjperdAction()
     {
+
+        /*$em=$this->getDoctrine()->getManager();
+        $objet=$em->getRepository(Objet::class)->nbobjperd();*/
 
         return $this->render('ObjetBundle:Objet:coinobjperd.html.twig');
     }
@@ -218,113 +215,103 @@ class ObjetController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $objet = $em->getRepository(Objet::class)->find($id);
-        if ($objet->getNature() == "Objet Perdu") {
-
-                $inter = new Interaction();
-                $inter->setIdUser($this->getUser());
-                $inter->setIdObjet($objet);
-                $inter->setStatut("Perdu-->Trouvé par");
-                $em->persist($inter);
-                $em->flush();
-                return $this->redirectToRoute('affichobjperd');
-        }
-            else
-                {
-                $inter = new Interaction();
-                $inter->setIdUser($this->getUser());
-                $inter->setIdObjet($objet);
-                $inter->setStatut("Trouvé-->propriétaire de");
-                $em->persist($inter);
-                $em->flush();
-                return $this->redirectToRoute('affichobjtrouv',array('inter'=>$inter));
-
-                }
-    }
-
-    public function viewetatAction(Request $request){
-        $em=$this->getDoctrine()->getManager();
-        $inter=$em->getRepository(Interaction::class)->findByidObjet($request->get("id"));
-        if($inter)
+        $inter = $this->getDoctrine()->getRepository(Interaction::class)->findtrouver($id);
+        if($inter == null)
         {
-            $msg= 'Votre objet perdu a été réclamé comme trouvé par '.$inter[0]->getIdUser()->getNom();
-        }
-        elseif ($inter&&$inter->getIdObjet()->getNature()=='Objet Trouvé')
-        {
-            $msg=$inter[0]->getIdUser()->getNom().'a trouvé ton Objet';
+                    if ($objet->getNature() == "Objet Perdu") {
+
+                        $inter = new Interaction();
+                        $inter->setIdUser($this->getUser());
+                        $inter->setIdObjet($objet);
+                        $inter->setStatut('Cet objet perdu a été réclamé comme trouvé par ' . $this->getUser()->getNom());
+                        $em->persist($inter);
+                        $em->flush();
+                        return $this->redirectToRoute('showsingle',array('id'=>$id));
+                    }
+                    else
+                    {
+                        $inter = new Interaction();
+                        $inter->setIdUser($this->getUser());
+                        $inter->setIdObjet($objet);
+                        $inter->setStatut($this->getUser()->getNom().' a trouvé Cet Objet');
+                        $em->persist($inter);
+                        $em->flush();
+                        return $this->redirectToRoute('showsingle',array('id'=>$id));
+                    }
         }
         else
         {
-            $msg='Aucune Réclamation';
-        }
-        return $this->render('ObjetBundle:Objet:updateobj.html.twig',array('msg'=>$msg));
+            $msg='Déja Réclamé';
+            return $this->redirectToRoute('affichobjtrouv',array('msg'=>$msg));
 
+        }
     }
 
     public function showsingleAction($id)
     {
+        $em = $this->getDoctrine()->getManager();
+        $objet = $em->getRepository(Objet::class)->find($id);
+        $inter=$em->getRepository(Interaction::class)->findOneBy(array('idObjet'=>$objet));
+        $interaction = $em->getRepository(Interaction::class)->findOneBy(
+            array('idUser'=>$this->getUser(),'idObjet'=>$objet));
+       // $msg=$interaction->getStatut();
+        if($interaction) {
+
+            return $this->render('ObjetBundle:Objet:showsingle.html.twig', array('objet' => $objet, 'interaction' => $interaction,'inter'=>$inter));
+        }
+        else{
+
+            return $this->render('ObjetBundle:Objet:showsingle.html.twig', array('objet' => $objet, 'interaction' => null,'inter'=>$inter ));
+
+        }
+    }
+
+    public function mailAction( \Swift_Mailer $mailer){
+        $message = (new \Swift_Message('Hello Email'))
+            ->setFrom('espritentraide@gmail.com')
+            ->setTo('bader.chtara@gmail.com')
+            ->setBody('salut');
+        $mailer->send($message);
+
+    }
+
+    public function supprimerInteractionAction($id)
+    {
         $em=$this->getDoctrine()->getManager();
-        $objet=$em->getRepository(Objet::class)->find($id);
-        $interaction= new Interaction();
-
-        return $this->render('ObjetBundle:Objet:showsingle.html.twig',array('objet'=>$objet,'interaction'=>$interaction));
+        $interaction = $em->getRepository(Interaction::class)->findByidObjet($id);
+        $em->remove($interaction[0]);
+        $em->flush();
+        return $this->redirectToRoute('showsingle',array('id'=>$id));
 
     }
 
+    public function signalerReclamationAction($id)
 
-/*
-    public function acceptOffreRequestAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
-        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
-        if ($co->getType() == "o") {
-            if ($co->getPlacedisponibles() == 0) {
-                return $this->redirectToRoute('co_voiturage_viewownoffreparam', ['success' => 3]);
+        $interaction = $em->getRepository(Interaction::class)->findByidObjet($id);
+        $sig = $this->getDoctrine()->getRepository(traitafter::class)->findtrouver($id);
+        if($sig==null)
+        {
+            foreach ($interaction as $i){
+
+
+            $signal=new traitafter();
+            $signal->setUser($this->getUser());
+            if($interaction!=null ){
+            $signal->setInteraction($i);}
+            else{
+                return new Response("Pas dobjet");
             }
-            $co->setPlacedisponibles($co->getPlacedisponibles() - 1);
-            $cor->setEtat("c");
+            $signal->setStatut('Cet Signal a été réclamé par ' . $this->getUser()->getNom());
+            $em->persist($signal);
             $em->flush();
-            return $this->redirectToRoute('co_voiturage_viewownoffreparam', ['success' => 1]);
         }
-    }
-
-    public function acceptDemandeRequestAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
-        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
-        if ($co->getType() == "d") {
-            $cor->setEtat("c");
-            $em->flush();
-            return $this->redirectToRoute('co_voiturage_viewowndemandeparam', ['success' => 1]);
         }
-    }
-
-    public function refuseOffreRequestAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
-        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
-        if ($co->getType() == "o") {
-            $cor->setEtat("r");
-            $em->flush();
-            return $this->redirectToRoute('co_voiturage_viewownoffreparam', ['success' => 5]);
-        }
-    }
-
-    public function refuseDemandeRequestAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $cor = $em->getRepository(CoVoiturageRequests::class)->find($request->get("id"));
-        $co = $co = $em->getRepository(CoVoiturage::class)->find($cor->getIdc());
-        if ($co->getType() == "d") {
-            $cor->setEtat("r");
-            $em->flush();
-            return $this->redirectToRoute('co_voiturage_viewowndemandeparam', ['success' => 5]);
-        }
+        return $this->redirectToRoute('showsingle',array('id'=>$id));
     }
 
 
-*/
 
-    }
+
+}

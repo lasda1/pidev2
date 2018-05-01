@@ -3,6 +3,7 @@
 namespace EspaceEtudeBundle\Controller;
 
 use EspaceEtudeBundle\Entity\Matiere;
+use EspaceEtudeBundle\Entity\notification;
 use EspaceEtudeBundle\Enum\Niveau;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,10 +18,14 @@ class MatieresController extends Controller
         $user = $this->getUser();
         if ($user) {
         $em=$this->getDoctrine()->getManager();
-        $matiere=$em->getRepository(Section::class)->findOneBy(array('id' =>$request->attributes->get('section')));
-        $matiere=$matiere->getMatiere();
+            $notif=$em->getRepository(notification::class)->findAll();
+            $notifAll=$em->getRepository(notification::class)->countAll();
+
+            $notifAllCroi=$em->getRepository(notification::class)->findAllCroi();
+            $section=$em->getRepository(Section::class)->findOneBy(array('id' =>$request->attributes->get('section')));
+        $matiere=$section->getMatiere();
         return $this->render('EspaceEtudeBundle:Matieres:afficher_matiere.html.twig', array(
-            'matieres'=>$matiere
+            'matieres'=>$matiere,'notifs'=>$notif,'notifAll'=>$notifAll,'notifcroi'=>$notifAllCroi
         ));
         }
         return $this->redirectToRoute('fos_user_security_login');
@@ -29,10 +34,14 @@ class MatieresController extends Controller
     public function afficherSectionAction(Request $request){
         $user = $this->getUser();
         if ($user) {
+
             $em=$this->getDoctrine()->getManager();
+            $notifAllCroi=$em->getRepository(notification::class)->findAllCroi();
+            $notif=$em->getRepository(notification::class)->findAll();
+            $notifAll=$em->getRepository(notification::class)->countAll();
             $section=$em->getRepository(Section::class)->findAll();
             return $this->render('EspaceEtudeBundle:Matieres:afficher_section.html.twig', array(
-                'sections'=>$section,'niveau'=>$request->attributes->get('niveau'),
+                'sections'=>$section,'niveau'=>$request->attributes->get('niveau'),'notifs'=>$notif,'notifAll'=>$notifAll,'notifcroi'=>$notifAllCroi
             ));
         }
         return $this->redirectToRoute('fos_user_security_login');

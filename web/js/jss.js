@@ -1,3 +1,28 @@
+
+
+
+$(function(){
+    $("#upload_link").on('click', function(e){
+        e.preventDefault();
+        $("#upload:hidden").trigger('click');
+    });
+});
+
+function profileImage() {
+
+    document.getElementById("myModal100").style.display = "block";
+    window.onclick = function(event) {
+        if(event.target == document.getElementById("myModal100")) {
+            document.getElementById("myModal100").style.display = "none";
+
+        }
+    }
+}
+
+
+
+
+
 // Get the modal
 var modal = document.getElementById('myModal');
 
@@ -18,7 +43,7 @@ function modal1() {
 // When the user clicks on the button, open the modal 
 btn.onclick = function() {
     modal.style.display = "block";
-}
+};
 
 function modal2(i) {
 
@@ -48,6 +73,12 @@ function out(i) {
     document.getElementById("update"+i).style.display = "none";
 
 }
+function out4() {
+    document.getElementById("myModal100").style.display = "none";
+}
+function formSubmit() {
+    document.forms["myform"].submit();
+}
 function out2(i) {
     document.getElementById("afficher"+i).style.display = "none";
 
@@ -76,20 +107,6 @@ function test2(i) {
 
 }
 $("#recherche-content").hide();
-function recherche() {
 
 
 
-        var input=$("#docName").val();
-        $.ajax({
-            url:"{{ path('recherche_document') }}",
-            type: "POST",
-            data:{'docName':input},
-            success : function (data){
-                alert(data);
-
-            }
-        })
-
-
-}

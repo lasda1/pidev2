@@ -210,91 +210,88 @@ class EventJsonController extends Controller
             ->getForm();
     }
 
-    public function participerAction($id)
+    public function participerAction($id,$iduser)
     {
         global $kernel;
         $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
-        if ($user !== 'anon.') {
 
-            $em = $this->getDoctrine()->getManager();
 
-            $event = $em->getRepository('EventBundle:Event')->find($id);
-            if ($event->getNbMax()==0 or $user===$event->getUser()){
-                $this->addFlash('success','Vous ne pouvez pas participer');
-                return $this->redirectToRoute('e_show', array('id' => $id));
+        $em = $this->getDoctrine()->getManager();
 
-            }else{
-                $event->setNbMax($event->getNbMax()-1);
-                $em->persist($event);
-                $em->flush();
-                $avis = new Avis();
+        $event = $em->getRepository('EventBundle:Event')->find($id);
+        if ($event->getNbMax()==0 or $iduser===$event->getUser()){
+            $this->addFlash('success','Vous ne pouvez pas participer');
 
-                $avis->setIduser($user->getId());
-                $avis->setIdevent((int)$id);
+            return $this->redirectToRoute('e_show', array('id' => $id));
 
-                $em->persist($avis);
-                $em->flush();
-                $serializer = new Serializer([new ObjectNormalizer()]);
-                $formatted = $serializer->normalize($avis);
-                return new JsonResponse($formatted);
-                // return $this->redirectToRoute('ej_show', array('id' => $id));
-            }}
-        else
-            return $this->redirectToRoute('ej_index');
-
-    }
-
-    public function annulerParticipationAction($id)
-    {
-        global $kernel;
-        $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
-        if ($user !== 'anon.') {
-
-            $em = $this->getDoctrine()->getManager();
-
-            $event = $em->getRepository('EventBundle:Event')->find($id);
-            $avis = $em->getRepository('EventBundle:Avis')->findOneBy(array('idevent'=>$id,'iduser'=>$user));
-            if ($avis!=null){
-            $em->remove($avis);
-            }
-            $event->setNbMax($event->getNbMax()+1);
+        }else{
+            $event->setNbMax($event->getNbMax()-1);
             $em->persist($event);
+            $em->flush();
+            $avis = new Avis();
+
+            $avis->setIduser((int)$iduser);
+            $avis->setIdevent((int)$id);
+
+            $em->persist($avis);
             $em->flush();
             $serializer = new Serializer([new ObjectNormalizer()]);
             $formatted = $serializer->normalize($avis);
             return new JsonResponse($formatted);
-            //  return $this->redirectToRoute('ej_show', array('id' => $id));
+            // return $this->redirectToRoute('ej_show', array('id' => $id));
         }
-        else
-            return $this->redirectToRoute('ej_index');
+
+
+
     }
 
-
-    public function ratingAction($id,$val)
+    public function annulerParticipationAction($id,$iduser)
     {
         global $kernel;
         $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
-        if ($user !== 'anon.') {
-            $em = $this->getDoctrine()->getManager();
-            $avis = $em->getRepository('EventBundle:Avis')->findOneBy(array('idevent' => $id, 'iduser' => $user));
 
-            if ($avis!=null){
-                $em->remove($avis);
-                $em->flush();
-            } else if ($avis==null){
-                $avis=new Avis();
-                $avis->setIduser($user->getId());
-                $avis->setIdevent($id);
-                $avis->setAvis($val);
-                $em->persist($avis);
-                $em->flush();}
-            $serializer = new Serializer([new ObjectNormalizer()]);
-            $formatted = $serializer->normalize($avis);
-            return new JsonResponse($formatted);
-            //return $this->redirectToRoute('ej_show', array('id' => $avis->getIdevent()));
+
+        $em = $this->getDoctrine()->getManager();
+
+        $event = $em->getRepository('EventBundle:Event')->find($id);
+        $avis = $em->getRepository('EventBundle:Avis')->findOneBy(array('idevent'=>$id,'iduser'=>$iduser));
+        if ($avis!=null){
+            $em->remove($avis);
         }
-        else
-            return $this->redirectToRoute('ej_index');
+        $event->setNbMax($event->getNbMax()+1);
+        $em->persist($event);
+        $em->flush();
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($avis);
+        return new JsonResponse($formatted);
+        //  return $this->redirectToRoute('ej_show', array('id' => $id));
+
+    }
+
+
+    public function ratingAction($id,$iduser,$val)
+    {
+        global $kernel;
+        $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
+
+        $em = $this->getDoctrine()->getManager();
+        $avis = $em->getRepository('EventBundle:Avis')->findOneBy(array('idevent' => $id, 'iduser' => $iduser));
+
+        if ($avis!=null){
+            $em->remove($avis);
+            $em->flush();
+        } else if ($avis==null){
+            $avis=new Avis();
+            $avis->setIduser($iduser);
+            $avis->setIdevent($id);
+            $avis->setAvis($val);
+            $em->persist($avis);
+            $em->flush();}
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($avis);
+        return new JsonResponse($formatted);
+        //return $this->redirectToRoute('ej_show', array('id' => $avis->getIdevent()));
+
 
     }
 
@@ -314,7 +311,44 @@ class EventJsonController extends Controller
         ));
     }
 
+    public function allRatingAction($id){
+        $em = $this->getDoctrine()->getManager();
+        $avis = $em->getRepository('EventBundle:Avis')->findAll($id);
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($avis);
+        return new JsonResponse($formatted);
 
+    }
+
+
+    public function ifParticipateAction($iduser,$idevent){
+        $em = $this->getDoctrine()->getManager();
+        $avis = $em->getRepository('EventBundle:Avis')->findOneBy(array('idevent' => $idevent, 'iduser' => $iduser));
+        if ($avis!=null && $avis->getAvis()==0) {
+            $serializer = new Serializer([new ObjectNormalizer()]);
+            $formatted = $serializer->normalize($avis);
+            return new JsonResponse($formatted);
+        }
+
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($avis);
+        return new JsonResponse($formatted);
+    }
+
+
+    public function ifRatingAction($iduser,$idevent){
+        $em = $this->getDoctrine()->getManager();
+        $avis = $em->getRepository('EventBundle:Avis')->findOneBy(array('idevent' => $idevent, 'iduser' => $iduser));
+        if ($avis!=null && $avis->getAvis()!=0) {
+            $serializer = new Serializer([new ObjectNormalizer()]);
+            $formatted = $serializer->normalize($avis);
+            return new JsonResponse($formatted);
+        }
+
+        $serializer = new Serializer([new ObjectNormalizer()]);
+        $formatted = $serializer->normalize($avis);
+        return new JsonResponse($formatted);
+    }
 
 
 }

@@ -133,35 +133,35 @@ class EventController extends Controller
             $date=new \DateTime("now + 3 day");
 
             if ($event->getDatedebut()<=$date){
-                $this->addFlash('danger','Vous ne pouvez pas modifier cet evennement');
+                $this->addFlash('danger','Vous ne pouvez pas modifier cet evennement ');
                 return $this->redirectToRoute('e_show', array('id' => $event->getId()));
             }else{
-                $deleteForm = $this->createDeleteForm($event);
-                $editForm = $this->createForm('EventBundle\Form\EventType', $event);
-                $editForm->handleRequest($request);
+            $deleteForm = $this->createDeleteForm($event);
+            $editForm = $this->createForm('EventBundle\Form\EventType', $event);
+            $editForm->handleRequest($request);
 
-                if ($editForm->isSubmitted() && $editForm->isValid()) {
-                    $file = $event->getPhoto();
+            if ($editForm->isSubmitted() && $editForm->isValid()) {
+                $file = $event->getPhoto();
 
-                    $fileName = md5(uniqid('', true)).'.'.$file->guessExtension();
-                    $path = "C:/wamp64/www/pidev2/web" ;
-                    $file->move(
-                        $path,
-                        $fileName
-                    );
-                    $event->setPhoto($fileName);
-                    $event->setEnable(1);
-                    $this->getDoctrine()->getManager()->flush();
+                $fileName = md5(uniqid('', true)).'.'.$file->guessExtension();
+                $path = "C:/wamp64/www/pidev2/web" ;
+                $file->move(
+                    $path,
+                    $fileName
+                );
+                $event->setPhoto($fileName);
+                //$event->setEnable(1);
+                $this->getDoctrine()->getManager()->flush();
 
-                    return $this->redirectToRoute('e_show', array('id' => $event->getId()));
-                }
+                return $this->redirectToRoute('e_show', array('id' => $event->getId()));
+            }
 
-                return $this->render('@Event/event/edit.html.twig', array(
-                    'event' => $event,
-                    'form' => $editForm->createView(),
-                    'delete_form' => $deleteForm->createView(),
-                ));
-            }}
+            return $this->render('@Event/event/edit.html.twig', array(
+                'event' => $event,
+                'form' => $editForm->createView(),
+                'delete_form' => $deleteForm->createView(),
+            ));
+        }}
     }
 
     /**
@@ -170,26 +170,32 @@ class EventController extends Controller
      */
     public function deleteAction(Request $request, Event $event)
     {
+        global $kernel;
         $form = $this->createDeleteForm($event);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            if ($event->isEnable() == 1) {
-                $event->setEnable(0);
-                $manager = $this->get('mgilet.notification');
-                $notif = $manager->createNotification('Event Notification !');
-                $notif->setMessage("L'évennement a été annulé.");
-                $notif->setLink('http://symfony.com/');
-                $users = $em->getRepository('EventBundle:Avis')->findAll($event->getId());
-                foreach ($users as $user) {
-                    $manager->addNotification($user, $notif, true);
-                }
-            }
-            else
-                $event->setEnable(1);
-            $em->persist($event);
-            $em->flush();
+
+                $em->remove($event);
+
+
+
+                    $manager = $this->get('mgilet.notification');
+                    $notif = $manager->createNotification('Event Notification !');
+                    $notif->setMessage("L'évennement a été annulé.");
+                    $notif->setLink('http://symfony.com/');
+                    $notif->setIdEvent($event);
+
+                        try {
+                            $manager->addNotification(array($event), $notif, true);
+                            $em->flush();
+                        } catch (OptimisticLockException $exception) {
+
+
+                    }
+
+
         }
 
         return $this->redirectToRoute('e_index');
@@ -216,17 +222,17 @@ class EventController extends Controller
         $user = $kernel->getContainer()->get('security.token_storage')->getToken()->getUser();
         if ($user !== 'anon.') {
 
-            $em = $this->getDoctrine()->getManager();
+                $em = $this->getDoctrine()->getManager();
 
             $event = $em->getRepository('EventBundle:Event')->find($id);
             if ($event->getNbMax()==0 or $user===$event->getUser()){
-                $this->addFlash('success','Vous ne pouvez pas participer');
+                $this->addFlash('success','Vous ne pouvez pas participer à votre évennement !!');
                 return $this->redirectToRoute('e_show', array('id' => $id));
 
             }else{
-                $event->setNbMax($event->getNbMax()-1);
-                $em->persist($event);
-                $em->flush();
+            $event->setNbMax($event->getNbMax()-1);
+            $em->persist($event);
+            $em->flush();
                 $avis = new Avis();
 
                 $avis->setIduser($user->getId());
@@ -236,8 +242,8 @@ class EventController extends Controller
                 $em->flush();
                 return $this->redirectToRoute('e_show', array('id' => $id));
             }}
-        else
-            return $this->redirectToRoute('e_index');
+            else
+                return $this->redirectToRoute('e_index');
 
     }
 
@@ -254,7 +260,7 @@ class EventController extends Controller
             $em->remove($avis);
             $event->setNbMax($event->getNbMax()+1);
             $em->persist($event);
-            $em->flush();
+                $em->flush();
             return $this->redirectToRoute('e_show', array('id' => $id));
         }
         else
@@ -303,9 +309,17 @@ class EventController extends Controller
         ));
     }
 
+    public function listNotificationAction()
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $notifiableRepo = $em->getRepository('MgiletNotificationBundle:Notification')->findAllForNotifiableId($this->getUser());
+
+        return $this->render('@Event/event/index.html.twig',array('notification'=>$notifiableRepo));
+    }
+
 
 
 
 }
-
 

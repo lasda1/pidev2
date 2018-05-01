@@ -10,4 +10,27 @@ namespace ColocationBundle\Repository;
  */
 class ColocationRepository extends \Doctrine\ORM\EntityRepository
 {
+   public function recherche($valeur)
+    {
+        $query = ColocationRepository::createQueryBuilder('r')
+            ->where('UPPER(r.ville) LIKE UPPER(:valeur)')
+            ->setParameter('valeur', '%'.$valeur.'%')
+            ->getQuery();
+        return $query->getResult();
+    }
+
+    public function demcoloc(){
+        $q=$this->getEntityManager()
+            ->createQuery("select (c) from ColocationBundle:Colocation c WHERE c.nature ='Demande' ");
+        return $q->getResult();
+
+    }
+
+    public function offcoloc(){
+        $q=$this->getEntityManager()
+            ->createQuery("select (c) from ColocationBundle:Colocation c WHERE c.nature ='Offre' ");
+            return $q->getResult();
+
+    }
+
 }

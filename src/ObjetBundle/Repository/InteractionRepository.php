@@ -10,4 +10,12 @@ namespace ObjetBundle\Repository;
  */
 class InteractionRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findtrouver($id)
+    {
+        $q=$this->getEntityManager()
+            ->createQuery("SELECT i from ObjetBundle:Interaction i WHERE i.idObjet=:id")
+            ->setParameter('id',$id);
+        return $q->getResult();
+
+    }
 }

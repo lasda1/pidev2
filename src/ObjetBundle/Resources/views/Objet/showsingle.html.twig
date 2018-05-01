@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block pageName %}
+    <h2>Show Single Objet</h2>
+
+{% endblock %}
+
 {% block body %}
 <style>
     #map {
@@ -25,10 +30,10 @@
             {% endfor %}
         {% endfor %}
     {% endif %}
-{% set i=0 %}
+            {% set i=0 %}
             {% for interaction in interaction %}
                 {% if interaction.idobjet.id==objet.id %}
-                    {% set i=1 %}
+                    {{ interaction.Statut }}
                 {% endif %}
             {% endfor %}
 
@@ -43,8 +48,9 @@
                     <p style="width:max-content;  word-wrap: break-word">{{ objet.Description }}</p>
                 </div>
 
-              </div>
+            </div>
             {% if objet.User.id==app.user.id %}
+
             <div class="row">
                 <div class="col-md-3">
                     <div class="btnArea">
@@ -56,38 +62,71 @@
                         <a href="{{ path("updateobj", { "id":objet.id }) }}" class="btn btn-success">Modifier l'Objet</a>
                     </div>
                 </div>
+
+
                 <div class="col-md-3">
+                    {% if objet.nature=='Objet Trouvé' %}
                     <div class="btnArea">
-                        <a href="{{ path("etat_obj",{"id":objet.id})}}" class="btn btn-success">Etat de l'Objet</a>
+                        <a href="{{ path("affichobjtrouv")}}" class="btn btn-success">Voir La liste des Objets</a>
                     </div>
+                    {% else %}
+                    <div class="col-md-3">
+                        <div class="btnArea">
+                            <a href="{{ path("affichobjperd")}}" class="btn btn-success">Voir La liste des Objets</a>
+                        </div>
+                    </div>
+                    {% endif %}
                 </div>
+            </div>
+
+            {% else  %}
+            <div class="row">
                 <div class="col-md-3">
+                    {% if objet.nature=='Objet Trouvé' %}
                     <div class="btnArea">
-                        <a href="{{ path("objet_homepage")}}" class="btn btn-success">Voir La liste des Objets</a>
+                        <a href="{{ path("affichobjtrouv")}}" class="btn btn-success">Voir La liste des Objets</a>
                     </div>
+                    {% else %}
+                    <div class="btnArea">
+                        <a href="{{ path("affichobjperd")}}" class="btn btn-success">Voir La liste des Objets</a>
+                    </div>
+                    {% endif %}
                 </div>
+
+                {% if inter is defined and inter is not null%}
+                    {% if app.user.id!=inter.iduser.id %}
+                    <span style="font-size: 10px">{{ inter.Statut|upper }}</span>
+                        {#signaler interaction#}
+                        {% if objet.nature=='Objet Trouvé' %}
+                        <div class="col-md-3">
+                            <div class="btnArea">
+                                <a href="{{ path("signalerinteraction", { "id":objet.id })}}" class="btn btn-success">S'agit-il de votre Objet ?</a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% else %}
+
+                        {#supprimer interaction#}
+                        <div class="col-md-3">
+                            <div class="btnArea">
+                                <a href="{{ path("supprimerinteraction", { "id":objet.id })}}" class="btn btn-success">Supprimer Ma Réclamation</a>
+                            </div>
+
+                        <span style="font-size: 10px">Vous avez Déja Fait Une Réclamation</span>
+                        </div>
+                    {% endif %}
                 {% else %}
-                {% if i==0  %}
-                <div class="col-md-3">
+                    <div class="col-md-3">
                     <div class="btnArea">
-                        <a href="{{ path("reclamer_obj", { "id":objet.id })}}" class="btn btn-success">{% if objet.nature=='Objet Perdu' %}Tu as Trouvé l'Objet?{% else %}C'est Ton Objet{% endif %}</a>
+                        <a href="{{ path("reclamer_obj", { "id":objet.id })}}" class="btn btn-success">{% if objet.nature=='Objet Trouvé' %}C'est Ton Objet?{% else %}Tu as trouvé l'objet?{% endif %}</a>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="btnArea">
-                        <a href="{{ path("objet_homepage")}}" class="btn btn-success">Voir La liste des Objets</a>
                     </div>
-                </div>
-                {% else %}
-                <div class="col-md-3">
-                    <div class="btnArea">
-                        <a href="{{ path("objet_homepage")}}" class="btn btn-success">Voir La liste des Objets</a>
-                    </div>
-                </div>
-                {% endif %}
                 {% endif %}
             </div>
-        </div>
+            {% endif %}
+
+       </div>
+
         <div class="col-md-4 col-sm-4 col-xs-12">
 
             <aside>
@@ -96,66 +135,79 @@
                     <div class="panel panel-default">
 
                         <div class="panel-heading bg-color-1 border-color-1">
-                            <h3 class="panel-title">Informations de l'Objet</h3>
+                            <h3 class="panel-title">Fiche de l'Objet</h3>
                         </div>
                         <div class="panel-body">
-                            <ul class="media-list">
-                                <li class="media iconContet">
-                                    <div class="media-left iconContent bg-color-4">
-                                        <i class="fa fa-anchor" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="media-body iconContent">
-                                        <h4 class="media-heading color-4">Posté Par</h4>
-                                        <p>{{ objet.User }}</p>
-                                    </div>
-                                </li><li class="media iconContet">
-                                    <div class="media-left iconContent bg-color-4">
-                                        <i class="fa fa-anchor" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="media-body iconContent">
-                                        <h4 class="media-heading color-4">Type</h4>
-                                        <p>{{ objet.Type }}</p>
-                                    </div>
-                                </li>
-                                <li class="media">
-                                    <div class="media-left iconContent bg-color-3">
-                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="media-body iconContent">
-                                        <h4 class="media-heading color-3">Lieu</h4>
-                                        <p>{{ objet.Lieu }}</p>
-                                    </div>
-
-                                </li>
-                                <li class="media">
-                                    <div class="media-left iconContent bg-color-2">
-                                        <i class="fa fa-calendar" aria-hidden="true"></i>
-                                    </div>
-                                    <div class="media-body iconContent">
-                                        <h4 class="media-heading color-2">Date</h4>
-                                        <p>{{ objet.Date |date ('Y-m-d H:i:s') }}</p>
-                                    </div>
-                                </li>
-                                <li class="media iconContet">
+                                <ul class="media-list">
+                                    <li class="media iconContet">
                                         <div class="media-left iconContent bg-color-4">
                                             <i class="fa fa-anchor" aria-hidden="true"></i>
                                         </div>
                                         <div class="media-body iconContent">
-                                            <h4 class="media-heading color-4">Partager Sur</h4>
-                                            <p>{{ facebookButton() }}</p>
+                                            <h4 class="media-heading color-4">Posté Par</h4>
+                                            <p>{{ objet.User|upper }}</p>
                                         </div>
-                                </li>
-                            </ul>
+                                    </li>
+                                    <li class="media iconContet">
+                                        <div class="media-left iconContent bg-color-4">
+                                            <i class="fa fa-anchor" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body iconContent">
+                                            <h4 class="media-heading color-4">Type</h4>
+                                            <p>{{ objet.Type }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="media">
+                                        <div class="media-left iconContent bg-color-3">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body iconContent">
+                                            <h4 class="media-heading color-3">Lieu</h4>
+                                            <p>{{ objet.Lieu }}</p>
+                                        </div>
+
+                                    </li>
+                                    <li class="media">
+                                        <div class="media-left iconContent bg-color-2">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body iconContent">
+                                            <h4 class="media-heading color-2">Date</h4>
+                                            <p>{{ objet.Date |date ('Y-m-d H:i:s') }}</p>
+                                        </div>
+                                    </li>
+                                    <li class="media">
+                                        <div class="media-left iconContent bg-color-2">
+                                            <i class="fa fa-calendar" aria-hidden="true"></i>
+                                        </div>
+                                        <div class="media-body iconContent">
+                                            <h4 class="media-heading color-2">Statut</h4>
+                                            <p> {% if inter is defined and inter is not null %}
+                                                {{ inter.Statut|upper }}
+                                                {% else %}
+                                                PAS DE RECLAMATION POUR LE MOMENT
+                                                {% endif %}
+                                            </p>
+                                        </div>
+                                    </li>
+                                    <li class="media iconContet">
+                                            <div class="media-left iconContent bg-color-4">
+                                                <i class="fa fa-anchor" aria-hidden="true"></i>
+                                            </div>
+                                            <div class="media-body iconContent">
+                                                <h4 class="media-heading color-4">Partager Sur</h4>
+                                                <p>{{ linkedinButton() }} {{ twitterButton() }}</p>
+                                                {##}
+                                            </div>
+                                    </li>
+                                </ul>
                         </div>
                     </div>
-
                 </div>
             </aside>
         </div>
     </div>
-
-
-        </div>
+</div>
 {% endblock %}
 
 

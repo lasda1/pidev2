@@ -25,22 +25,36 @@ class ObjetRepository extends \Doctrine\ORM\EntityRepository
     public function nbobjperd($date){
         $q = $this->getEntityManager()
             ->createQuery("select COUNT (o) from ObjetBundle:Objet o WHERE o.date =:date AND o.nature='Objet Perdu'")->setParameter('date',$date);
-        return $q->getSingleScalarResult();;
+        return $q->getSingleScalarResult();
 
     }
 
-    public function nbobjtrouv($date){
+    public function nbobjtrouv($date)
+    {
         $q = $this->getEntityManager()
             ->createQuery("select COUNT (o) from ObjetBundle:Objet o WHERE o.date =:date AND o.nature='Objet Trouvé'")->setParameter('date',$date);
-        return $q->getSingleScalarResult();;
+        return $q->getSingleScalarResult();
     }
 
-    function recherche($search){
-        $query = ObjetRepository::createQueryBuilder('e')
-            ->where('UPPER(e.type) LIKE UPPER(:search)')
-            ->setParameter('valeur', '%'.$search.'%')
-            ->getQuery();
-        return $query->getResult();
+    public function nbpardate($nature,$type)
+    {
+        $q=$this->getEntityManager()
+            ->createQuery("select COUNT (o) from ObjetBundle:Objet o WHERE o.date=CURRENT_DATE() AND o.nature=:nature AND o.type=:type AND o.enable=:en")
+            ->setParameter('nature',$nature)
+            ->setParameter('type',$type)
+            ->setParameter('en',0);
+        return $q->getSingleScalarResult();
+
+    }
+
+    public function suggest($l,$d,$t)
+    {
+        $q=$this->getEntityManager()
+            ->createQuery("select (o) from ObjetBundle:Objet o WHERE o.nature='Objet Trouvé' AND o.type=:type AND o.date=:date AND o.lieu=:lieu")
+            ->setParameter('type',$t)
+            ->setParameter('date',$d)
+            ->setParameter('lieu',$l);
+        return $q->getResult();
     }
 
 

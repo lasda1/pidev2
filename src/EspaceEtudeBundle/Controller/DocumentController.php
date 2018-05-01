@@ -7,6 +7,7 @@ use EspaceEtudeBundle\Entity\Matiere;
 use EspaceEtudeBundle\Entity\Section;
 use EspaceEtudeBundle\Enum\Niveau;
 use EspaceEtudeBundle\Form\DocumentsType;
+use EspaceEtudeBundle\Entity\notification;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Org_Heigl\Ghostscript\Ghostscript;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Symfony\Component\Serializer\Encoder\JsonEncode;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -27,10 +30,14 @@ class DocumentController extends Controller
 
         $user = $this->getUser();
         if ($user) {
+
         $b=null;
         $id=$request->attributes->get('id');
         $documents=new Documents();
         $em=$this->getDoctrine()->getManager();
+            $notif=$em->getRepository(notification::class)->findAll();
+            $notifAll=$em->getRepository(notification::class)->countAll();
+            $notifAllCroi=$em->getRepository(notification::class)->findAllCroi();
         $form = $this->createForm(DocumentsType::class, $documents);
         $form->handleRequest($request);
 
@@ -64,9 +71,21 @@ class DocumentController extends Controller
                 $documents->setImg($test);
             }
             elseif($file->getClientOriginalExtension ()=="docx"){
-                $test="documents/telechargement.jpeg";
+                $test="documents/Office03.png";
                 $documents->setImg($test);
-            }else
+
+            }elseif($file->getClientOriginalExtension ()=="pptx") {
+                $test = "documents/Office03.png";
+                $documents->setImg($test);
+            }elseif($file->getClientOriginalExtension ()=="jpeg") {
+
+                $documents->setImg("/documents/".$fileName);
+            }
+            elseif($file->getClientOriginalExtension ()=="jpg") {
+
+                $documents->setImg("/documents/".$fileName);
+            }
+            else
                 $documents->setImg(" ");
             $user = $this->getUser();
             $documents->setUser($user);
@@ -83,16 +102,27 @@ class DocumentController extends Controller
             $documents->setPath("/Documents/".$fileName);
             $em->persist($documents);
             $em->flush();
+            if(!($this->get('security.authorization_checker')->isGranted('ROLE_ENSEIGNANT') )){
+            $notif=new Notification();
+            $notif=$notif->setDate($date = date('m/d/Y h:i:s a', time()));
+            $notif=$notif->setVu("0");
+            $notif=$notif->setMatiere($matiere);
+            $notif=$notif->setDocument($documents);
+            $em->persist($notif);
+            $em->flush();
+            }
+
         }
 
         $niveau=new Niveau();
         $documents=$em->getRepository(Documents::class)->findBy( ['matiere' => $id,'flag' => 1]);
         $documentEns=$em->getRepository(Documents::class)->findBy( ['matiere' => $id,'flag' => 0]);
-         $niveau=$niveau->getAvailableTypes();
+        $matiere=$em->getRepository(Matiere::class)->findOneBy(array('id'=>$id));
+        $niveau=$niveau->getAvailableTypes();
         $section=$em->getRepository(Section::class)->findAll();
         $countAll=$em->getRepository(Documents::class)->countAll();
         return $this->render('EspaceEtudeBundle:Document:afficher_documents.html.twig', array(
-            'niveaux'=>$niveau,'sections'=>$section,'form' => $form->createView(),'id'=>$id,'docs'=>$documents,'docprofs'=>$documentEns,'all'=>$countAll,
+            'niveaux'=>$niveau,'sections'=>$section,'form' => $form->createView(),'id'=>$id,'docs'=>$documents,'docprofs'=>$documentEns,'all'=>$countAll,'notifs'=>$notif,'notifAll'=>$notifAll,'matiere'=>$matiere,'notifcroi'=>$notifAllCroi
         ));
         }
         return $this->redirectToRoute('fos_user_security_login');

@@ -18,6 +18,13 @@ class ColocationType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
+
+            ->add('nature',ChoiceType::class,array(
+                'choices'=>array(
+                    'Demande'=>'Demande',
+                    'Offre'=>'Offre'
+                )
+            ))
             ->add('loyer')
             ->add('titre')
             ->add('meuble', ChoiceType::class, array(
@@ -55,9 +62,9 @@ class ColocationType extends AbstractType
             ->add('y',NumberType::class,array(
                 'scale'=>15
             ))
-            ->add('photo', FileType::class)
-            ->add('photo1', FileType::class)
-            ->add('photo2', FileType::class);
+            ->add('photo', FileType::class, array('attr' => array('class' => 'form-control file'),'data_class' => null,'label'=>'Photo'))
+            ->add('photo1', FileType::class, array('attr' => array('class' => 'form-control file'),'data_class' => null,'label'=>'Photo'))
+            ->add('photo2', FileType::class, array('attr' => array('class' => 'form-control file'),'data_class' => null,'label'=>'Photo'));
 
 
     }

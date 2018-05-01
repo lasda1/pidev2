@@ -1,0 +1,60 @@
+ej_index:
+    path:     /
+    defaults: { _controller: "EventBundle:EventJson:index" }
+    methods:  GET
+
+ej_show:
+    path:     /{id}/show
+    defaults: { _controller: "EventBundle:EventJson:show" }
+    methods:  GET
+
+ej_new:
+    path:     /new
+    defaults: { _controller: "EventBundle:EventJson:new" }
+    methods:  [GET, POST]
+
+ej_edit:
+    path:     /{id}/edit
+    defaults: { _controller: "EventBundle:EventJson:edit" }
+    methods:  [GET, POST]
+
+ej_delete:
+    path:     /{id}/delete
+    defaults: { _controller: "EventBundle:EventJson:delete" }
+    methods:  DELETE
+
+ej_participate:
+    path:     /{id}/{iduser}/participer
+    defaults: { _controller: "EventBundle:EventJson:participer" }
+    methods:  GET
+
+ej_annuler:
+    path:     /{id}/{iduser}/annuler
+    defaults: { _controller: "EventBundle:EventJson:annulerParticipation" }
+    methods:  GET
+
+ej_rating:
+    path:     /{id}/{iduser}/{val}
+    defaults: { _controller: "EventBundle:EventJson:rating" }
+    methods:  GET
+
+ej_recherche:
+    path:     /recherche
+    defaults: { _controller: "EventBundle:EventJson:recherche" }
+    methods:  GET
+
+ej_all_rating:
+    path:     avis/event/{id}/
+    defaults: { _controller: "EventBundle:EventJson:allRating" }
+    methods:  GET
+
+
+ej_if_participate:
+    path:     if/participate/{iduser}/{idevent}
+    defaults: { _controller: "EventBundle:EventJson:ifParticipate" }
+    methods:  GET
+
+ej_if_rate:
+    path:     if/rate/{iduser}/{idevent}
+    defaults: { _controller: "EventBundle:EventJson:ifRating" }
+    methods:  GET

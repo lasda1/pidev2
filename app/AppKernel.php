@@ -23,6 +23,8 @@ class AppKernel extends Kernel
             new EventBundle\EventBundle(),
             new Knp\Bundle\PaginatorBundle\KnpPaginatorBundle(),
             new Ob\HighchartsBundle\ObHighchartsBundle(),
+            new MyAppMailBundle\MyAppMailBundle(),
+
             new Nomaya\SocialBundle\NomayaSocialBundle(),
             new Knp\Bundle\TimeBundle\KnpTimeBundle(),
             new ColocationBundle\ColocationBundle(),
@@ -30,9 +32,8 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Discutea\DForumBundle\DForumBundle(),
             new ForumBundle\ForumBundle(),
-            new \Mgilet\NotificationBundle\MgiletNotificationBundle(),
-
-            
+            new Mgilet\NotificationBundle\MgiletNotificationBundle(),
+            new CoVoiturageAPISBundle\CoVoiturageAPISBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {

@@ -68,12 +68,37 @@ fos_user_resetting:
 fos_user_change_password:
     resource: "@FOSUserBundle/Resources/config/routing/change_password.xml"
     prefix: /profile
+
 afficher_section_admin:
     path:     /admin/section
     defaults: { _controller: UserBundle:Default:section }
 delete_section:
     path:     /admin/section/{id}
     defaults: { _controller: UserBundle:Default:delete }
+
+affiche:
+    path:     /admin/colocation
+    defaults: { _controller: UserBundle:Default:colocation }
+supprimer:
+      path:     /user/colocation/supprimer/{id}
+      defaults: { _controller: UserBundle:Default:supprimer }
+modifier:
+      path:   /modifier/{id}
+      defaults: { _controller: ColocationBundle:Default:modifier}
+
+afficher_matiere_admin:
+    path:     /admin/matiere/{id}
+    defaults: { _controller: UserBundle:Default:matiere }
+delete_matiere:
+    path:     /admin/matiere/{id}/{ids}
+    defaults: { _controller: UserBundle:Default:deleteMatiere }
+update_matiere:
+    path: /admin/update
+    defaults: {_controller: UserBundle:Default:updateMatiere}
+update_section:
+    path: /admin/sectionupdate
+    defaults: {_controller: UserBundle:Default:updateSection}
+
 
 admin_index:
     path:     /adminIndex
@@ -94,3 +119,50 @@ admin_index_approuve:
     path:     /adminIndexApprouver
     defaults: { _controller: "UserBundle:Default:indexAdminApprouver" }
     methods:  GET
+
+admin_objet_approuve:
+    path:     /adminaffichobjApprouver
+    defaults: { _controller: "UserBundle:Default:indexAdminObjet" }
+    methods:  GET
+
+admin_fct_OBJET_approuver:
+    path:     /{id}/adminObjetApprouver
+    defaults: { _controller: "UserBundle:Default:approuverObjet" }
+    methods:  GET
+
+admin_objet_non_approuve:
+    path:     /adminaffichobjnonApprouver
+    defaults: { _controller: "UserBundle:Default:indexAdminObjetApprouver" }
+    methods:  GET
+
+admin_objet_supprimer:
+    path:     /{id}/adminsupprimerobjet
+    defaults:  { _controller: "UserBundle:Default:admindeleteobj" }
+    methods:  GET
+upload_photo:
+    path:     /uploadphoto
+    defaults: { _controller: "UserBundle:Default:uploadPhoto" }
+remove_photo:
+    path:     /removephoto
+    defaults: { _controller: "UserBundle:Default:removePhoto" }
+
+admin_objet_perdu_stat:
+      path:     /objperdstat
+      defaults:  { _controller: "UserBundle:Default:adminStatObjPerd" }
+      methods:  GET
+
+admin_objet_trouve_stat:
+      path:     /objtrouvstat
+      defaults:  { _controller: "UserBundle:Default:adminStatObjTrouv" }
+      methods:  GET
+
+admin_affich_signal:
+      path:     /adminAfficherSignalobjet
+      defaults:  { _controller: "UserBundle:Default:adminAfficherSignal" }
+      methods:  GET
+
+admin_supprimer_reclamation:
+      path:     /adminsupprimerreclamation{id}
+      defaults:  { _controller: "UserBundle:Default:adminSupprimerInteraction" }
+      methods:  GET
+
