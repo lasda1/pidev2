@@ -72,7 +72,7 @@
                                     <div id="action{{ i }}" class="action">
                                         <a href="{{ path('supp_documents',{'idDoc': doc.id,'idMatiere':doc.matiere.id}) }}"><img
                                                     style="width: 25px;height: 25px; margin-left:10px;"
-                                                    src="{{ asset('/img/del.png') }}"/></a>
+                                                    src="{{ asset('img/del.png') }}"/></a>
                                         <a href="{{ path('valider_documents',{'idDoc': doc.id,'idMatiere':doc.matiere.id}) }}"><img style="width: 25px;height: 25px; margin-left:20px;"
                                                                            src="{{ asset('/img/tik.png') }}"/></a>
                                     </div>
@@ -88,7 +88,7 @@
                         <span class="close"><a onclick="out2({{ i }});">&times;</a></span>
 
                         <object type="application/PDF" width="100%" height="200%">
-                            <param name="src" value="{{ doc.path }}"/>
+                            <param name="src" value="{{ asset(doc.path) }}"/>
                         </object>
 
                     </div>
@@ -116,7 +116,7 @@
                                     <div id="action{{ i }}" class="action">
                                         <a href="{{ path('supp_documents',{'idDoc': doc.id,'idMatiere':doc.matiere.id}) }}"><img
                                                     style="width: 25px;height: 25px; margin-left:10px;"
-                                                    src="{{ asset('/img/del.png') }}"/></a>
+                                                    src="{{ asset('img/del.png') }}"/></a>
                                         <a href="{{ path('valider_documents',{'idDoc': doc.id,'idMatiere':doc.matiere.id}) }}"><img style="width: 25px;height: 25px; margin-left:20px;"
                                                                            src="{{ asset('/img/tik.png') }}"/></a>
                                     </div>
@@ -131,7 +131,7 @@
                         <span class="close"><a onclick="out2({{ i }});">&times;</a></span>
 
                         <object type="application/PDF" width="100%" height="200%">
-                            <param name="src" value="{{ doc.path }}"/>
+                            <param name="src" value="{{ asset(doc.path) }}"/>
                         </object>
 
                     </div>
@@ -166,7 +166,7 @@
                                     <div class="action">
                                         <a href="{{ path('supp_documents',{'idDoc': doc.id,'idMatiere':doc.matiere.id}) }}"><img
                                                     style="width: 25px;height: 25px; margin-left:10px;"
-                                                    src="{{ asset('/img/del.png') }}"/></a>
+                                                    src="{{ asset('img/del.png') }}"/></a>
                                       </div>
                                 </center>
                             </div>
@@ -179,7 +179,7 @@
                         <span class="close"><a onclick="out2({{ i }});">&times;</a></span>
 
                         <object type="application/PDF" width="100%" height="200%">
-                            <param name="src" value="{{ doc.path }}"/>
+                            <param name="src" value="{{ asset(doc.path) }}"/>
                         </object>
 
                     </div>
@@ -207,9 +207,9 @@
                                     <div id="action{{ i }}" class="action">
                                         <a href="{{ path('supp_documents',{'idDoc': doc.id,'idMatiere':doc.matiere.id}) }}"><img
                                                     style="width: 25px;height: 25px; margin-left:10px;"
-                                                    src="{{ asset('/img/del.png') }}"/></a>
+                                                    src="{{ asset('img/del.png') }}"/></a>
                                         <a onclick="modal2({{ i }});"><img style="width: 25px;height: 25px; margin-left:20px;"
-                                                                           src="{{ asset('/img/update.png') }}"/></a>
+                                                                           src="{{ asset('img/update.png') }}"/></a>
                                     </div>
                                 </center>
                             </div>
@@ -259,7 +259,7 @@
                         <span class="close"><a onclick="out2({{ i }});">&times;</a></span>
 
                         <object type="application/PDF" width="100%" height="200%">
-                            <param name="src" value="{{ doc.path }}"/>
+                            <param name="src" value="{{ asset(doc.path) }}"/>
                         </object>
 
                     </div>
@@ -301,9 +301,9 @@
                         <div id="action{{ i }}" class="action">
                             <a href="{{ path('supp_documents',{'idDoc': doc.id,'idMatiere':doc.matiere.id}) }}"><img
                                         style="width: 25px;height: 25px; margin-left:10px;"
-                                        src="{{ asset('/img/del.png') }}"/></a>
+                                        src="{{ asset('img/del.png') }}"/></a>
                             <a onclick="modal2({{ i }});"><img style="width: 25px;height: 25px; margin-left:20px;"
-                                                               src="{{ asset('/img/update.png') }}"/></a>
+                                                               src="{{ asset('img/update.png') }}"/></a>
                         </div>
                     </center>
                 </div>
@@ -353,7 +353,7 @@
                 <span class="close"><a onclick="out2({{ i }});">&times;</a></span>
 
                 <object type="application/PDF" width="100%" height="200%">
-                    <param name="src" value="{{ doc.path }}"/>
+                    <param name="src" value="{{ asset(doc.path) }}"/>
                 </object>
 
             </div>
@@ -381,9 +381,9 @@
                                     <div id="action{{ i }}" class="action">
                                         <a href="{{ path('supp_documents',{'idDoc': doc.id,'idMatiere':doc.matiere.id}) }}"><img
                                                     style="width: 25px;height: 25px; margin-left:10px;"
-                                                    src="{{ asset('/img/del.png') }}"/></a>
+                                                    src="{{ asset('img/del.png') }}"/></a>
                                         <a onclick="modal2({{ i }});"><img style="width: 25px;height: 25px; margin-left:20px;"
-                                                                           src="{{ asset('/img/update.png') }}"/></a>
+                                                                           src="{{ asset('img/update.png') }}"/></a>
                                     </div>
                                 </center>
                             </div>
@@ -433,7 +433,7 @@
                         <span class="close"><a onclick="out2({{ i }});">&times;</a></span>
 
                         <object type="application/PDF" width="100%" height="200%">
-                            <param name="src" value="{{ doc.path }}"/>
+                            <param name="src" value="{{ asset(doc.path) }}"/>
                         </object>
 
                     </div>

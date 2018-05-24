@@ -65,6 +65,37 @@ class DefaultController extends Controller
 
         return $response;
     }
+    public function getAllNotifAction()
+    {
+        $response = new Response();
+        $em=$this->getDoctrine()->getManager();
+        $notifAllCroi=$em->getRepository(notification::class)->findAllCroi();
+        $response->headers->set("Content-Type","application/json");
+        $notifArray=array();
+        foreach ($notifAllCroi as $s){
+
+            $a = array(
+                "id" => $s->getId(),
+                "date" => $s->getDate(),
+                "vu" => $s->getVu(),
+                "matiere"=>$s->getMatiere()->getId(),
+                "doc" => $s->getDocument()->getId()
+
+
+            );
+            array_push($notifArray,$a);
+        };
+        $response->setContent(json_encode( array(
+            "notif" => $notifArray)));
+
+
+
+
+
+
+        return $response;
+    }
+
     public function getAllMatiereAction($id)
     {
         $response = new Response();
@@ -100,7 +131,7 @@ class DefaultController extends Controller
     {
         $response = new Response();
         $em=$this->getDoctrine()->getManager();
-        $documents=$em->getRepository(Documents::class)->findBy( ['matiere' => $id,'flag' => 1]);
+        $documents=$em->getRepository(Documents::class)->findBy( ['matiere' => $id]);
 
 
         $response->headers->set("Content-Type","application/json");
@@ -111,11 +142,13 @@ class DefaultController extends Controller
                 "id" => $d->getId(),
                 "libelle" => $d->getLibelle(),
                 "path" => $d->getPath(),
+                "image" => $d->getImg(),
                 "date"=> $d->getDate(),
                 "type"=> $d->getTypeDocument(),
                 "size" => $d->getSize(),
                 "matiere"=> $d->getMatiere()->getId(),
-                "user"=> $d->getUser()->getId()
+                "user"=> $d->getUser()->getId(),
+                "flag"=>$d->getFlag()
             );
             array_push($sectionArray,$a);
         };
@@ -153,7 +186,15 @@ class DefaultController extends Controller
 
         return $response;
     }
-
+    public function setDocValidAction($id){
+        $response = new Response();
+        $em=$this->getDoctrine()->getManager();
+        $doc=$em->getRepository(Documents::class)->find($id);
+        $doc=$doc->setFlag("1");
+        $em->persist($doc);
+        $em->flush();
+        return $response;
+    }
     public function testAction()
     {
 

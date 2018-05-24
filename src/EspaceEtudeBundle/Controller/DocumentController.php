@@ -67,7 +67,7 @@ class DocumentController extends Controller
                     ->setTextAntiAliasing(Ghostscript::ANTIALIASING_HIGH);
                 // convert the input file to an image
                 $gs->render();
-                $test="/documents/".$withoutExt.".jpeg";
+                $test="documents/".$withoutExt.".jpeg";
                 $documents->setImg($test);
             }
             elseif($file->getClientOriginalExtension ()=="docx"){
@@ -79,11 +79,11 @@ class DocumentController extends Controller
                 $documents->setImg($test);
             }elseif($file->getClientOriginalExtension ()=="jpeg") {
 
-                $documents->setImg("/documents/".$fileName);
+                $documents->setImg("documents/".$fileName);
             }
             elseif($file->getClientOriginalExtension ()=="jpg") {
 
-                $documents->setImg("/documents/".$fileName);
+                $documents->setImg("documents/".$fileName);
             }
             else
                 $documents->setImg(" ");
@@ -99,7 +99,7 @@ class DocumentController extends Controller
             $type =$file->getClientOriginalExtension ();
             $documents->setTypeDocument($type);
             $documents->setFlag(0);
-            $documents->setPath("/Documents/".$fileName);
+            $documents->setPath("Documents/".$fileName);
             $em->persist($documents);
             $em->flush();
             if(!($this->get('security.authorization_checker')->isGranted('ROLE_ENSEIGNANT') )){

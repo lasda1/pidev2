@@ -10,12 +10,15 @@ json_matiere:
 json_document:
     path:     /jsonDocuments/{id}
     defaults: { _controller: EspaceEtudeBundle:Default:getAllDocuments }
+json_document_accept:
+    path:     /jsonDocumentsAccept/{id}
+    defaults: { _controller: EspaceEtudeBundle:Default:setDocValid }
 json_notif:
     path:     /jsonNotification
     defaults: { _controller: EspaceEtudeBundle:Default:getAllNotif }
 json_notif_set_vu:
-    path:     /jsonAddNotification/{id}
-    defaults: { _controller: EspaceEtudeBundle:Default:setNotificationVu }
+    path:     /jsonGetNotification/{id}
+    defaults: { _controller: EspaceEtudeBundle:Default:getNotification }
 recherche_document:
     path:     /rechercheDocument
     defaults: { _controller: EspaceEtudeBundle:Document:recherche }
