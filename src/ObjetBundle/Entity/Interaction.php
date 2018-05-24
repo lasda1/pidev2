@@ -42,6 +42,13 @@ class Interaction
 
 
     /**
+     * @var integer
+     *
+     * @ORM\OneToMany(targetEntity="ObjetBundle\Entity\traitafter", mappedBy="interaction", cascade={"persist","remove"})
+     */
+    private $traitafter;
+
+    /**
      * Get id
      *
      * @return int
@@ -126,4 +133,47 @@ class Interaction
     }
 
 
+
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->traitafter = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add traitafter
+     *
+     * @param \ObjetBundle\Entity\traitafter $traitafter
+     *
+     * @return Interaction
+     */
+    public function addTraitafter(\ObjetBundle\Entity\traitafter $traitafter)
+    {
+        $this->traitafter[] = $traitafter;
+
+        return $this;
+    }
+
+    /**
+     * Remove traitafter
+     *
+     * @param \ObjetBundle\Entity\traitafter $traitafter
+     */
+    public function removeTraitafter(\ObjetBundle\Entity\traitafter $traitafter)
+    {
+        $this->traitafter->removeElement($traitafter);
+    }
+
+    /**
+     * Get traitafter
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getTraitafter()
+    {
+        return $this->traitafter;
+    }
 }

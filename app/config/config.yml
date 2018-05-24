@@ -9,6 +9,7 @@ imports:
     - { resource: "@EspaceEtudeBundle/Resources/config/services.yml" }
     - { resource: "@ForumBundle/Resources/config/services.yml" }
     - { resource: "@MyAppMailBundle/Resources/config/services.yml" }
+    - { resource: "@CoVoiturageAPISBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
@@ -148,7 +149,7 @@ nomaya_social:
             locale:         "fr"
             message:        "Je veux partager ça avec vous"
             text:           "Tweet"
-            via:            "L'Equipe cartedevisitevirtuelle.fr"
+            via:            "Esprit Entr'aide"
             tag:            "ttot"
         googleplus:
             url:            null

@@ -1,3 +1,8 @@
+co_voiturage_apis:
+    resource: "@CoVoiturageAPISBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
 forum:
     resource: "@ForumBundle/Resources/config/routing.yml"
     prefix:   /forum
@@ -41,3 +46,8 @@ discutea_forum:
 mgilet_notifications:
     resource: "@MgiletNotificationBundle/Controller/"
     prefix: /notifications
+
+
+covoiturage_api:
+    resource: "@CoVoiturageAPISBundle/Resources/config/routing.yml"
+    prefix: /covoiturage/api
